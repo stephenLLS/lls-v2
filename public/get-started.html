@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Started — Local Launch Sites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --fire1: #E8600A;
+  --fire2: #C84A08;
+  --amber: #D4820A;
+  --gold: #E8A020;
+  --bg: #140C04;
+  --card: rgba(20,12,4,0.82);
+  --border: rgba(232,96,10,0.16);
+  --border2: rgba(255,255,255,0.055);
+  --text: #F5EDE0;
+  --text2: rgba(245,237,224,0.54);
+  --text3: rgba(245,237,224,0.22);
+  --serif: 'Bebas Neue', Impact, sans-serif;
+  --body: 'Outfit', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--body);overflow:hidden;}
+
+/* ── SHADER STAGE ── */
+#stage{position:fixed;inset:0;z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 38%,#241408 0%,#140C04 65%,#0C0802 100%);}
+#shader-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+
+/* Glass panels */
+.glass-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2;}
+.glass{position:absolute;border:0.5px solid rgba(232,140,40,0.07);border-radius:14px;
+  background:linear-gradient(135deg,rgba(232,140,40,0.016),rgba(232,140,40,0.002) 60%);
+  box-shadow:inset 0 1px 0 rgba(255,200,100,0.022),0 40px 100px -60px rgba(0,0,0,0.65);}
+.glass.g1{left:8%;top:16%;width:28%;height:64%;animation:drift1 38s ease-in-out infinite;}
+.glass.g2{right:9%;top:22%;width:34%;height:56%;animation:drift2 44s ease-in-out infinite;}
+.glass.g3{left:36%;top:30%;width:30%;height:40%;animation:drift3 52s ease-in-out infinite;opacity:0.65;}
+@keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(8px,-12px)}}
+@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-10px,8px)}}
+@keyframes drift3{0%,100%{transform:translate(0,0)}50%{transform:translate(0,-16px)}}
+
+/* Corner reticles */
+.reticle{position:absolute;width:14px;height:14px;z-index:3;pointer-events:none;opacity:0.4;}
+.reticle::before,.reticle::after{content:'';position:absolute;background:rgba(232,140,60,0.45);}
+.reticle::before{left:0;top:0;width:100%;height:1px;}
+.reticle::after{left:0;top:0;width:1px;height:100%;}
+.reticle.tr{transform:scaleX(-1);}.reticle.bl{transform:scaleY(-1);}.reticle.br{transform:scale(-1,-1);}
+.reticle.tl{top:14px;left:14px;}.reticle.tr2{top:14px;right:14px;}
+.reticle.bl2{bottom:14px;left:14px;}.reticle.br2{bottom:14px;right:14px;}
+
+/* NAV — matches main site, dark mode */
+.site-nav{position:fixed;top:0;left:0;right:0;height:68px;background:rgba(14,8,2,0.88);border-bottom:1px solid rgba(232,96,10,0.18);z-index:100;display:flex;align-items:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);width:100%;}
+.site-nav-inner{width:100%;max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;}
+.site-nav-logo{display:flex;align-items:baseline;gap:10px;text-decoration:none;}
+.site-nav-mark{font-family:'Outfit',system-ui,sans-serif;font-weight:800;font-size:20px;color:#F2EDE4;letter-spacing:-0.02em;}
+.site-nav-mark span{color:#FF5C3A;}
+.site-nav-pill{font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;background:rgba(255,255,255,0.08);color:rgba(242,237,228,0.45);padding:3px 8px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);white-space:nowrap;}
+.site-nav-links{list-style:none;display:flex;align-items:center;gap:32px;}
+.site-nav-links a{font-family:'Outfit',system-ui,sans-serif;font-size:14px;font-weight:600;color:rgba(242,237,228,0.55);text-decoration:none;transition:color 0.2s;}
+.site-nav-links a:hover{color:#F2EDE4;}
+.site-nav-cta{background:#FF5C3A!important;color:#fff!important;padding:10px 22px;border-radius:100px;transition:background 0.2s,transform 0.2s!important;}
+.site-nav-cta:hover{background:#FF7A5C!important;transform:translateY(-1px);}
+.site-nav-links{display:none;}
+.site-nav-hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;background:none;border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:8px;width:40px;height:40px;align-items:center;justify-content:center;}
+.site-nav-hamburger span{display:block;width:20px;height:1.5px;background:#F2EDE4;border-radius:2px;}
+.site-nav-overlay{position:fixed;inset:0;z-index:190;background:rgba(18,18,18,0.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity 0.35s ease;}
+.site-nav-overlay.open{opacity:1;pointer-events:auto;}
+.site-nav-drawer{position:fixed;top:0;left:0;bottom:0;width:min(340px,85vw);background:#131316;border-right:1px solid rgba(232,96,10,0.2);padding:28px 32px 40px;display:flex;flex-direction:column;gap:0;z-index:210;transform:translateX(-100%);transition:transform 0.38s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;}
+.site-nav-drawer.open{transform:translateX(0);}
+.site-nav-drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.1);}
+.site-nav-drawer-close{width:40px;height:40px;background:none;border:1px solid rgba(255,255,255,0.15);border-radius:4px;color:#F2EDE4;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.site-nav-drawer a{font-family:'Outfit',system-ui,sans-serif;font-size:15px;font-weight:700;color:#F2EDE4;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.07);padding:16px 0;display:flex;align-items:center;justify-content:space-between;}
+.site-nav-drawer .drawer-cta{display:block;background:#FF5C3A;color:#fff!important;padding:14px 28px;border-radius:4px;text-align:center;margin-top:24px;border-bottom:none!important;}
+
+/* PAGE */
+.page{position:relative;z-index:4;display:grid;grid-template-columns:1fr 480px;height:100vh;padding-top:68px;}
+
+/* LEFT */
+.left{display:flex;flex-direction:column;justify-content:space-between;padding:32px 52px 48px;position:relative;}
+/* Dark gradient behind left text so it's always readable */
+.left::before{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(8,4,1,0.72) 0%,rgba(8,4,1,0.55) 60%,rgba(8,4,1,0.0) 100%);pointer-events:none;z-index:0;}
+.left>*{position:relative;z-index:1;}
+.brand-name{font-family:var(--serif);font-size:26px;color:var(--gold);letter-spacing:2px;text-shadow:0 2px 12px rgba(0,0,0,0.8);}
+.brand-sub{font-family:var(--mono);font-size:10px;color:rgba(245,237,224,0.5);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;}
+.left-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px 0;}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--fire1);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--fire1);}
+.headline{font-family:var(--serif);font-size:clamp(58px,6.2vw,94px);line-height:0.9;letter-spacing:1px;color:#FFFFFF;margin-bottom:28px;text-shadow:0 2px 20px rgba(0,0,0,0.9),0 0 40px rgba(0,0,0,0.5);}
+.headline .fire{color:var(--fire1);display:block;text-shadow:0 0 80px rgba(232,96,10,0.55),0 2px 16px rgba(0,0,0,0.8);}
+.subtext{font-size:14px;color:rgba(245,237,224,0.82);max-width:360px;line-height:1.8;margin-bottom:40px;font-weight:300;text-shadow:0 1px 8px rgba(0,0,0,0.7);}
+.pills{display:flex;flex-direction:column;gap:14px;}
+.pill{display:flex;align-items:center;gap:14px;font-size:13px;color:rgba(245,237,224,0.75);}
+.pill-icon{width:34px;height:34px;border-radius:8px;background:rgba(12,6,2,0.65);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;backdrop-filter:blur(4px);}
+.pill strong{color:#FFFFFF;font-weight:500;text-shadow:0 1px 6px rgba(0,0,0,0.7);}
+.left-footer{font-family:var(--mono);font-size:10px;color:rgba(245,237,224,0.3);letter-spacing:0.3px;}
+
+/* CHAT PANEL */
+.right{display:flex;flex-direction:column;height:calc(100vh - 68px);background:var(--card);border-left:1px solid var(--border);backdrop-filter:blur(28px) saturate(130%);-webkit-backdrop-filter:blur(28px) saturate(130%);}
+
+/* HEADER */
+.chat-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;height:90px;}
+.agent-left{display:flex;align-items:center;gap:12px;}
+.agent-av{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:500;color:#fff;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,0.35);transition:background 0.4s ease;min-width:40px;}
+.agent-name{font-size:14px;font-weight:600;color:var(--text);}
+.agent-title{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;}
+.agent-status{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:2px;}
+.sdot{width:5px;height:5px;border-radius:50%;background:#4CAF50;box-shadow:0 0 6px #4CAF50;}
+.ai-badge{font-family:var(--mono);font-size:9px;color:var(--text3);border:1px solid var(--border2);padding:3px 8px;border-radius:20px;letter-spacing:0.5px;}
+.rev-track{display:flex;align-items:center;gap:5px;}
+.rdot{width:7px;height:7px;border-radius:50%;background:var(--fire1);box-shadow:0 0 6px rgba(232,96,10,0.5);transition:all 0.3s;}
+.rdot.used{background:#2a1a0a;box-shadow:none;}
+
+/* RETURNING BANNER */
+.ret-banner{margin:10px 16px 0;padding:10px 14px;background:rgba(232,96,10,0.07);border:1px solid rgba(232,96,10,0.18);border-radius:10px;font-size:12px;color:var(--text2);display:none;}
+.ret-banner.show{display:block;}
+.ret-banner strong{color:var(--fire1);}
+
+/* MESSAGES */
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:#2a1a0a transparent;}
+.msgs::-webkit-scrollbar{width:3px;}
+.msgs::-webkit-scrollbar-thumb{background:#2a1a0a;border-radius:2px;}
+.msg{display:flex;gap:9px;animation:fadeUp 0.22s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse;align-self:flex-end;max-width:85%;}
+.mav{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:500;flex-shrink:0;margin-top:2px;color:#fff;}
+.msg.user .mav{background:rgba(255,255,255,0.06);color:var(--text2);}
+.mcol{display:flex;flex-direction:column;gap:2px;}
+.alabel{font-family:var(--mono);font-size:9px;color:var(--text3);padding-left:2px;letter-spacing:0.5px;text-transform:uppercase;}
+.mbub{padding:11px 14px;border-radius:14px;font-size:13.5px;line-height:1.65;white-space:pre-wrap;word-break:break-word;}
+.msg.agent .mbub{background:rgba(255,255,255,0.038);border:1px solid var(--border2);color:var(--text);border-radius:4px 14px 14px 14px;}
+.msg.user .mbub{background:linear-gradient(135deg,var(--fire2),var(--amber));color:#fff;border-radius:14px 4px 14px 14px;box-shadow:0 4px 16px rgba(232,96,10,0.22);}
+
+/* TYPING */
+.tbub{background:rgba(255,255,255,0.038);border:1px solid var(--border2);border-radius:4px 14px 14px 14px;padding:13px 16px;display:flex;gap:5px;align-items:center;}
+.tbub span{width:5px;height:5px;border-radius:50%;background:var(--fire1);animation:tb 1.3s infinite;}
+.tbub span:nth-child(2){animation-delay:0.2s;}.tbub span:nth-child(3){animation-delay:0.4s;}
+@keyframes tb{0%,80%,100%{opacity:0.2;transform:scale(0.7)}40%{opacity:1;transform:scale(1)}}
+
+/* ACTIONS */
+.act-wrap{display:flex;flex-direction:column;gap:7px;margin-top:4px;width:100%;}
+.act-btn{padding:11px 15px;border-radius:10px;font-size:13px;font-family:var(--body);font-weight:500;cursor:pointer;transition:all 0.15s;text-align:left;width:100%;}
+.act-btn.primary{background:linear-gradient(135deg,var(--fire2),var(--amber));color:#fff;border:none;box-shadow:0 4px 16px rgba(232,96,10,0.25);}
+.act-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(232,96,10,0.35);}
+.act-btn.primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.act-btn.secondary{background:transparent;color:var(--fire1);border:1px solid rgba(232,96,10,0.25);}
+.act-btn.secondary:hover{background:rgba(232,96,10,0.07);border-color:rgba(232,96,10,0.4);}
+.act-btn.secondary:disabled{opacity:0.4;cursor:not-allowed;}
+
+/* PROGRESS */
+.prog{padding:7px 20px;display:flex;align-items:center;gap:5px;border-top:1px solid var(--border);flex-shrink:0;}
+.pstep{height:2px;flex:1;background:rgba(255,255,255,0.05);border-radius:2px;transition:background 0.4s;}
+.pstep.on{background:var(--fire1);box-shadow:0 0 8px rgba(232,96,10,0.4);}
+.plabel{font-family:var(--mono);font-size:9px;color:var(--text3);white-space:nowrap;margin-left:4px;text-transform:uppercase;letter-spacing:0.5px;}
+
+/* INPUT */
+.inp-area{padding:13px 16px;border-top:1px solid var(--border);display:flex;gap:9px;align-items:flex-end;flex-shrink:0;}
+#inp{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:12px;padding:10px 13px;font-size:13.5px;font-family:var(--body);color:var(--text);resize:none;max-height:100px;min-height:40px;line-height:1.5;transition:border-color 0.15s;}
+#inp::placeholder{color:var(--text3);}
+#inp:focus{outline:none;border-color:rgba(232,96,10,0.38);}
+#sbtn{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--fire2),var(--amber));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;box-shadow:0 4px 12px rgba(232,96,10,0.28);}
+#sbtn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(232,96,10,0.38);}
+#sbtn:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+#sbtn svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+
+@media(max-width:820px){.page{grid-template-columns:1fr;}.left{display:none;}.right{height:100vh;}}
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <canvas id="shader-canvas"></canvas>
+  <div class="glass-layer">
+    <div class="glass g1"></div>
+    <div class="glass g2"></div>
+    <div class="glass g3"></div>
+  </div>
+  <div class="reticle tl"></div>
+  <div class="reticle tr2"></div>
+  <div class="reticle bl2"></div>
+  <div class="reticle br2"></div>
+</div>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-nav-logo">
+      <span class="site-nav-mark">Local <span>Launch</span> Sites</span>
+      <span class="site-nav-pill">by All Spark Ent. Ltd.</span>
+    </a>
+    <ul class="site-nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="chat.html" class="site-nav-cta">Get Started</a></li>
+    </ul>
+    <button class="site-nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="site-nav-overlay" id="nav-overlay"></div>
+<div class="site-nav-drawer" id="nav-drawer">
+  <div class="site-nav-drawer-header">
+    <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;color:#F2EDE4;">Local Launch Sites</span>
+    <button class="site-nav-drawer-close" id="drawerClose">✕</button>
+  </div>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="faq.html">FAQ</a>
+  <a href="get-started.html" class="drawer-cta">Get Started →</a>
+</div>
+
+<div class="page">
+  <div class="left">
+    <div class="left-main">
+      <div class="eyebrow">Website Discovery</div>
+      <h1 class="headline">Your Business,<br><span class="fire">Online &</span>Thriving.</h1>
+      <p class="subtext">Tell our agent about your business. We ask the right questions, then build you a professional website automatically — no commitment until you approve your preview.</p>
+      <div class="pills">
+        <div class="pill"><div class="pill-icon">⚡</div><div><strong>Built. Deployed. Done.</strong> Your site goes live automatically.</div></div>
+        <div class="pill"><div class="pill-icon">✓</div><div><strong>Approve Before You Pay.</strong> See your preview first. Pay only when you love it.</div></div>
+        <div class="pill"><div class="pill-icon">📍</div><div><strong>Someone Local.</strong> Devlin, Ontario — real people behind every site.</div></div>
+      </div>
+    </div>
+    <div class="left-footer">local-launch-sites.pages.dev · All Spark Enterprises Ltd. · Devlin, ON</div>
+  </div>
+
+  <div class="right">
+    <div class="chat-header">
+      <div class="agent-left">
+        <div class="agent-av" id="agentAv">LS</div>
+        <div>
+          <div class="agent-name" id="agentName">Local Launch Sites</div>
+          <div class="agent-title" id="agentTitle">AI-Powered Agent</div>
+          <div class="agent-status"><div class="sdot"></div><span>Online — ready to help</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div class="ai-badge">AI Agent · Disclosed</div>
+        <div class="rev-track">
+          <div class="rdot" id="rp1"></div>
+          <div class="rdot" id="rp2"></div>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:3px;" id="rlabel">2 revisions</span>
+        </div>
+      </div>
+    </div>
+    <div class="ret-banner" id="retBanner"></div>
+    <div class="msgs" id="msgs"></div>
+    <div class="prog">
+      <div class="pstep on" id="ps1"></div>
+      <div class="pstep" id="ps2"></div>
+      <div class="pstep" id="ps3"></div>
+      <div class="pstep" id="ps4"></div>
+      <div class="pstep" id="ps5"></div>
+      <span class="plabel" id="plabel">About your business</span>
+    </div>
+    <div class="inp-area">
+      <textarea id="inp" placeholder="Tell us about your business..." rows="1"></textarea>
+      <button id="sbtn" aria-label="Send">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── WEBGL SHADER — amber/fire palette ── */
+window.setupAIAgentBg = function(canvas) {
+  try {
+    const gl = canvas.getContext('webgl', {
+      premultipliedAlpha: false, antialias: false,
+      preserveDrawingBuffer: true, powerPreference: 'high-performance'
+    });
+    if (!gl) {
+      console.warn('WebGL not supported, using fallback gradient');
+      canvas.style.background = 'radial-gradient(ellipse at center,#241408,#140C04 65%,#0C0802)';
+      return { destroy(){}, setUniforms(){} };
+    }
+
+  const vsSrc = `attribute vec2 a_pos; void main(){ gl_Position=vec4(a_pos,0.0,1.0); }`;
+
+  const fsSrc = `
+    precision highp float;
+    uniform vec2  u_res;
+    uniform float u_time;
+    uniform vec2  u_mouse;
+    uniform float u_parallax;
+    uniform float u_gridAmt;
+    uniform float u_particlesAmt;
+    uniform float u_streamsAmt;
+    uniform float u_pulseAmt;
+    uniform float u_glowAmt;
+    uniform float u_grainAmt;
+    uniform vec3  u_accent;
+
+    float hash21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+    float hash11(float n){return fract(sin(n*78.233)*43758.5453);}
+
+    float glowField(vec2 p,float aspect){
+      float g=0.0;
+      for(int i=0;i<3;i++){
+        float fi=float(i);
+        vec2 c=vec2(
+          0.28+0.32*fi+sin(u_time*0.022+fi*1.7)*0.12,
+          0.42+sin(u_time*0.018+fi*2.3)*0.16
+        );
+        c.x*=aspect;
+        float d=length(p-c);
+        float scale=1.6+fi*0.35;
+        g+=exp(-d*d*scale)*(0.55+0.12*fi);
+      }
+      return g;
+    }
+
+    float gridLines(vec2 p){
+      p+=vec2(u_time*0.004,-u_time*0.005);
+      vec2 g1=vec2(0.5)-abs(fract(p*14.0)-0.5);
+      float fine=min(g1.x,g1.y);
+      float line1=exp(-fine*90.0)*0.5;
+      vec2 g2=vec2(0.5)-abs(fract(p*2.8)-0.5);
+      float major=min(g2.x,g2.y);
+      float line2=exp(-major*65.0)*0.42;
+      float xsec=exp(-(g2.x+g2.y)*85.0)*0.55;
+      return line1+line2+xsec;
+    }
+
+    float particles(vec2 p,float aspect){
+      float total=0.0;
+      for(int i=0;i<32;i++){
+        float fi=float(i);
+        float seed=hash11(fi);
+        vec2 base=vec2(hash11(fi*1.31),hash11(fi*2.77));
+        base.x*=aspect;
+        vec2 pos=base+vec2(
+          sin(u_time*0.045+seed*6.283)*0.055,
+          cos(u_time*0.052+seed*3.141)*0.045
+        );
+        float d=length(p-pos);
+        float twinkle=0.5+0.5*sin(u_time*0.55+seed*28.0);
+        total+=exp(-d*d*16000.0)*twinkle;
+      }
+      return total;
+    }
+
+    float dataStreams(vec2 uv,float aspect){
+      float total=0.0,headTotal=0.0;
+      for(int i=0;i<7;i++){
+        float fi=float(i);
+        float lane=hash11(fi*3.71);
+        float speed=0.035+hash11(fi*1.93)*0.03;
+        float offset=hash11(fi*5.13);
+        float y=mod(1.25+offset-u_time*speed,1.4)-0.2;
+        float dx=abs(uv.x-lane);
+        float trail=exp(-dx*2200.0)*smoothstep(0.0,0.022,uv.y-y)*smoothstep(0.38,0.05,uv.y-y);
+        vec2 hd=(uv-vec2(lane,y))*vec2(130.0,26.0);
+        float head=exp(-dot(hd,hd));
+        total+=trail*0.5;
+        headTotal+=head;
+      }
+      return total+headTotal;
+    }
+
+    void main(){
+      vec2 frag=gl_FragCoord.xy/u_res.xy;
+      float aspect=u_res.x/u_res.y;
+      vec2 uv=frag;
+      vec2 pa=vec2(uv.x*aspect,uv.y);
+      vec2 par=vec2(-u_mouse.x,u_mouse.y)*u_parallax;
+      vec2 uvP=uv+par;
+      vec2 paP=vec2(uvP.x*aspect,uvP.y);
+
+      /* Base — warm charcoal-amber, noticeably lighter than pure black */
+      vec2 vc=uv-vec2(0.5,0.42);
+      float vd=length(vc*vec2(aspect/max(aspect,1.0),1.0));
+      vec3 col=mix(
+        vec3(0.18,0.09,0.025),   /* center: warm amber-brown */
+        vec3(0.10,0.05,0.012),   /* mid: deep amber */
+        smoothstep(0.0,0.55,vd)
+      );
+      col=mix(col,vec3(0.055,0.025,0.006),smoothstep(0.55,1.10,vd));
+
+      /* Breathing pulse */
+      float pulse=1.0+0.16*sin(u_time*0.30)*u_pulseAmt;
+
+      /* Volumetric glow — amber/orange blobs */
+      float g=glowField(paP,aspect)*u_glowAmt*pulse;
+      col+=vec3(0.72,0.28,0.04)*g*1.3;   /* warm amber body */
+      col+=u_accent*g*0.32;               /* accent tint rim */
+
+      /* Neural grid — amber tinted */
+      float gr=gridLines(paP)*u_gridAmt;
+      vec2 edge=abs(uv-0.5)*2.0;
+      float edgeFade=1.0-smoothstep(0.55,1.10,max(edge.x,edge.y));
+      edgeFade=pow(edgeFade,1.8);
+      gr*=edgeFade;
+      col+=u_accent*gr*0.28;
+      col+=vec3(1.0,0.75,0.4)*gr*0.10;
+
+      /* Particles — warm gold motes */
+      float pt=particles(paP,aspect)*u_particlesAmt;
+      col+=vec3(1.0,0.82,0.55)*pt*0.75;
+      col+=u_accent*pt*0.28;
+
+      /* Data streams */
+      float ds=dataStreams(uvP,aspect)*u_streamsAmt;
+      col+=u_accent*ds*0.42;
+      col+=vec3(1.0,0.9,0.7)*ds*0.12;
+
+      /* Top warm wash */
+      float topLight=smoothstep(1.15,0.15,uv.y)*0.06;
+      col+=vec3(0.9,0.45,0.08)*topLight;
+
+      /* Vignette — softer so it doesn't go too dark */
+      float vig=1.0-smoothstep(0.35,1.0,vd)*0.72;
+      col*=vig;
+
+      /* Grain */
+      float gn=hash21(gl_FragCoord.xy+vec2(u_time*31.0,u_time*17.0))-0.5;
+      col+=vec3(gn)*u_grainAmt;
+
+      /* Tone compress */
+      col=col/(1.0+col*0.5);
+
+      gl_FragColor=vec4(col,1.0);
+    }
+  `;
+
+  function compile(type,src){
+    const s=gl.createShader(type);
+    gl.shaderSource(s,src);gl.compileShader(s);
+    if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  const vs=compile(gl.VERTEX_SHADER,vsSrc);
+  const fs=compile(gl.FRAGMENT_SHADER,fsSrc);
+  const prog=gl.createProgram();
+  gl.attachShader(prog,vs);gl.attachShader(prog,fs);gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  const buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+  const aPos=gl.getAttribLocation(prog,'a_pos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos,2,gl.FLOAT,false,0,0);
+
+  const U={
+    res:gl.getUniformLocation(prog,'u_res'),
+    time:gl.getUniformLocation(prog,'u_time'),
+    mouse:gl.getUniformLocation(prog,'u_mouse'),
+    parallax:gl.getUniformLocation(prog,'u_parallax'),
+    gridAmt:gl.getUniformLocation(prog,'u_gridAmt'),
+    particlesAmt:gl.getUniformLocation(prog,'u_particlesAmt'),
+    streamsAmt:gl.getUniformLocation(prog,'u_streamsAmt'),
+    pulseAmt:gl.getUniformLocation(prog,'u_pulseAmt'),
+    glowAmt:gl.getUniformLocation(prog,'u_glowAmt'),
+    grainAmt:gl.getUniformLocation(prog,'u_grainAmt'),
+    accent:gl.getUniformLocation(prog,'u_accent'),
+  };
+
+  function hex3(h){
+    h=(h||'#E8820A').trim().replace('#','');
+    if(h.length===3)h=h.split('').map(c=>c+c).join('');
+    return[parseInt(h.slice(0,2),16)/255,parseInt(h.slice(2,4),16)/255,parseInt(h.slice(4,6),16)/255];
+  }
+
+  const state={
+    parallax:0.016, gridAmt:0.55, particlesAmt:0.85,
+    streamsAmt:0.65, pulseAmt:0.55, glowAmt:0.88,
+    grainAmt:0.022, accent:hex3('#E8820A'),
+  };
+
+  function resize(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    const w=Math.max(1,Math.floor(canvas.clientWidth*dpr));
+    const h=Math.max(1,Math.floor(canvas.clientHeight*dpr));
+    if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}
+  }
+  const ro=new ResizeObserver(resize);
+  ro.observe(canvas);
+  window.addEventListener('resize',resize);
+  resize();
+
+  const mouse={tx:0,ty:0,x:0,y:0};
+  function onMove(e){
+    const t=e.touches?e.touches[0]:e;
+    mouse.tx=(t.clientX/window.innerWidth)-0.5;
+    mouse.ty=(t.clientY/window.innerHeight)-0.5;
+  }
+  window.addEventListener('mousemove',onMove,{passive:true});
+  window.addEventListener('touchmove',onMove,{passive:true});
+
+  const start=performance.now();
+  let running=true;
+  function frame(){
+    if(!running)return;
+    const t=(performance.now()-start)/1000;
+    mouse.x+=(mouse.tx-mouse.x)*0.04;
+    mouse.y+=(mouse.ty-mouse.y)*0.04;
+    gl.uniform2f(U.res,canvas.width,canvas.height);
+    gl.uniform1f(U.time,t);
+    gl.uniform2f(U.mouse,mouse.x,mouse.y);
+    gl.uniform1f(U.parallax,state.parallax);
+    gl.uniform1f(U.gridAmt,state.gridAmt);
+    gl.uniform1f(U.particlesAmt,state.particlesAmt);
+    gl.uniform1f(U.streamsAmt,state.streamsAmt);
+    gl.uniform1f(U.pulseAmt,state.pulseAmt);
+    gl.uniform1f(U.glowAmt,state.glowAmt);
+    gl.uniform1f(U.grainAmt,state.grainAmt);
+    gl.uniform3f(U.accent,state.accent[0],state.accent[1],state.accent[2]);
+    gl.drawArrays(gl.TRIANGLES,0,6);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  return {
+    setUniforms(patch){
+      if(!patch)return;
+      if(patch.glowAmt!=null)state.glowAmt=patch.glowAmt;
+      if(patch.gridAmt!=null)state.gridAmt=patch.gridAmt;
+      if(patch.particlesAmt!=null)state.particlesAmt=patch.particlesAmt;
+      if(patch.streamsAmt!=null)state.streamsAmt=patch.streamsAmt;
+      if(patch.pulseAmt!=null)state.pulseAmt=patch.pulseAmt;
+      if(patch.grainAmt!=null)state.grainAmt=patch.grainAmt;
+      if(patch.accent!=null)state.accent=hex3(patch.accent);
+    },
+    destroy(){
+      running=false;ro.disconnect();
+      window.removeEventListener('resize',resize);
+      window.removeEventListener('mousemove',onMove);
+      window.removeEventListener('touchmove',onMove);
+    }
+  };
+  } catch(e) {
+    console.error('Shader setup failed:', e);
+    canvas.style.background = 'radial-gradient(ellipse at center,#241408,#140C04 65%,#0C0802)';
+    return { destroy(){}, setUniforms(){} };
+  }
+};
+
+/* ── INIT SHADER ── */
+let bgHandle={destroy(){},setUniforms(){}};
+try{bgHandle=window.setupAIAgentBg(document.getElementById('shader-canvas'));}catch(e){console.error('Shader init failed:',e);}
+
+/* ── CHAT ENGINE ── */
+const N8N='https://n8n.allsparkenterprisesltd.ca/webhook/chat-agent';
+const BUILDER='https://n8n.allsparkenterprisesltd.ca/webhook/site-builder';
+
+const SYSTEM=`You are a professional website sales and client management agent for Local Launch Sites, a division of All Spark Enterprises Ltd. (owner: Stephen Lavoie, Devlin, Ontario, Canada). This is an AI-powered agent service — disclose this if asked directly.
+
+YOUR SOLE PURPOSE: Warm, professional discovery conversations to collect everything needed to build a great website, walk clients through their preview, handle revisions, guide toward payment and upsells.
+
+STRICT RULES:
+1. ONLY discuss: business, website goals, services, brand style, contact details, pages, features, revisions, payment, upsells
+2. Off-topic: "I'm here specifically to help with your website — let's stay focused on that."
+3. Never write code, stories, essays, or answer general knowledge questions
+4. Keep responses 2-4 sentences, then ask ONE question
+5. Warm, confident, professional — senior account manager energy
+6. No bullet lists — conversational prose only
+7. One question at a time only
+8. Disclose you are AI if directly asked
+
+SERVICE: Professional static HTML sites, production quality. Vercel preview before paying. Tiers: Standard, Premium, Elite. Never quote specific prices — "Stephen will follow up with full details along with your preview."
+
+REVISIONS: 2 free included. Collect ALL feedback at once before any revision. After 2 free: "That's your two included revisions used. A revision pack of 3 more is $19.99 CAD — want to grab that, or are you happy with how it looks?"
+
+UPSELLS (mention naturally): Custom domain +$49, Contact form +$29.99, Google Analytics +$19.99, Facebook Pixel +$19.99, WhatsApp button +$14.99, Social links +$14.99, Cookie banner +$14.99, Testimonials +$24.99, Photo gallery +$29.99, Booking button +$24.99, French version +$35, Care plan $29/mo, Ad management $9.99/mo. Starter Bundle $79, Full Launch Bundle $299.
+
+FRAUD DETECTION: Encourage batching feedback. Returning user different session: ask for email. Clear abuse: flag for Stephen, 24hr follow-up. Files active 30 days.
+
+DISCOVERY: Phase 1 business basics, Phase 2 goals, Phase 3 services, Phase 4 style, Phase 5 contact details.
+
+WHEN READY TO BUILD:
+[READY_TO_BUILD]
+business_name: [value]
+business_type: [value]
+location: [value]
+phone: [value]
+email: [value]
+services: [value]
+style: [value]
+goals: [value]
+
+WHEN REVISION READY:
+[REVISION_READY]
+changes: [summary]
+revision_number: [1, 2, or paid]`;
+
+const agentColors={sarah:'#B85C38',marcus:'#2D6A4F',jenna:'#6B4E71',tom:'#4A6FA5'};
+const agentTitles={sarah:'Website Discovery Specialist',marcus:'Digital Growth Strategist',jenna:'Brand & Design Consultant',tom:'Client Success Manager'};
+const phases=['About your business','Your goals','Your services','Style & feel','Contact details'];
+
+const S={history:[],phase:1,revUsed:0,revFree:2,paidPacks:0,customerData:{},siteUrl:null,stage:'discovery',agent:null,sessionId:null,ip:null};
+
+const msgsEl=document.getElementById('msgs');
+const inpEl=document.getElementById('inp');
+const sBtn=document.getElementById('sbtn');
+
+function updateAgentUI(agent){
+  if(!agent){console.warn('updateAgentUI called with no agent');return;}
+  console.log('updateAgentUI called with agent:',agent);
+  S.agent=agent;
+  const color=agentColors[agent.id]||'#B85C38';
+  const init=agent.avatar_initials||agent.name.slice(0,2).toUpperCase();
+  const avEl=document.getElementById('agentAv');
+  const nameEl=document.getElementById('agentName');
+  const titleEl=document.getElementById('agentTitle');
+  if(avEl){avEl.textContent=init;avEl.style.background=`linear-gradient(135deg,${color},${color}cc)`;console.log('Avatar updated:',init,color);}else{console.warn('agentAv element not found');}
+  if(nameEl){nameEl.textContent=agent.name;console.log('Name updated:',agent.name);}else{console.warn('agentName element not found');}
+  if(titleEl){titleEl.textContent=agentTitles[agent.id]||'Website Specialist';console.log('Title updated');}else{console.warn('agentTitle element not found');}
+}
+
+function updateRevUI(){
+  document.getElementById('rp1').className='rdot'+(S.revUsed>=1?' used':'');
+  document.getElementById('rp2').className='rdot'+(S.revUsed>=2?' used':'');
+  const l=document.getElementById('rlabel');
+  if(S.revUsed===0)l.textContent='2 revisions';
+  else if(S.revUsed===1)l.textContent='1 left';
+  else if(!S.paidPacks)l.textContent='Used';
+  else l.textContent='Pack active';
+}
+
+function setPhase(p){
+  S.phase=Math.min(Math.max(p,1),5);
+  for(let i=1;i<=5;i++)document.getElementById('ps'+i).classList.toggle('on',i<=S.phase);
+  document.getElementById('plabel').textContent=phases[S.phase-1];
+}
+
+function scroll(){
+  // Scroll to bottom with retries for reliability
+  const doScroll = () => msgsEl.scrollTop = msgsEl.scrollHeight;
+  doScroll();
+  setTimeout(doScroll, 0);
+  setTimeout(doScroll, 50);
+}
+
+function addMsg(role,text,agentName){
+  const w=document.createElement('div');w.className='msg '+role;
+  const av=document.createElement('div');av.className='mav';
+  if(role==='agent'){
+    const color=S.agent?(agentColors[S.agent.id]||'#B85C38'):'#B85C38';
+    const init=S.agent?(S.agent.avatar_initials||S.agent.name.slice(0,2).toUpperCase()):'LS';
+    av.textContent=init;av.style.background=`linear-gradient(135deg,${color},${color}cc)`;
+  } else {
+    av.textContent='You';av.style.background='rgba(255,255,255,0.06)';av.style.color='rgba(245,237,224,0.38)';
+  }
+  const col=document.createElement('div');col.className='mcol';
+  if(role==='agent'&&agentName){const l=document.createElement('div');l.className='alabel';l.textContent=agentName;col.appendChild(l);}
+  const b=document.createElement('div');b.className='mbub';b.textContent=text;
+  col.appendChild(b);w.appendChild(av);w.appendChild(col);
+  msgsEl.appendChild(w);scroll();
+}
+
+function showTyping(){
+  const w=document.createElement('div');w.className='msg agent';w.id='typing';
+  const av=document.createElement('div');av.className='mav';
+  const color=S.agent?(agentColors[S.agent.id]||'#B85C38'):'#B85C38';
+  const init=S.agent?(S.agent.avatar_initials||S.agent.name.slice(0,2).toUpperCase()):'LS';
+  av.textContent=init;av.style.background=`linear-gradient(135deg,${color},${color}cc)`;
+  const b=document.createElement('div');b.className='tbub';
+  b.innerHTML='<span></span><span></span><span></span>';
+  w.appendChild(av);w.appendChild(b);msgsEl.appendChild(w);scroll();
+}
+
+function removeTyping(){document.getElementById('typing')?.remove();}
+
+function showActions(opts){
+  const w=document.createElement('div');w.className='msg agent';
+  const av=document.createElement('div');av.className='mav';
+  const color=S.agent?(agentColors[S.agent.id]||'#B85C38'):'#B85C38';
+  const init=S.agent?(S.agent.avatar_initials||S.agent.name.slice(0,2).toUpperCase()):'LS';
+  av.textContent=init;av.style.background=`linear-gradient(135deg,${color},${color}cc)`;
+  const wrap=document.createElement('div');wrap.className='act-wrap';
+  opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='act-btn '+(i===0?'primary':'secondary');
+    b.textContent=o.label;b.onclick=()=>o.fn(b);wrap.appendChild(b);
+  });
+  w.appendChild(av);w.appendChild(wrap);msgsEl.appendChild(w);scroll();
+}
+
+function parseBlock(text,marker){
+  if(!text.includes(marker))return null;
+  const block=text.split(marker)[1];const d={};
+  block.split('\n').forEach(l=>{const i=l.indexOf(':');if(i>-1){const k=l.slice(0,i).trim(),v=l.slice(i+1).trim();if(k&&v)d[k]=v;}});
+  return Object.keys(d).length>=3?d:null;
+}
+
+function detectPhase(t){
+  const l=t.toLowerCase();
+  if(/goal|want|need|accomplish|achieve/.test(l))setPhase(Math.max(S.phase,2));
+  if(/service|offer|speciali|provide|different/.test(l))setPhase(Math.max(S.phase,3));
+  if(/colour|color|style|look|feel|dark|light/.test(l))setPhase(Math.max(S.phase,4));
+  if(/phone|email|@|year|logo|photo/.test(l))setPhase(Math.max(S.phase,5));
+}
+
+async function getIP(){
+  try{const r=await fetch('https://api.ipify.org?format=json');const d=await r.json();return d.ip;}
+  catch(e){return 'unknown-'+Math.random().toString(36).slice(2,8);}
+}
+
+async function triggerBuild(data,btn){
+  btn.textContent='Building your preview...';btn.disabled=true;
+  try{
+    const r=await fetch(BUILDER,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({business_name:data.business_name||'',business_type:data.business_type||'',
+        location:data.location||'',phone:data.phone||'',email:data.email||'',
+        services:data.services||'',style:data.style||'',goals:data.goals||''})});
+    const raw=await r.text();
+    const url=raw.trim().replace(/^"|"$/g,'');
+    S.siteUrl=url;S.stage='review';
+    btn.textContent='Preview is live!';
+    document.getElementById('plabel').textContent='Review your site';
+    const agentName=S.agent?.name||'Your AI Agent';
+    addMsg('agent','Your preview is live! Open it here:\n'+url+'\n\nTake a good look and come back. Walk me through everything you love and anything you\'d like changed — all at once so your revision is perfect.',agentName);
+    S.history.push({role:'assistant',content:'Preview: '+url});
+  }catch(e){
+    btn.textContent='Retry';btn.disabled=false;
+    const agentName=S.agent?.name||'Your AI Agent';
+    addMsg('agent','There was a hiccup. Stephen has been notified and will follow up within 24 hours.',agentName);
+  }
+}
+
+async function callProxy(){
+  const ctx2=`\n\n[CONTEXT: stage=${S.stage}, revisions_used=${S.revUsed}, free=${S.revFree}, paid_packs=${S.paidPacks}, site_url=${S.siteUrl||'not built'}]`;
+  const agentAddon=S.agent?`\n\n${S.agent.system_prompt_addon||''}`:'';
+  const msgs=S.history.map((m,i)=>i===S.history.length-1&&m.role==='user'?{...m,content:m.content+ctx2}:m);
+  const r=await fetch(N8N,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({system:SYSTEM+agentAddon,messages:msgs,ip:S.ip||'unknown',sessionId:S.sessionId})});
+  const d=await r.json();
+  console.log('callProxy response:',d);
+  console.log('Agent from response:',d.agent);
+  if(d.agent){
+    console.log('Setting agent, previous S.agent:',S.agent);
+    if(!S.agent){
+      console.log('Calling updateAgentUI with:',d.agent);
+      updateAgentUI(d.agent);
+    }
+    S.agent=d.agent;
+    localStorage.setItem('agent',JSON.stringify(d.agent));
+    console.log('Agent set to:',S.agent);
+  }
+  if(d.sessionId&&!S.sessionId)S.sessionId=d.sessionId;
+  if(d.isReturning!==undefined)S.isReturning=d.isReturning;
+  return{reply:d.reply,typingDelay:d.typingDelay||2000,agent:d.agent};
+}
+
+async function send(userText){
+  addMsg('user',userText);
+  S.history.push({role:'user',content:userText});
+  detectPhase(userText);
+  sBtn.disabled=true;inpEl.disabled=true;
+  showTyping();
+  try{
+    const{reply:raw,typingDelay}=await callProxy();
+    await new Promise(r=>setTimeout(r,typingDelay));
+    removeTyping();
+    const agentName=S.agent?.name||'Your AI Agent';
+    const readyData=parseBlock(raw,'[READY_TO_BUILD]');
+    const revData=parseBlock(raw,'[REVISION_READY]');
+    const display=raw.split('[READY_TO_BUILD]')[0].split('[REVISION_READY]')[0].trim();
+    if(display){addMsg('agent',display,agentName);S.history.push({role:'assistant',content:display});}
+    if(readyData){
+      S.customerData=readyData;S.stage='building';setPhase(5);
+      showActions([{label:'Build my preview site now →',fn:btn=>triggerBuild(readyData,btn)}]);
+    }
+    if(revData){
+      S.revUsed++;updateRevUI();
+      if(S.revUsed<=S.revFree){
+        showActions([{label:'Apply these changes',fn:async btn=>{
+          btn.textContent='Applying...';btn.disabled=true;
+          await triggerBuild({...S.customerData,style:(S.customerData.style||'')+' REVISION '+S.revUsed+': '+revData.changes},btn);
+        }}]);
+      } else {
+        addMsg('agent',"That's your two included revisions used. A revision pack of 3 more changes is $19.99 CAD — want to grab that, or are you happy with how it looks?",agentName);
+        showActions([
+          {label:'Get revision pack — $19.99 CAD (3 more)',fn:btn=>{
+            btn.textContent='Pack added!';btn.disabled=true;
+            S.paidPacks++;S.revFree+=3;updateRevUI();
+            addMsg('agent','Revision pack is active — 3 more revisions. Walk me through everything at once and we\'ll get it all done.',agentName);
+          }},
+          {label:"I'm happy with it — what's next?",fn:btn=>{
+            btn.disabled=true;S.stage='upsell';
+            document.getElementById('plabel').textContent='Finalizing';
+            addMsg('agent',"Excellent — your site looks great. Let's talk about getting it on your own domain and making sure people can find you. Want me to walk you through the options?",agentName);
+          }}
+        ]);
+      }
+    }
+  }catch(e){
+    removeTyping();
+    const agentName=S.agent?.name||'Your AI Agent';
+    addMsg('agent','Connection issue — please try again in a moment.',agentName);
+  }
+  sBtn.disabled=false;inpEl.disabled=false;inpEl.focus();
+}
+
+async function init(){
+  // Generate or retrieve sessionId (fixed session tracking, not IP-based)
+  let sessionId=localStorage.getItem('lls_sessionId');
+  if(!sessionId){
+    sessionId='sess_'+Date.now()+'_'+Math.random().toString(36).substr(2,9).toUpperCase();
+    localStorage.setItem('lls_sessionId',sessionId);
+  }
+  S.sessionId=sessionId;
+  console.log('Session ID:',sessionId);
+  
+  S.ip=await getIP();
+  // DON'T load stored agent - let n8n return the correct one
+  const storedFileNumber=localStorage.getItem('fileNumber');
+  if(storedFileNumber)S.fileNumber=storedFileNumber;
+  sBtn.disabled=true;showTyping();
+  S.history.push({role:'user',content:'begin'});
+  try{
+    const{reply:raw,typingDelay,agent}=await callProxy();
+    await new Promise(r=>setTimeout(r,Math.min(typingDelay,2500)));
+    removeTyping();
+  const display=raw.split('[READY_TO_BUILD]')[0].trim();
+    const agentName=S.agent?.name||'Your AI Agent';
+    if(raw.includes('fileNumber')){
+      const match=raw.match(/fileNumber['":\s]+([^\s'"]+)/i);
+      if(match){S.fileNumber=match[1];localStorage.setItem('fileNumber',match[1]);}
+    }
+    addMsg('agent',display,agentName);
+    S.history.push({role:'assistant',content:display});
+    if(S.isReturning&&S.agent){
+      const b=document.getElementById('retBanner');
+      b.innerHTML=`Welcome back! <strong>${S.agent.name}</strong> has your file ready.`;
+      b.classList.add('show');setTimeout(()=>b.classList.remove('show'),5000);
+    }
+  }catch(e){
+    removeTyping();
+    const fb="Hi there! I'm your AI discovery agent for Local Launch Sites. I'll ask you a few quick questions so we can build your website automatically — no payment until you see and approve your preview. What's your first name and the name of your business?";
+    addMsg('agent',fb,'Your AI Agent');S.history.push({role:'assistant',content:fb});
+  }
+  sBtn.disabled=false;inpEl.focus();updateRevUI();
+}
+
+sBtn.addEventListener('click',()=>{
+  const t=inpEl.value.trim();if(!t)return;
+  inpEl.value='';inpEl.style.height='auto';send(t);
+});
+inpEl.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sBtn.click();}});
+inpEl.addEventListener('input',()=>{inpEl.style.height='auto';inpEl.style.height=Math.min(inpEl.scrollHeight,100)+'px';});
+
+/* Nav hamburger */
+const ham=document.getElementById('hamburger');
+const drawer=document.getElementById('nav-drawer');
+const overlay=document.getElementById('nav-overlay');
+const drawerClose=document.getElementById('drawerClose');
+function openNav(){drawer.classList.add('open');overlay.classList.add('open');document.body.style.overflow='hidden';}
+function closeNav(){drawer.classList.remove('open');overlay.classList.remove('open');document.body.style.overflow='';}
+if(ham&&drawer){ham.addEventListener('click',openNav);overlay.addEventListener('click',closeNav);if(drawerClose)drawerClose.addEventListener('click',closeNav);document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNav();});}
+
+init();
+</script>
+</body>
+</html>

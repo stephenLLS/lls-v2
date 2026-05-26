@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Local Launch Sites</title>
+  <meta name="description" content="Real websites built for real Northwestern Ontario businesses. See how Local Launch Sites helps local business owners get online.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --coral:       #FF5C3A;
+      --coral-dark:  #E04828;
+      --coral-light: #FF7A5C;
+      --coral-pale:  #FFF0EC;
+      --sky:         #3AB5FF;
+      --sky-dark:    #1E9FEF;
+      --sky-pale:    #EBF7FF;
+      --mint:        #2ECC8F;
+      --mint-dark:   #1DAD70;
+      --mint-pale:   #EAFAF3;
+      --ink:         #121212;
+      --ink-60:      rgba(18,18,18,0.60);
+      --ink-30:      rgba(18,18,18,0.30);
+      --chalk:       #F2EDE4;
+      --sand:        #E8DCC8;
+      --white:       #FFFFFF;
+      --border:      rgba(18,18,18,0.12);
+
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Lora', Georgia, serif;
+      --font-mono:    'DM Mono', 'Courier New', monospace;
+
+      --nav-h:     68px;
+      --radius:    4px;
+      --radius-lg: 8px;
+      --transition:0.3s ease;
+      --shadow-sm: 0 2px 8px rgba(18,18,18,0.08);
+      --shadow-md: 0 8px 32px rgba(18,18,18,0.12);
+      --shadow-lg: 0 20px 60px rgba(18,18,18,0.16);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--chalk); color: var(--ink); line-height: 1.7; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; font-family: inherit; }
+
+    .container { width: 100%; max-width: 1120px; margin-inline: auto; padding-inline: 24px; }
+    @media (min-width: 768px) { .container { padding-inline: 40px; } }
+
+    /* ── NAV ─────────────────────────────────────────────────── */
+    .nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 200; background: transparent; transition: background var(--transition), box-shadow var(--transition); }
+    .nav.scrolled { background: rgba(242,237,228,0.96); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--border); }
+    .nav__inner { height: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .nav__logo { display: flex; align-items: center; gap: 6px; }
+    .nav__logo-text { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+    .nav__logo-text em { font-style: normal; color: var(--coral); }
+    .nav__logo-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--coral); flex-shrink: 0; }
+    .nav__hamburger { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; background: none; border: 1.5px solid var(--border); border-radius: var(--radius); transition: border-color var(--transition); }
+    .nav__hamburger:hover { border-color: var(--coral); }
+    .nav__hamburger span { display: block; width: 20px; height: 1.5px; background: var(--ink); border-radius: 2px; transition: transform 0.35s ease, opacity 0.2s ease, width 0.3s ease; transform-origin: center; }
+    .nav__hamburger.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav__hamburger.is-open span:nth-child(2) { opacity: 0; width: 0; }
+    .nav__hamburger.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .nav__overlay { position: fixed; inset: 0; z-index: 190; background: rgba(18,18,18,0.5); backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+    .nav__overlay.is-open { opacity: 1; pointer-events: auto; }
+    .nav__drawer { position: fixed; top: 0; left: 0; bottom: 0; width: min(340px,85vw); z-index: 210; background: var(--chalk); padding: 28px 32px 40px; display: flex; flex-direction: column; transform: translateX(-100%); transition: transform 0.38s cubic-bezier(0.4,0,0.2,1); box-shadow: var(--shadow-lg); }
+    .nav__drawer.is-open { transform: translateX(0); }
+    .nav__drawer-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px; }
+    .nav__drawer-close { width: 44px; height: 44px; border: 1.5px solid var(--border); border-radius: var(--radius); background: none; font-size: 1rem; color: var(--ink); display: flex; align-items: center; justify-content: center; transition: border-color var(--transition), color var(--transition); }
+    .nav__drawer-close:hover { border-color: var(--coral); color: var(--coral); }
+    .nav__drawer-links { list-style: none; flex: 1; }
+    .nav__drawer-links li { border-bottom: 1px solid var(--border); }
+    .nav__drawer-links li:first-child { border-top: 1px solid var(--border); }
+    .nav__drawer-links a { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--ink); transition: color var(--transition); }
+    .nav__drawer-links a:hover, .nav__drawer-links a.active { color: var(--coral); }
+    .nav__drawer-links a .arrow { font-family: var(--font-mono); font-size: 0.85rem; opacity: 0; transform: translateX(-6px); transition: opacity var(--transition), transform var(--transition); }
+    .nav__drawer-links a:hover .arrow, .nav__drawer-links a.active .arrow { opacity: 1; transform: translateX(0); }
+    .nav__drawer-cta { margin-top: 40px; }
+    .nav__drawer-cta a { display: block; background: var(--coral); color: var(--white); text-align: center; padding: 15px 24px; border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.06em; font-weight: 500; transition: background var(--transition); }
+    .nav__drawer-cta a:hover { background: var(--coral-dark); }
+    .nav__drawer-tagline { margin-top: 14px; font-size: 0.75rem; color: var(--ink-60); font-family: var(--font-mono); text-align: center; }
+
+    /* ── PAGE HEADER ─────────────────────────────────────────── */
+    .page-header {
+      padding-top: calc(var(--nav-h) + 72px);
+      padding-bottom: 80px;
+      background: #09090b;
+      position: relative; overflow: hidden;
+    }
+    .page-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); }
+    .page-header__inner { position: relative; z-index: 1; }
+    .page-header__eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral-light); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .page-header__eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--coral-light); }
+    .page-header__title { font-family: var(--font-display); font-size: clamp(2.4rem,5vw,3.8rem); font-weight: 800; color: var(--white); line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 24px; }
+    .page-header__title em { font-style: italic; color: var(--coral-light); }
+    .page-header__sub { font-family: var(--font-body); font-size: 1.05rem; color: rgba(255,255,255,0.6); max-width: 520px; line-height: 1.75; }
+
+    /* ── PROJECTS ────────────────────────────────────────────── */
+    .projects { padding: 96px 0; }
+
+    .projects__list {
+      display: flex;
+      flex-direction: column;
+      gap: 96px;
+    }
+
+    /* Each project row */
+    .project {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .project { grid-template-columns: 1fr 1fr; gap: 72px; }
+      .project--reverse .project__visual { order: 2; }
+      .project--reverse .project__content { order: 1; }
+    }
+
+    /* ── PROJECT VISUAL ──────────────────────────────────────── */
+    .project__visual { position: relative; }
+
+    .project__screen {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      aspect-ratio: 16/10;
+    }
+
+    /* Browser chrome bar */
+    .project__chrome {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 36px;
+      background: #1E1E1E;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 14px;
+      z-index: 2;
+    }
+    .chrome-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .chrome-dot--r { background: #FF5F57; }
+    .chrome-dot--y { background: #FFBD2E; }
+    .chrome-dot--g { background: #28C840; }
+    .chrome-url {
+      flex: 1;
+      margin-left: 10px;
+      height: 20px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+    }
+    .chrome-url span {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.04em;
+    }
+
+    /* Fake site content area */
+    .project__mock {
+      position: absolute;
+      inset: 36px 0 0;
+      overflow: hidden;
+    }
+
+    /* Devlin — warm corner store palette */
+    .project--devlin .project__mock {
+      background: linear-gradient(160deg, #1C1008 0%, #2E1B0C 50%, #120B04 100%);
+    }
+
+    /* Lil K's — fresh green food palette */
+    .project--lilks .project__mock {
+      background: linear-gradient(160deg, #071A0E 0%, #0F3320 50%, #041008 100%);
+    }
+
+    /* All Spark — deep teal tech palette */
+    .project--allspark .project__mock {
+      background: linear-gradient(160deg, #030D14 0%, #071C2E 50%, #020810 100%);
+    }
+
+    .mock__hero {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .mock__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .project--devlin .mock__eyebrow  { color: var(--coral-light); }
+    .project--lilks   .mock__eyebrow  { color: var(--mint); }
+    .project--allspark .mock__eyebrow { color: var(--sky); }
+
+    .mock__heading {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .mock__bar { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); margin-bottom: 6px; }
+    .mock__bar--short { width: 60%; }
+    .mock__bar--med   { width: 75%; }
+
+    .mock__btn {
+      display: inline-block;
+      margin-top: 14px;
+      height: 28px;
+      width: 100px;
+      border-radius: 3px;
+    }
+    .project--devlin .mock__btn  { background: var(--coral); }
+    .project--lilks   .mock__btn  { background: var(--mint-dark); }
+    .project--allspark .mock__btn { background: var(--sky-dark); }
+
+    .mock__grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 10px;
+      padding: 16px 24px;
+    }
+
+    .mock__card {
+      border-radius: 4px;
+      padding: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .mock__card-dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+    }
+    .project--devlin .mock__card-dot  { background: var(--coral); }
+    .project--lilks   .mock__card-dot  { background: var(--mint-dark); }
+    .project--allspark .mock__card-dot { background: var(--sky-dark); }
+
+    .mock__card-line { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.12); margin-bottom: 5px; }
+    .mock__card-line--short { width: 65%; }
+
+    /* Status tag floating on image */
+    .project__status {
+      position: absolute;
+      bottom: -14px;
+      right: 24px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 3;
+    }
+    .project__status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 0 3px rgba(46,204,143,0.2);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 3px rgba(46,204,143,0.2); }
+      50%      { box-shadow: 0 0 0 6px rgba(46,204,143,0.1); }
+    }
+    .project__status-text {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-60);
+    }
+
+    /* ── PROJECT CONTENT ─────────────────────────────────────── */
+    .project__content { padding: 16px 0; }
+
+    .project__index {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-30);
+      margin-bottom: 16px;
+    }
+
+    .project__category {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+    .project--devlin  .project__category { background: var(--coral-pale); color: var(--coral-dark); }
+    .project--lilks   .project__category { background: var(--mint-pale);  color: var(--mint-dark); }
+    .project--allspark .project__category { background: var(--sky-pale);  color: var(--sky-dark); }
+
+    .project__name {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .project__location {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--coral);
+      margin-bottom: 20px;
+    }
+    .project--lilks   .project__location { color: var(--mint-dark); }
+    .project--allspark .project__location { color: var(--sky-dark); }
+
+    .project__desc {
+      font-family: var(--font-body);
+      font-size: 0.97rem;
+      color: var(--ink-60);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    /* Stats row */
+    .project__stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .project__stat {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    .project__stat-num {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .project--devlin  .project__stat-num { color: var(--coral); }
+    .project--lilks   .project__stat-num { color: var(--mint-dark); }
+    .project--allspark .project__stat-num { color: var(--sky-dark); }
+
+    .project__stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-30);
+      margin-top: 4px;
+    }
+
+    /* Chips */
+    .project__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .project__chip {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      padding: 5px 12px;
+      border-radius: 2px;
+      background: var(--sand);
+      color: var(--ink-60);
+      border: 1px solid var(--border);
+    }
+
+    .project__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      border-bottom: 1.5px solid var(--ink);
+      padding-bottom: 2px;
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .project__link:hover { color: var(--coral); border-color: var(--coral); }
+
+    /* Divider between projects */
+    .projects__divider {
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── RESULTS STRIP ───────────────────────────────────────── */
+    .results {
+      background: var(--ink);
+      padding: 64px 0;
+    }
+
+    .results__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+    @media (min-width: 640px) { .results__grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .result__num {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--coral);
+      line-height: 1;
+    }
+    .result__label {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 8px;
+    }
+
+    /* ── NEXT SECTION ────────────────────────────────────────── */
+    .next-section { padding: 96px 0; background: var(--white); }
+
+    .next-section__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .next-section__inner { grid-template-columns: 1fr 1fr; gap: 80px; }
+    }
+
+    .next-section__content {}
+    .next-section__eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral); margin-bottom: 14px; }
+    .next-section__title { font-family: var(--font-display); font-size: clamp(1.9rem,4vw,2.8rem); font-weight: 700; line-height: 1.15; color: var(--ink); margin-bottom: 20px; }
+    .next-section__desc { font-family: var(--font-body); font-size: 1rem; color: var(--ink-60); line-height: 1.8; margin-bottom: 32px; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--coral);
+      color: var(--white);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+      padding: 15px 28px;
+      border-radius: var(--radius);
+      border: none;
+      transition: background var(--transition), transform 0.2s ease, box-shadow var(--transition);
+    }
+    .btn-primary:hover { background: var(--coral-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,92,58,0.3); }
+
+    .industries-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .industry-card {
+      background: var(--chalk);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 18px;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .industry-card:hover { box-shadow: var(--shadow-sm); border-color: rgba(18,18,18,0.2); }
+    .industry-card__icon { font-size: 1.3rem; margin-bottom: 8px; }
+    .industry-card__name { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .industry-card__desc { font-family: var(--font-body); font-size: 0.75rem; color: var(--ink-60); line-height: 1.5; }
+
+    /* ── CTA BAND ────────────────────────────────────────────── */
+    .cta-band { background: var(--coral); padding: 100px 0; position: relative; overflow: hidden; }
+    .cta-band::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(255,255,255,0.08) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 15% 30%, rgba(0,0,0,0.08) 0%, transparent 60%); pointer-events: none; }
+    .cta-band__inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
+    @media (min-width: 768px) { .cta-band__inner { grid-template-columns: 1fr auto; gap: 64px; } }
+    .cta-band__heading { font-family: var(--font-display); font-size: clamp(2rem,4.5vw,3.2rem); font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 16px; }
+    .cta-band__heading em { font-style: italic; color: rgba(255,255,255,0.75); }
+    .cta-band__sub { font-family: var(--font-body); font-size: 1.05rem; color: rgba(255,255,255,0.75); line-height: 1.65; }
+    .cta-band__actions { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; }
+    @media (min-width: 480px) { .cta-band__actions { flex-direction: row; } }
+    @media (min-width: 768px) { .cta-band__actions { flex-direction: column; align-items: stretch; } }
+    .btn-white { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--white); color: var(--coral-dark); font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.06em; font-weight: 500; padding: 15px 28px; border-radius: var(--radius); border: none; transition: background var(--transition), transform 0.2s ease, box-shadow var(--transition); white-space: nowrap; }
+    .btn-white:hover { background: var(--chalk); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .btn-white-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: var(--white); font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.06em; font-weight: 500; padding: 14px 28px; border-radius: var(--radius); border: 1.5px solid rgba(255,255,255,0.4); transition: border-color var(--transition), background var(--transition), transform 0.2s ease; white-space: nowrap; }
+    .btn-white-outline:hover { border-color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+
+    /* ── FOOTER ──────────────────────────────────────────────── */
+    .footer { background: var(--ink); color: rgba(242,237,228,0.6); padding: 64px 0 0; }
+    .footer__grid { display: grid; grid-template-columns: 1fr; gap: 48px; margin-bottom: 48px; }
+    @media (min-width: 640px)  { .footer__grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .footer__grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+    .footer__logo { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--chalk); margin-bottom: 14px; }
+    .footer__logo em { font-style: normal; color: var(--coral); }
+    .footer__tagline { font-family: var(--font-body); font-size: 0.88rem; line-height: 1.6; color: rgba(242,237,228,0.4); max-width: 260px; margin-bottom: 20px; }
+    .footer__badge { display: inline-block; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(255,92,58,0.15); color: var(--coral-light); border: 1px solid rgba(255,92,58,0.25); padding: 5px 12px; border-radius: 2px; }
+    .footer__col-title { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242,237,228,0.3); margin-bottom: 18px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-family: var(--font-body); font-size: 0.9rem; color: rgba(242,237,228,0.55); transition: color var(--transition); }
+    .footer__links a:hover { color: var(--coral-light); }
+    .footer__contact-item { margin-bottom: 14px; }
+    .footer__contact-label { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(242,237,228,0.25); display: block; margin-bottom: 2px; }
+    .footer__contact-value { font-family: var(--font-body); font-size: 0.88rem; color: rgba(242,237,228,0.55); }
+    .footer__contact-value a { color: rgba(242,237,228,0.55); transition: color var(--transition); }
+    .footer__contact-value a:hover { color: var(--coral-light); }
+    .footer__bottom { border-top: 1px solid rgba(242,237,228,0.08); padding: 20px 0; display: flex; flex-direction: column; gap: 8px; }
+    @media (min-width: 640px) { .footer__bottom { flex-direction: row; align-items: center; justify-content: space-between; } }
+    .footer__copy { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; color: rgba(242,237,228,0.25); }
+    .footer__legal { display: flex; gap: 20px; }
+    .footer__legal a { font-family: var(--font-mono); font-size: 0.68rem; color: rgba(242,237,228,0.25); transition: color var(--transition); }
+    .footer__legal a:hover { color: var(--coral-light); }
+
+    /* ── SCROLL REVEAL ───────────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+    /* ── NAV: LIGHT ON DARK HEADER ── */
+    .nav__logo-text { color: #F2EDE4; }
+    .nav__logo-text em { color: var(--coral-light); }
+    .nav__hamburger { border-color: rgba(242,237,228,0.25); }
+    .nav__hamburger span { background: #F2EDE4; }
+    .nav.scrolled .nav__logo-text { color: var(--ink); }
+    .nav.scrolled .nav__logo-text em { color: var(--coral); }
+    .nav.scrolled .nav__hamburger { border-color: var(--border); }
+    .nav.scrolled .nav__hamburger span { background: var(--ink); }
+    .nav__logo-pill { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 100px; border: 1px solid rgba(242,237,228,0.2); background: rgba(242,237,228,0.08); color: rgba(242,237,228,0.5); white-space: nowrap; }
+    .nav.scrolled .nav__logo-pill { background: var(--sand); color: var(--ink-60); border-color: var(--border); }
+  </style>
+<script>
+window.ShaderRunner=class ShaderRunner{constructor(canvas,fragmentSource){this.canvas=canvas;this.gl=canvas.getContext('webgl',{premultipliedAlpha:false,antialias:false});if(!this.gl)return;this.mouse=[0.5,0.5];this.targetMouse=[0.5,0.5];this.clicks=[];this.startTime=performance.now();this.running=true;this._buildProgram(fragmentSource);this._bindEvents();this._resize();this._loop();}_buildProgram(fs){const gl=this.gl;const compile=(type,src)=>{const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;};const vs=compile(gl.VERTEX_SHADER,'attribute vec2 a_pos; void main(){gl_Position=vec4(a_pos,0.,1.);}');const prog=gl.createProgram();gl.attachShader(prog,vs);gl.attachShader(prog,compile(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);this.program=prog;const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);const loc=gl.getAttribLocation(prog,'a_pos');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);this.uTime=gl.getUniformLocation(prog,'u_time');this.uRes=gl.getUniformLocation(prog,'u_res');this.uMouse=gl.getUniformLocation(prog,'u_mouse');this.uClicks=gl.getUniformLocation(prog,'u_clicks');this.uClickCount=gl.getUniformLocation(prog,'u_clickCount');}_bindEvents(){const onMove=(e)=>{const r=this.canvas.getBoundingClientRect();const t=e.touches?e.touches[0]:e;this.targetMouse[0]=(t.clientX-r.left)/r.width;this.targetMouse[1]=1-(t.clientY-r.top)/r.height;};const onClick=(e)=>{const r=this.canvas.getBoundingClientRect();const t=e.touches?e.touches[0]:e;this.clicks.push({x:(t.clientX-r.left)/r.width,y:1-(t.clientY-r.top)/r.height,t:(performance.now()-this.startTime)/1000});if(this.clicks.length>8)this.clicks.shift();};this.canvas.addEventListener('mousemove',onMove);this.canvas.addEventListener('touchmove',onMove,{passive:true});this.canvas.addEventListener('mousedown',onClick);this.canvas.addEventListener('touchstart',onClick,{passive:true});this._ro=new ResizeObserver(()=>this._resize());this._ro.observe(this.canvas);}_resize(){const dpr=Math.min(window.devicePixelRatio||1,1.5);this.canvas.width=Math.max(1,Math.floor(this.canvas.clientWidth*dpr));this.canvas.height=Math.max(1,Math.floor(this.canvas.clientHeight*dpr));this.gl.viewport(0,0,this.canvas.width,this.canvas.height);}_loop(){if(!this.running)return;const gl=this.gl;const now=(performance.now()-this.startTime)/1000;this.mouse[0]+=(this.targetMouse[0]-this.mouse[0])*0.08;this.mouse[1]+=(this.targetMouse[1]-this.mouse[1])*0.08;gl.useProgram(this.program);gl.uniform1f(this.uTime,now);gl.uniform2f(this.uRes,this.canvas.width,this.canvas.height);gl.uniform2f(this.uMouse,this.mouse[0],this.mouse[1]);const cd=new Float32Array(24);let count=0;for(const c of this.clicks){const age=now-c.t;if(age<4.0){cd[count*3]=c.x;cd[count*3+1]=c.y;cd[count*3+2]=age;count++;}}if(this.uClicks)gl.uniform3fv(this.uClicks,cd);if(this.uClickCount)gl.uniform1i(this.uClickCount,count);gl.drawArrays(gl.TRIANGLES,0,6);requestAnimationFrame(()=>this._loop());}destroy(){this.running=false;if(this._ro)this._ro.disconnect();}};
+const SHADER_COMMON=`precision highp float;uniform float u_time;uniform vec2 u_res;uniform vec2 u_mouse;uniform vec3 u_clicks[8];uniform int u_clickCount;float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}float noise(vec2 p){vec2 i=floor(p);vec2 f=fract(p);vec2 u=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}float fbm(vec2 p){float v=0.;float a=0.5;for(int i=0;i<6;i++){v+=a*noise(p);p*=2.02;a*=0.5;}return v;}float fbmWarp(vec2 p,float t){vec2 q=vec2(fbm(p+vec2(0.,t*.1)),fbm(p+vec2(5.2,1.3)+t*.1));vec2 r=vec2(fbm(p+4.*q+vec2(1.7,9.2)+t*.15),fbm(p+4.*q+vec2(8.3,2.8)+t*.12));return fbm(p+4.*r);}vec3 orangePalette(float t){vec3 a=vec3(.018,.010,.010);vec3 b=vec3(.18,.06,.03);vec3 c=vec3(.65,.22,.08);vec3 d=vec3(1.,.55,.22);vec3 e=vec3(1.,.85,.55);t=clamp(t,0.,1.);if(t<.35)return mix(a,b,t/.35);if(t<.65)return mix(b,c,(t-.35)/.30);if(t<.88)return mix(c,d,(t-.65)/.23);return mix(d,e,(t-.88)/.12);}float gridOverlay(vec2 uv){vec2 g=abs(fract(uv*28.)-.5);float l=min(g.x,g.y);return smoothstep(.48,.5,1.-l)*.06;}`;
+const SMOKE_FRAG=SHADER_COMMON+`void main(){vec2 uv=gl_FragCoord.xy/u_res.xy;vec2 p=uv;vec2 m=u_mouse;vec2 toMouse=m-p;float d=length(toMouse);vec2 pull=toMouse*exp(-d*3.)*0.22;vec2 q=(p+pull)*2.6;q.y-=u_time*0.07;float n=fbmWarp(q,u_time*0.5);float glow=exp(-d*4.)*0.55;float burst=0.;for(int i=0;i<8;i++){if(i>=u_clickCount)break;vec3 c=u_clicks[i];vec2 cp=vec2(c.x,c.y);float age=c.z;float r=length(p-cp);float ring=exp(-pow((r-age*0.3)*7.,2.))*exp(-age*0.7);float core=exp(-r*5.)*exp(-age*1.4)*0.5;burst+=ring+core;}float intensity=pow(n,1.6)*0.55+glow*n+burst*0.7;intensity=clamp(intensity,0.,1.);vec3 col=orangePalette(intensity);col+=gridOverlay(uv)*vec3(0.6,0.25,0.1);col*=1.-0.55*pow(length(p-0.5),1.5);gl_FragColor=vec4(col,1.);}`;
+document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[data-shader]').forEach(function(c){new window.ShaderRunner(c,SMOKE_FRAG);});});
+</script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header>
+    <nav class="nav" id="mainNav">
+      <div class="container">
+        <div class="nav__inner">
+          <a href="index.html" class="nav__logo">
+            <span class="nav__logo-text">Local <em>Launch</em> Sites</span>
+            <span class="nav__logo-dot" aria-hidden="true"></span>
+            <span class="nav__logo-pill">by All Spark Ent. Ltd.</span>
+          </a>
+          <button class="nav__hamburger" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navDrawer">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="nav__overlay" id="navOverlay" aria-hidden="true"></div>
+    <div class="nav__drawer" id="navDrawer" role="dialog" aria-label="Navigation menu" aria-modal="true">
+      <div class="nav__drawer-header">
+        <a href="index.html" class="nav__logo">
+          <span class="nav__logo-text">Local <em>Launch</em> Sites</span>
+        </a>
+        <button class="nav__drawer-close" id="drawerClose" aria-label="Close navigation menu">✕</button>
+      </div>
+      <ul class="nav__drawer-links" role="list">
+        <li><a href="index.html">Home <span class="arrow">→</span></a></li>
+        <li><a href="about.html">About <span class="arrow">→</span></a></li>
+        <li><a href="services.html">Services <span class="arrow">→</span></a></li>
+        <li><a href="pricing.html">Pricing <span class="arrow">→</span></a></li>
+        <li><a href="portfolio.html" class="active">Portfolio <span class="arrow">→</span></a></li>
+        <li><a href="contact.html">Contact <span class="arrow">→</span></a></li>
+      </ul>
+      <div class="nav__drawer-cta">
+        <a href="get-started.html">Get Started →</a>
+        <p class="nav__drawer-tagline">Northwestern Ontario · Since 2024</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+      <canvas data-shader="smoke" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;" aria-hidden="true"></canvas>
+      <div class="container">
+        <div class="page-header__inner">
+          <p class="page-header__eyebrow">Our Work</p>
+          <h1 class="page-header__title">
+            Real Sites.<br>
+            <em>Real Businesses.</em>
+          </h1>
+          <p class="page-header__sub">
+            Every site in this portfolio is live, indexed on Google, and owned by a Northwestern Ontario business owner who paid a flat rate to get it done.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="projects">
+      <div class="container">
+        <div class="projects__list">
+
+          <!-- ── PROJECT 1: DEVLIN CORNER STORE ── -->
+          <article class="project project--devlin reveal">
+
+            <div class="project__visual">
+              <div class="project__screen">
+                <div class="project__chrome">
+                  <div class="chrome-dot chrome-dot--r"></div>
+                  <div class="chrome-dot chrome-dot--y"></div>
+                  <div class="chrome-dot chrome-dot--g"></div>
+                  <div class="chrome-url"><span>devlincornerstore.ca</span></div>
+                </div>
+                <div class="project__mock">
+                  <img src="devlin-preview.png" alt="Devlin's Corner Store website" style="width:100%;height:100%;object-fit:cover;object-position:top;">
+                </div>
+              </div>
+              <div class="project__status">
+                <div class="project__status-dot"></div>
+                <span class="project__status-text">Live · Indexed on Google</span>
+              </div>
+            </div>
+
+            <div class="project__content">
+              <p class="project__index">Project 01 / 03</p>
+              <span class="project__category">Retail &amp; Convenience</span>
+              <h2 class="project__name">Devlin Corner Store</h2>
+              <p class="project__location">Devlin, Ontario</p>
+              <p class="project__desc">
+                The corner store has been a fixture of Devlin for years — but nobody could find it online. We built a clean, fast single-page site that puts hours, location, and weekly specials front and centre. Within the first week, customers were finding them on Google Maps without being told to look.
+              </p>
+              <div class="project__stats">
+                <div class="project__stat">
+                  <div class="project__stat-num">4d</div>
+                  <p class="project__stat-label">Delivered</p>
+                </div>
+                <div class="project__stat">
+                  <div class="project__stat-num">98</div>
+                  <p class="project__stat-label">Lighthouse</p>
+                </div>
+                <div class="project__stat">
+                  <div class="project__stat-num">$79</div>
+                  <p class="project__stat-label">Package</p>
+                </div>
+              </div>
+              <div class="project__chips">
+                <span class="project__chip">Starter Package</span>
+                <span class="project__chip">AI Chat Agent</span>
+                <span class="project__chip">Google Maps</span>
+                <span class="project__chip">48hr Delivery</span>
+              </div>
+              <a href="#" class="project__link">View Live Site →</a>
+            </div>
+
+          </article>
+
+          <div class="projects__divider"></div>
+
+          <!-- ── PROJECT 2: LIL K'S ── -->
+          <article class="project project--lilks project--reverse reveal">
+
+            <div class="project__visual">
+              <div class="project__screen">
+                <div class="project__chrome">
+                  <div class="chrome-dot chrome-dot--r"></div>
+                  <div class="chrome-dot chrome-dot--y"></div>
+                  <div class="chrome-dot chrome-dot--g"></div>
+                  <div class="chrome-url"><span>lilkskickenchicken.ca</span></div>
+                </div>
+                <div class="project__mock">
+                  <img src="lilks-preview.png" alt="Lil K's Kickin' Chicken website" style="width:100%;height:100%;object-fit:cover;object-position:top;">
+                </div>
+              </div>
+              <div class="project__status">
+                <div class="project__status-dot"></div>
+                <span class="project__status-text">Live · Indexed on Google</span>
+              </div>
+            </div>
+
+            <div class="project__content">
+              <p class="project__index">Project 02 / 03</p>
+              <span class="project__category">Food &amp; Restaurant</span>
+              <h2 class="project__name">Lil K's Kicken Chicken</h2>
+              <p class="project__location">Rainy River, Ontario</p>
+              <p class="project__desc">
+                Lil K's needed a site that matched the energy of the food. We built a vibrant multi-page site with a full menu display, daily specials section, and an AI chat agent that handles "what time do you close?" questions around the clock — so the team can stay focused on what they do best.
+              </p>
+              <div class="project__stats">
+                <div class="project__stat">
+                  <div class="project__stat-num">5d</div>
+                  <p class="project__stat-label">Delivered</p>
+                </div>
+                <div class="project__stat">
+                  <div class="project__stat-num">96</div>
+                  <p class="project__stat-label">Lighthouse</p>
+                </div>
+                <div class="project__stat">
+                  <div class="project__stat-num">$299</div>
+                  <p class="project__stat-label">Package</p>
+                </div>
+              </div>
+              <div class="project__chips">
+                <span class="project__chip">Full Launch</span>
+                <span class="project__chip">Menu Display</span>
+                <span class="project__chip">AI Chat Agent</span>
+                <span class="project__chip">WhatsApp</span>
+                <span class="project__chip">Analytics</span>
+              </div>
+              <a href="#" class="project__link">View Live Site →</a>
+            </div>
+
+          </article>
+
+          <div class="projects__divider"></div>
+
+          <!-- ── PROJECT 3: ALL SPARK ── -->
+          <article class="project project--allspark reveal">
+
+            <div class="project__visual">
+              <div class="project__screen">
+                <div class="project__chrome">
+                  <div class="chrome-dot chrome-dot--r"></div>
+                  <div class="chrome-dot chrome-dot--y"></div>
+                  <div class="chrome-dot chrome-dot--g"></div>
+                  <div class="chrome-url"><span>allsparkenterprisesltd.com</span></div>
+                </div>
+                <div class="project__mock">
+                  <img src="allspark-preview.png" alt="All Spark Enterprises Ltd. website" style="width:100%;height:100%;object-fit:cover;object-position:top;">
+                </div>
+              </div>
+              <div class="project__status">
+                <div class="project__status-dot"></div>
+                <span class="project__status-text">Live · Indexed on Google</span>
+              </div>
+            </div>
+
+            <div class="project__content">
+              <p class="project__index">Project 03 / 03</p>
+              <span class="project__category">Technology &amp; Services</span>
+              <h2 class="project__name">All Spark Enterprises</h2>
+              <p class="project__location">Fort Frances, Ontario</p>
+              <p class="project__desc">
+                A full premium build for a Fort Frances technology company. WebGL animated hero, multi-service showcase, AI chat agent pre-trained on the company's complete service offering, and a client portal with Supabase auth. Built to be the most capable site in the region.
+              </p>
+              <div class="project__stats">
+                <div class="project__stat">
+                  <div class="project__stat-num">7d</div>
+                  <p class="project__stat-label">Delivered</p>
+                </div>
+                <div class="project__stat">
+                  <div class="project__stat-num">94</div>
+                  <p class="project__stat-label">Lighthouse</p>
+                </div>
+                <div class="project__stat">
+                  <div class="project__stat-num">$599</div>
+                  <p class="project__stat-label">Package</p>
+                </div>
+              </div>
+              <div class="project__chips">
+                <span class="project__chip">Premium Package</span>
+                <span class="project__chip">WebGL Hero</span>
+                <span class="project__chip">AI Chat Agent</span>
+                <span class="project__chip">Client Portal</span>
+                <span class="project__chip">Auth / Login</span>
+              </div>
+              <a href="#" class="project__link">View Live Site →</a>
+            </div>
+
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS STRIP -->
+    <section class="results">
+      <div class="container">
+        <div class="results__grid">
+          <div class="reveal">
+            <p class="result__num">3</p>
+            <p class="result__label">Sites launched</p>
+          </div>
+          <div class="reveal reveal-d1">
+            <p class="result__num">100%</p>
+            <p class="result__label">On time</p>
+          </div>
+          <div class="reveal reveal-d2">
+            <p class="result__num">96+</p>
+            <p class="result__label">Avg Lighthouse score</p>
+          </div>
+          <div class="reveal reveal-d3">
+            <p class="result__num">NW ON</p>
+            <p class="result__label">Focused exclusively</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- YOUR BUSINESS NEXT -->
+    <section class="next-section">
+      <div class="container">
+        <div class="next-section__inner">
+
+          <div class="next-section__content reveal">
+            <p class="next-section__eyebrow">What's Next</p>
+            <h2 class="next-section__title">Your Business Could Be Here</h2>
+            <p class="next-section__desc">We're actively looking for the next great Northwestern Ontario business to put on the map. If you're ready to be found online, let's talk — no pressure, no jargon.</p>
+            <a href="get-started.html" class="btn-primary">Start Your Project →</a>
+          </div>
+
+          <div class="industries-grid reveal reveal-d1">
+            <div class="industry-card">
+              <div class="industry-card__icon">🏪</div>
+              <p class="industry-card__name">Retail</p>
+              <p class="industry-card__desc">Hours, location, products</p>
+            </div>
+            <div class="industry-card">
+              <div class="industry-card__icon">🍽️</div>
+              <p class="industry-card__name">Restaurants</p>
+              <p class="industry-card__desc">Menu, specials, ordering</p>
+            </div>
+            <div class="industry-card">
+              <div class="industry-card__icon">🔧</div>
+              <p class="industry-card__name">Trades</p>
+              <p class="industry-card__desc">Quote forms, portfolios</p>
+            </div>
+            <div class="industry-card">
+              <div class="industry-card__icon">🏥</div>
+              <p class="industry-card__name">Health</p>
+              <p class="industry-card__desc">Clinics, wellness, care</p>
+            </div>
+            <div class="industry-card">
+              <div class="industry-card__icon">🌾</div>
+              <p class="industry-card__name">Agriculture</p>
+              <p class="industry-card__desc">Farms, markets, produce</p>
+            </div>
+            <div class="industry-card">
+              <div class="industry-card__icon">🏕️</div>
+              <p class="industry-card__name">Tourism</p>
+              <p class="industry-card__desc">Lodges, outfitters, guides</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-band">
+      <div class="container">
+        <div class="cta-band__inner">
+          <div>
+            <h2 class="cta-band__heading">
+              Ready to Join<br>
+              <em>This List?</em>
+            </h2>
+            <p class="cta-band__sub">From "no website" to live in under a week. Flat rate. No surprises.</p>
+          </div>
+          <div class="cta-band__actions">
+            <a href="get-started.html" class="btn-white">Get Started →</a>
+            <a href="pricing.html" class="btn-white-outline">See Pricing</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__logo">Local <em>Launch</em> Sites</p>
+          <p class="footer__tagline">Fast, affordable, professional web design for Northwestern Ontario small businesses. Built local. Built to last.</p>
+          <span class="footer__badge">Northwestern Ontario</span>
+        </div>
+        <div>
+          <p class="footer__col-title">Pages</p>
+          <ul class="footer__links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__col-title">Services</p>
+          <ul class="footer__links">
+            <li><a href="pricing.html">Starter — $79</a></li>
+            <li><a href="pricing.html">Standard — $299</a></li>
+            <li><a href="pricing.html">Premium — $599</a></li>
+            <li><a href="pricing.html">Add-Ons</a></li>
+            <li><a href="get-started.html">Get a Quote</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <div class="footer__contact-item">
+            <span class="footer__contact-label">Email</span>
+            <span class="footer__contact-value"><a href="mailto:info@locallaunchsites.ca">info@locallaunchsites.ca</a></span>
+          </div>
+          <div class="footer__contact-item">
+            <span class="footer__contact-label">Phone / WhatsApp</span>
+            <span class="footer__contact-value"><a href="tel:+18075550000">(807) 555-0000</a></span>
+          </div>
+          <div class="footer__contact-item">
+            <span class="footer__contact-label">Location</span>
+            <span class="footer__contact-value">Fort Frances, Ontario</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2025 Local Launch Sites. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var hamburger = document.getElementById('hamburgerBtn');
+      var drawer    = document.getElementById('navDrawer');
+      var overlay   = document.getElementById('navOverlay');
+      var closeBtn  = document.getElementById('drawerClose');
+      function openMenu() { drawer.classList.add('is-open'); overlay.classList.add('is-open'); hamburger.classList.add('is-open'); hamburger.setAttribute('aria-expanded','true'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; closeBtn.focus(); }
+      function closeMenu() { drawer.classList.remove('is-open'); overlay.classList.remove('is-open'); hamburger.classList.remove('is-open'); hamburger.setAttribute('aria-expanded','false'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; hamburger.focus(); }
+      hamburger.addEventListener('click', openMenu);
+      closeBtn.addEventListener('click', closeMenu);
+      overlay.addEventListener('click', closeMenu);
+      drawer.querySelectorAll('a').forEach(function(l){ l.addEventListener('click', closeMenu); });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&drawer.classList.contains('is-open')) closeMenu(); });
+      drawer.addEventListener('keydown', function(e){
+        if(e.key!=='Tab'||!drawer.classList.contains('is-open')) return;
+        var f=drawer.querySelectorAll('button,a'); var first=f[0],last=f[f.length-1];
+        if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+        else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+      });
+    }());
+
+    (function(){
+      var nav=document.getElementById('mainNav');
+      function tick(){ nav.classList.toggle('scrolled', window.scrollY>40); }
+      window.addEventListener('scroll',tick,{passive:true}); tick();
+    }());
+
+    (function(){
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }});
+      },{threshold:0.1});
+      document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+    }());
+  </script>
+</body>
+</html>
