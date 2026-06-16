@@ -1,0 +1,663 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms & Conditions — Local Launch Sites</title>
+  
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --coral: #FF5C3A; --coral-light: #FF7A5C; --coral-pale: #FFCFBF;
+      --sky: #3AB5FF; --sky-pale: #B8E4FF; --mint: #2ECC8F; --mint-pale: #A8F0D4;
+      --ink: #121212; --ink-60: rgba(18,18,18,0.6); --ink-20: rgba(18,18,18,0.12);
+      --chalk: #F2EDE4; --white: #FFFFFF; --sand: #E8DCC8; --border: rgba(18,18,18,0.18);
+      --font-display: 'Playfair Display', Georgia, serif; --font-body: 'Lora', Georgia, serif; --font-mono: 'DM Mono', monospace;
+      --max-width: 1120px; --nav-h: 68px; --r: 12px; --r-lg: 20px; --r-xl: 32px; --ease: cubic-bezier(0.22,1,0.36,1); --t: 0.28s;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 1.7; color: var(--ink); background: var(--chalk); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+
+    .nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--white); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; align-items: center; }
+    .nav-inner { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .nav-logo { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; min-width: 0; }
+    .nav-logo-mark { font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--ink); letter-spacing: -0.02em; white-space: nowrap; }
+    .nav-logo-mark span { color: var(--coral); }
+    .nav-logo-pill { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; background: var(--sand); color: var(--ink-60); padding: 3px 8px; border-radius: 100px; border: 1px solid var(--border); white-space: nowrap; }
+    .nav-links { list-style: none; display: none; }
+    .nav-links a { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--ink-60); transition: color var(--t); }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta { background: var(--coral) !important; color: var(--white) !important; padding: 10px 22px; border-radius: 100px; }
+    .nav-hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; }
+    .nav-overlay { position: fixed; inset: 0; z-index: 190; background: rgba(18,18,18,0.5); backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+    .nav-overlay.open { opacity: 1; pointer-events: auto; }
+    .nav-drawer { position: fixed; top: 0; left: 0; bottom: 0; width: min(340px,85vw); background: #131316; padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 0; z-index: 210; transform: translateX(-100%); transition: transform 0.38s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; }
+    .nav-drawer.open { transform: translateX(0); }
+    .drawer-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .drawer-close-btn { width: 40px; height: 40px; background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; color: #F2EDE4; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .nav-drawer a { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #F2EDE4; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 16px 0; display: flex; align-items: center; justify-content: space-between; }
+    .nav-drawer .drawer-cta { display: block; background: var(--coral); color: var(--white) !important; padding: 14px 28px; border-radius: 4px; text-align: center; margin-top: 24px; border-bottom: none !important; }
+
+    .page-header { padding-top: calc(var(--nav-h) + 64px); padding-bottom: 56px; padding-left: 32px; padding-right: 32px; background: var(--white); position: relative; overflow: hidden; }
+    .page-header-bg { position: absolute; bottom: -60px; left: -60px; width: 400px; height: 400px; background: radial-gradient(circle, #B8E4FF 0%, transparent 65%); pointer-events: none; }
+    .page-header-inner { position: relative; z-index: 1; max-width: var(--max-width); margin: 0 auto; }
+    .label-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; color: var(--coral); }
+    .label-tag::before { content: '//'; opacity: 0.5; }
+    .page-header.hero-animated-bg h1 { color: #F2EDE4 !important; }
+    .page-header.hero-animated-bg p { color: rgba(242,237,228,0.65) !important; }
+    .page-header.hero-animated-bg .label-tag { background: rgba(255,92,58,0.18) !important; color: #FF7A5C !important; border: 1px solid rgba(255,92,58,0.3); }
+    .page-header h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 5vw, 56px); letter-spacing: -0.03em; color: #F2EDE4; margin-bottom: 12px; }
+    .page-header-meta { font-family: var(--font-mono); font-size: 11px; color: rgba(242,237,228,0.45); letter-spacing: 0.04em; }
+
+    .legal-section { padding: 72px 32px 96px; }
+    .legal-layout { max-width: 800px; margin: 0 auto; }
+
+    .legal-highlight { background: var(--sky-pale); border-left: 4px solid var(--sky); border-radius: 0 var(--r-lg) var(--r-lg) 0; padding: 18px 24px; margin-bottom: 40px; font-size: 15px; color: var(--ink); line-height: 1.75; }
+
+    .legal-layout h2 { font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; color: var(--ink); margin-top: 48px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+    .legal-layout h2::before { content: ''; display: inline-block; width: 8px; height: 8px; background: var(--coral); border-radius: 50%; flex-shrink: 0; }
+    .legal-layout h2:first-of-type { margin-top: 0; }
+    .legal-layout p { font-size: 15px; color: var(--ink-60); line-height: 1.85; margin-bottom: 16px; }
+    .legal-layout ul { margin: 12px 0 16px 24px; }
+    .legal-layout ul li { font-size: 15px; color: var(--ink-60); line-height: 1.8; margin-bottom: 8px; }
+    .legal-layout a { color: var(--coral); }
+    .legal-layout strong { color: var(--ink); font-weight: 600; }
+
+    .footer { background: var(--ink); padding: 64px 32px 36px; }
+    .footer-inner { max-width: var(--max-width); margin: 0 auto; }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 48px; margin-bottom: 56px; flex-wrap: wrap; }
+    .footer-logo-mark { font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--white); letter-spacing: -0.02em; margin-bottom: 4px; }
+    .footer-logo-mark span { color: var(--coral); }
+    .footer-sub { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 14px; }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.4); max-width: 240px; line-height: 1.65; }
+    .footer-nav { display: flex; gap: 64px; flex-wrap: wrap; }
+    .footer-col h4 { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a { font-size: 14px; color: rgba(255,255,255,0.5); transition: color var(--t); }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom { padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .footer-copy { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.25); }
+    .footer-legal { display: flex; gap: 24px; }
+    .footer-legal a { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.25); transition: color var(--t); }
+    .footer-legal a:hover { color: rgba(255,255,255,0.7); }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; } .nav-hamburger { display: flex; }
+      .footer-top { flex-direction: column; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .legal-section { padding: 56px 24px 80px; }
+    }
+
+    /* ── MOBILE OPTIMISATION ── */
+
+    /* Nav: stop logo wrapping, tighten padding */
+    @media (max-width: 900px) {
+      .nav-inner { padding: 0 20px; }
+      .nav-logo { gap: 6px; align-items: center; }
+      .nav-logo-mark { font-size: 18px; white-space: nowrap; }
+      .nav-logo-pill { display: none; }
+    }
+
+    /* 375px — small phone pass */
+    @media (max-width: 420px) {
+      .nav-logo-mark { font-size: 16px; }
+
+      /* Page headers */
+      .page-header { padding-left: 20px; padding-right: 20px; padding-top: calc(var(--nav-h) + 40px); padding-bottom: 48px; }
+      .page-header h1 { font-size: clamp(32px, 9vw, 48px); }
+
+      /* Sections */
+      .section { padding: 48px 20px; }
+      .legal-section { padding: 40px 20px 64px; }
+      .contact-section { padding: 40px 20px 64px; }
+      .faq-section { padding: 40px 20px 64px; }
+      .portfolio-section { padding: 36px 20px 64px; }
+
+      /* Steps */
+      .step { padding: 28px 24px; }
+
+      /* Services grid — always single col on small phones */
+      .services-grid { grid-template-columns: 1fr !important; }
+
+      /* Footer */
+      .footer { padding: 48px 20px 28px; }
+      .footer-nav { gap: 32px; }
+      .footer-copy { font-size: 10px; }
+
+      /* Buttons — full width */
+      .btn-primary, .btn-secondary, .btn-outline, .btn-white { width: 100%; justify-content: center; text-align: center; }
+
+      /* Hero */
+      .hero-inner { padding: 40px 20px 56px; }
+      .hero h1 { font-size: clamp(36px, 10vw, 52px); }
+      .hero-sub { font-size: 16px; }
+      .hero-proof { gap: 20px; }
+      .hero-proof-num { font-size: 24px; }
+      .hero-cards { display: none; }
+
+      /* Section titles */
+      .section-title { font-size: clamp(28px, 8vw, 40px); }
+
+      /* Portfolio cards */
+      .portfolio-card { border-radius: 16px; }
+      .portfolio-img { height: 180px; }
+      .portfolio-body { padding: 20px; }
+
+      /* Allspark card */
+      .allspark-card { padding: 28px 20px; }
+      .allspark-right { padding: 24px 20px; }
+
+      /* CTA band */
+      .cta-band { padding: 64px 20px; }
+      .cta-band::before { font-size: 140px; }
+
+      /* Portfolio page items */
+      .portfolio-info h2 { font-size: clamp(24px, 7vw, 34px); }
+      .portfolio-visual { height: 240px; }
+      .portfolio-meta-pills { gap: 6px; }
+      .pill { font-size: 9px; padding: 4px 10px; }
+
+      /* FAQ */
+      .faq-btn { padding: 16px 20px; }
+      .faq-question-text { font-size: 15px; }
+      .faq-answer-inner { padding: 16px 20px 20px; font-size: 14px; }
+      .faq-group-label { font-size: 18px; }
+
+      /* Contact form */
+      .form-card-body { padding: 28px 20px; }
+      .form-step h3 { font-size: 17px; }
+      .checkbox-grid { grid-template-columns: 1fr; }
+      .social-toggle-row { padding: 14px 16px; }
+      .social-toggle-text { font-size: 14px; }
+
+      /* Process strip */
+      .process-strip { padding: 20px; }
+
+      /* Legal pages */
+      .legal-layout h2 { font-size: 20px; }
+      .legal-layout p, .legal-layout ul li { font-size: 14px; }
+      .legal-highlight { padding: 14px 16px; font-size: 14px; }
+    }
+    
+
+    /* ================================================================
+       LLS PREMIUM BACKGROUND SYSTEM v2
+    ================================================================ */
+    .nav {
+      background: rgba(10,10,12,0.75) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+    }
+    .nav-logo-mark { color: #F2EDE4 !important; }
+    .nav-links a { color: rgba(242,237,228,0.55) !important; }
+    .nav-links a:hover, .nav-links a.active { color: #F2EDE4 !important; }
+    .nav-hamburger span { background: #F2EDE4 !important; }
+    .nav-logo-pill { background: rgba(255,255,255,0.08) !important; color: rgba(242,237,228,0.45) !important; border-color: rgba(255,255,255,0.1) !important; }
+    .nav-drawer { background: #131316 !important; border-bottom-color: rgba(255,92,58,0.4) !important; }
+    .nav-drawer a { color: #F2EDE4 !important; }
+
+    .hero {
+      background: radial-gradient(ellipse 60% 50% at 18% 30%, rgba(255,92,58,0.28), transparent 60%), radial-gradient(ellipse 40% 40% at 82% 12%, rgba(255,140,90,0.15), transparent 55%), radial-gradient(ellipse 50% 60% at 50% 90%, rgba(58,181,255,0.07), transparent 60%), linear-gradient(160deg, #09090b 0%, #131316 40%, #0c0c0f 100%) !important;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.042) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.042) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 80%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 80%);
+      animation: lls-grid 20s linear infinite; pointer-events: none; z-index: 0;
+    }
+    .hero::after {
+      content: ""; position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 60% at 20% 40%, black, transparent);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 20% 40%, black, transparent);
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+    @keyframes lls-grid { from{background-position:0 0} to{background-position:52px 52px} }
+    .lls-blob-1 { position:absolute;width:400px;height:400px;top:-160px;right:-120px;background:radial-gradient(circle,rgba(255,92,58,0.32) 0%,rgba(255,92,58,0.08) 50%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0;animation:lls-blob1 14s ease-in-out infinite alternate }
+    @keyframes lls-blob1{from{transform:translate(0,0) scale(1)}to{transform:translate(-60px,80px) scale(1.12)}}
+    .lls-blob-2 { position:absolute;width:280px;height:280px;bottom:-60px;left:-60px;background:radial-gradient(circle,rgba(255,92,58,0.18) 0%,transparent 65%);border-radius:50%;pointer-events:none;z-index:0;animation:lls-blob2 18s ease-in-out infinite alternate }
+    @keyframes lls-blob2{from{transform:translate(0,0) scale(1)}to{transform:translate(80px,-60px) scale(0.9)}}
+    .lls-blob-3 { position:absolute;width:300px;height:300px;top:40%;right:5%;background:radial-gradient(circle,rgba(58,181,255,0.12) 0%,transparent 70%);filter:blur(40px);border-radius:50%;pointer-events:none;z-index:0;animation:lls-blob3 22s ease-in-out infinite alternate }
+    @keyframes lls-blob3{from{transform:translate(0,0)}to{transform:translate(-40px,60px)}}
+    .lls-sweep { position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.025),transparent);animation:lls-sweep 8s ease-in-out infinite;pointer-events:none;z-index:0 }
+    @keyframes lls-sweep{0%{left:-60%}50%{left:120%}100%{left:120%}}
+    .lls-glow-line { position:absolute;top:58%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,92,58,0.3),rgba(255,92,58,0.6),rgba(255,92,58,0.3),transparent);pointer-events:none;z-index:0;opacity:0;animation:lls-line 3s ease 1.2s forwards }
+    @keyframes lls-line{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:scaleX(1)}}
+    .hero .hero-bg-word { color:#fff!important;opacity:0.02!important }
+    .hero .hero-eyebrow { color:#FF7A5C!important;background:rgba(255,92,58,0.15)!important;border:1px solid rgba(255,92,58,0.35)!important }
+    .hero .hero-eyebrow::before { background:var(--coral)!important;animation:lls-pulse 2s ease-in-out infinite }
+    @keyframes lls-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+    .hero h1 { color:#F2EDE4!important }
+    .hero h1 .highlight { color:var(--coral)!important }
+    .hero .hero-sub { color:rgba(242,237,228,0.62)!important }
+    .hero .hero-proof { border-top-color:rgba(255,255,255,0.08)!important }
+    .hero .hero-proof-num { color:#F2EDE4!important }
+    .hero .hero-proof-label { color:rgba(242,237,228,0.4)!important }
+    .hero .hero-proof-item+.hero-proof-item { border-left-color:rgba(255,255,255,0.08)!important }
+    .hero .btn-secondary,.hero .btn-ghost { color:rgba(242,237,228,0.8)!important;border-color:rgba(242,237,228,0.25)!important;background:transparent!important }
+    .hero .btn-secondary:hover,.hero .btn-ghost:hover { border-color:rgba(242,237,228,0.6)!important;background:rgba(255,255,255,0.06)!important }
+    .hero .hero-card { background:rgba(255,255,255,0.05)!important;border-color:rgba(255,255,255,0.1)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important }
+    .hero .hero-card:hover { background:rgba(255,255,255,0.08)!important;border-color:rgba(255,92,58,0.3)!important;transform:translateX(-4px)!important }
+    .hero .hero-card-title { color:#F2EDE4!important }
+    .hero .hero-card-desc { color:rgba(242,237,228,0.5)!important }
+    .hero .hero-card-icon { filter:brightness(0.9) }
+    .hero>* { position:relative;z-index:1 }
+    .hero .hero-inner { position:relative;z-index:2 }
+
+    .page-header { background:#09090b!important }
+
+    .page-header>* { position:relative;z-index:1 }
+    .page-header h1 { color:#F2EDE4!important }
+    .page-header p { color:rgba(242,237,228,0.62)!important }
+    .page-header .label-tag { color:#FF7A5C!important }
+
+    .how { position:relative;overflow:hidden }
+    .how::before { content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(18,18,18,0.09) 1.5px,transparent 1.5px);background-size:30px 30px;pointer-events:none;z-index:0 }
+    .how::after { content:"";position:absolute;width:600px;height:600px;right:-200px;bottom:-200px;background:radial-gradient(circle,rgba(255,92,58,0.07),transparent 65%);border-radius:50%;pointer-events:none;z-index:0;animation:lls-corner-glow 10s ease-in-out infinite alternate }
+    to{transform:scale(1.15)}}
+    .how .section-inner { position:relative;z-index:1 }
+    .step { background:rgba(255,255,255,0.82)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important }
+    .step:hover { border-color:rgba(255,92,58,0.2)!important }
+
+    .services { position:relative;overflow:hidden }
+    .services::before { content:""; position:absolute; inset:0; pointer-events:none; z-index:0; }
+    .services::after { content:"";position:absolute;width:500px;height:500px;left:-150px;top:-100px;background:radial-gradient(circle,rgba(255,92,58,0.05),transparent 65%);border-radius:50%;pointer-events:none;z-index:0 }
+    .services .section-inner { position:relative;z-index:1 }
+    .service-card:hover { transform:translateY(-6px)!important;box-shadow:0 16px 48px rgba(0,0,0,0.1)!important;border-color:rgba(255,92,58,0.2)!important }
+
+    .portfolio-preview { position:relative;overflow:hidden }
+    .portfolio-preview::before { content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(18,18,18,0.07) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0 }
+    .portfolio-preview::after { content:"";position:absolute;width:400px;height:400px;left:-100px;bottom:-100px;background:radial-gradient(circle,rgba(255,92,58,0.06),transparent 65%);border-radius:50%;pointer-events:none;z-index:0 }
+    .portfolio-preview .section-inner { position:relative;z-index:1 }
+    .portfolio-card { box-shadow:0 2px 8px rgba(0,0,0,0.06),0 8px 32px rgba(0,0,0,0.08)!important;transition:transform 0.28s ease,box-shadow 0.28s ease,border-color 0.28s ease!important }
+    .portfolio-card:hover { transform:translateY(-6px)!important;box-shadow:0 8px 24px rgba(0,0,0,0.1),0 24px 64px rgba(0,0,0,0.14)!important;border-color:rgba(255,92,58,0.2)!important }
+
+    .allspark-note { background:linear-gradient(160deg,#0f0f11 0%,#1a1a1e 100%)!important;position:relative;overflow:hidden }
+    .allspark-note::before { content:"";position:absolute;width:600px;height:300px;top:-80px;left:50%;transform:translateX(-50%);background:rgba(255,92,58,0.08);filter:blur(80px);border-radius:50%;pointer-events:none }
+    .allspark-note::after { content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:52px 52px;pointer-events:none }
+    .allspark-note>* { position:relative;z-index:1 }
+
+    .cta-band { background:#09090b!important;position:relative;overflow:hidden }
+    .cta-band::before { content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(255,92,58,0.28),transparent 65%),radial-gradient(ellipse 40% 40% at 15% 80%,rgba(255,140,90,0.15),transparent 60%),radial-gradient(ellipse 30% 40% at 85% 20%,rgba(255,92,58,0.12),transparent 60%);animation:lls-cta-breath 7s ease-in-out infinite alternate;pointer-events:none;z-index:0 }
+    .cta-band::after { content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:52px 52px;animation:lls-grid 20s linear infinite;pointer-events:none;z-index:0 }
+    @keyframes lls-cta-breath{from{transform:scale(1);opacity:1}to{transform:scale(1.06);opacity:0.85}}
+    .cta-band>* { position:relative;z-index:2 }
+    .cta-band h2 { color:#F2EDE4!important }
+    .cta-band p { color:rgba(242,237,228,0.58)!important }
+    .lls-cta-sweep { position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent);animation:lls-cta-sweep 6s ease-in-out 2s infinite;pointer-events:none;z-index:1 }
+    @keyframes lls-cta-sweep{0%{left:-50%}40%{left:130%}100%{left:130%}}
+
+    .faq-section { position:relative;overflow:hidden }
+    .faq-section::before { content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(18,18,18,0.07) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0 }
+    .faq-section::after { content:"";position:absolute;width:500px;height:500px;right:-150px;top:50%;transform:translateY(-50%);background:radial-gradient(circle,rgba(255,92,58,0.05),transparent 65%);border-radius:50%;pointer-events:none;z-index:0 }
+    .faq-section .faq-layout,.faq-section .section-inner { position:relative;z-index:1 }
+
+    .contact-section { position:relative;overflow:hidden }
+    .contact-section::before { content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(18,18,18,0.06) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0 }
+    .contact-section::after { content:"";position:absolute;width:600px;height:600px;right:-200px;bottom:-200px;background:radial-gradient(circle,rgba(255,92,58,0.06),transparent 65%);border-radius:50%;pointer-events:none;z-index:0 }
+    .contact-section .contact-layout,.contact-section .section-inner { position:relative;z-index:1 }
+
+    .footer { background:#09090b!important;position:relative;overflow:hidden }
+    .footer::before { content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0;opacity:0.6 }
+    .footer .footer-inner { position:relative;z-index:1 }
+    .footer .footer-logo-mark { color:#F2EDE4!important }
+    .footer .footer-sub { color:rgba(242,237,228,0.3)!important }
+    .footer .footer-tagline { color:rgba(242,237,228,0.45)!important }
+    .footer .footer-col h4 { color:rgba(242,237,228,0.35)!important }
+    .footer .footer-col a { color:rgba(242,237,228,0.55)!important }
+    .footer .footer-col a:hover { color:#F2EDE4!important }
+    .footer .footer-copy { color:rgba(242,237,228,0.25)!important }
+    .footer .footer-legal a { color:rgba(242,237,228,0.3)!important }
+    .footer .footer-legal a:hover { color:rgba(242,237,228,0.6)!important }
+    .footer .footer-top { border-bottom-color:rgba(255,255,255,0.07)!important }
+
+    .legal-content { position:relative;overflow:hidden }
+    .legal-content::before { content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(18,18,18,0.06) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0 }
+    .legal-content>* { position:relative;z-index:1 }
+
+
+    /* ── HERO TEXT: Force light on dark shader background ── */
+    .hero h1, .hero h2, .hero h3 { color: #F2EDE4 !important; }
+    .hero h1 .highlight, .hero h1 .em { color: var(--coral) !important; }
+    .hero p, .hero-sub, .hero li { color: rgba(242,237,228,0.65) !important; }
+    .hero-proof-num { color: #F2EDE4 !important; }
+    .hero-proof-label { color: rgba(242,237,228,0.42) !important; }
+    .hero-card-title { color: #F2EDE4 !important; }
+    .hero-card-desc { color: rgba(242,237,228,0.52) !important; }
+    .hero-eyebrow { color: #FF7A5C !important; background: rgba(255,92,58,0.15) !important; border: 1px solid rgba(255,92,58,0.35) !important; }
+    .hero .btn-secondary, .hero .btn-ghost, .hero .btn-outline { color: rgba(242,237,228,0.82) !important; border-color: rgba(242,237,228,0.28) !important; }
+    .hero .hero-proof { border-top-color: rgba(255,255,255,0.08) !important; }
+    .hero .hero-proof-item + .hero-proof-item { border-left-color: rgba(255,255,255,0.08) !important; }
+    /* ── PAGE-HEADER TEXT (inner pages) ── */
+    .page-header h1, .page-header h2 { color: #F2EDE4 !important; }
+    .page-header p, .page-header-meta, .page-header .label-tag { color: rgba(242,237,228,0.65) !important; }
+    .page-header .label-tag { color: #FF7A5C !important; }
+    .page-header .page-header-meta { color: rgba(242,237,228,0.42) !important; }
+    /* ── CONTACT PAGE-HERO TEXT ── */
+    .page-hero h1, .page-hero h2 { color: #F2EDE4 !important; }
+    .page-hero h1 .em { color: var(--coral) !important; }
+    .page-hero p, .page-eyebrow { color: rgba(242,237,228,0.65) !important; }
+    .page-eyebrow { color: #FF7A5C !important; }
+    .page-eyebrow::before { background: var(--coral) !important; }
+    /* ── WHAT HAPPENS NEXT (contact sidebar card) ── */
+    .sidebar-next h3 { color: #F2EDE4 !important; }
+    .sidebar-next p, .sidebar-next li { color: rgba(242,237,228,0.65) !important; }
+
+
+    /* ── HERO TEXT STROKE: Light edge for readability on dark shader ── */
+    .hero h1, .page-header h1, .page-hero h1 {
+      -webkit-text-stroke: 0.4px rgba(255,255,255,0.45);
+      paint-order: stroke fill;
+    }
+    .hero h1 .highlight, .hero h1 .em,
+    .page-header h1 .em, .page-hero h1 .em {
+      -webkit-text-stroke: 0.3px rgba(255,130,80,0.5);
+      paint-order: stroke fill;
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .hero::before,.lls-blob-1,.lls-blob-2,.lls-blob-3,.lls-sweep,.lls-glow-line,
+      .hero .hero-eyebrow::before,.cta-band::before,.cta-band::after,.lls-cta-sweep,
+      .how::after,.allspark-note::after { animation:none!important }
+    }
+
+  </style>
+<script>
+// ============================================================
+// LLS SHADER ENGINE — WebGL interactive background
+// ============================================================
+window.ShaderRunner = class ShaderRunner {
+  constructor(canvas, fragmentSource) {
+    this.canvas = canvas;
+    this.gl = canvas.getContext('webgl', { premultipliedAlpha: false, antialias: false });
+    if (!this.gl) return;
+    this.mouse = [0.5, 0.5];
+    this.targetMouse = [0.5, 0.5];
+    this.clicks = [];
+    this.startTime = performance.now();
+    this.running = true;
+    this._buildProgram(fragmentSource);
+    this._bindEvents();
+    this._resize();
+    this._loop();
+  }
+  _buildProgram(fs) {
+    const gl = this.gl;
+    const compile = (type, src) => {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    };
+    const vs = compile(gl.VERTEX_SHADER, 'attribute vec2 a_pos; void main(){gl_Position=vec4(a_pos,0.,1.);}');
+    const prog = gl.createProgram();
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(prog);
+    this.program = prog;
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'a_pos');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    this.uTime = gl.getUniformLocation(prog, 'u_time');
+    this.uRes = gl.getUniformLocation(prog, 'u_res');
+    this.uMouse = gl.getUniformLocation(prog, 'u_mouse');
+    this.uClicks = gl.getUniformLocation(prog, 'u_clicks');
+    this.uClickCount = gl.getUniformLocation(prog, 'u_clickCount');
+  }
+  _bindEvents() {
+    const onMove = (e) => {
+      const r = this.canvas.getBoundingClientRect();
+      const t = e.touches ? e.touches[0] : e;
+      this.targetMouse[0] = (t.clientX - r.left) / r.width;
+      this.targetMouse[1] = 1 - (t.clientY - r.top) / r.height;
+    };
+    const onClick = (e) => {
+      const r = this.canvas.getBoundingClientRect();
+      const t = e.touches ? e.touches[0] : e;
+      this.clicks.push({ x: (t.clientX - r.left) / r.width, y: 1 - (t.clientY - r.top) / r.height, t: (performance.now() - this.startTime) / 1000 });
+      if (this.clicks.length > 8) this.clicks.shift();
+    };
+    this.canvas.addEventListener('mousemove', onMove);
+    this.canvas.addEventListener('touchmove', onMove, { passive: true });
+    this.canvas.addEventListener('mousedown', onClick);
+    this.canvas.addEventListener('touchstart', onClick, { passive: true });
+    this._ro = new ResizeObserver(() => this._resize());
+    this._ro.observe(this.canvas);
+  }
+  _resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    this.canvas.width = Math.max(1, Math.floor(this.canvas.clientWidth * dpr));
+    this.canvas.height = Math.max(1, Math.floor(this.canvas.clientHeight * dpr));
+    this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+  }
+  _loop() {
+    if (!this.running) return;
+    const gl = this.gl;
+    const now = (performance.now() - this.startTime) / 1000;
+    this.mouse[0] += (this.targetMouse[0] - this.mouse[0]) * 0.08;
+    this.mouse[1] += (this.targetMouse[1] - this.mouse[1]) * 0.08;
+    gl.useProgram(this.program);
+    gl.uniform1f(this.uTime, now);
+    gl.uniform2f(this.uRes, this.canvas.width, this.canvas.height);
+    gl.uniform2f(this.uMouse, this.mouse[0], this.mouse[1]);
+    const cd = new Float32Array(24);
+    let count = 0;
+    for (const c of this.clicks) {
+      const age = now - c.t;
+      if (age < 4.0) { cd[count*3]=c.x; cd[count*3+1]=c.y; cd[count*3+2]=age; count++; }
+    }
+    if (this.uClicks) gl.uniform3fv(this.uClicks, cd);
+    if (this.uClickCount) gl.uniform1i(this.uClickCount, count);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    requestAnimationFrame(() => this._loop());
+  }
+  destroy() { this.running = false; if (this._ro) this._ro.disconnect(); }
+};
+
+// GLSL common helpers
+const SHADER_COMMON = `
+precision highp float;
+uniform float u_time;
+uniform vec2 u_res;
+uniform vec2 u_mouse;
+uniform vec3 u_clicks[8];
+uniform int u_clickCount;
+float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p);vec2 f=fract(p);vec2 u=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}
+float fbm(vec2 p){float v=0.;float a=0.5;for(int i=0;i<6;i++){v+=a*noise(p);p*=2.02;a*=0.5;}return v;}
+float fbmWarp(vec2 p,float t){vec2 q=vec2(fbm(p+vec2(0.,t*.1)),fbm(p+vec2(5.2,1.3)+t*.1));vec2 r=vec2(fbm(p+4.*q+vec2(1.7,9.2)+t*.15),fbm(p+4.*q+vec2(8.3,2.8)+t*.12));return fbm(p+4.*r);}
+vec3 orangePalette(float t){vec3 a=vec3(.018,.010,.010);vec3 b=vec3(.18,.06,.03);vec3 c=vec3(.65,.22,.08);vec3 d=vec3(1.,.55,.22);vec3 e=vec3(1.,.85,.55);t=clamp(t,0.,1.);if(t<.35)return mix(a,b,t/.35);if(t<.65)return mix(b,c,(t-.35)/.30);if(t<.88)return mix(c,d,(t-.65)/.23);return mix(d,e,(t-.88)/.12);}
+float gridOverlay(vec2 uv){vec2 g=abs(fract(uv*28.)-.5);float l=min(g.x,g.y);return smoothstep(.48,.5,1.-l)*.06;}
+`;
+
+// Smoke shader source
+const SMOKE_FRAG = SHADER_COMMON + `
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_res.xy;
+  vec2 p=uv;
+  vec2 m=u_mouse;
+  vec2 toMouse=m-p;
+  float d=length(toMouse);
+  vec2 pull=toMouse*exp(-d*3.)*0.22;
+  vec2 q=(p+pull)*2.6;
+  q.y-=u_time*0.07;
+  float n=fbmWarp(q,u_time*0.5);
+  float glow=exp(-d*4.)*0.55;
+  float burst=0.;
+  for(int i=0;i<8;i++){
+    if(i>=u_clickCount)break;
+    vec3 c=u_clicks[i];
+    vec2 cp=vec2(c.x,c.y);
+    float age=c.z;
+    float r=length(p-cp);
+    float ring=exp(-pow((r-age*0.3)*7.,2.))*exp(-age*0.7);
+    float core=exp(-r*5.)*exp(-age*1.4)*0.5;
+    burst+=ring+core;
+  }
+  float intensity=pow(n,1.6)*0.55+glow*n+burst*0.7;
+  intensity=clamp(intensity,0.,1.);
+  vec3 col=orangePalette(intensity);
+  col+=gridOverlay(uv)*vec3(0.6,0.25,0.1);
+  col*=1.-0.55*pow(length(p-0.5),1.5);
+  gl_FragColor=vec4(col,1.);
+}
+`;
+
+// Init all shader canvases on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const canvases = document.querySelectorAll('[data-shader]');
+  canvases.forEach(canvas => {
+    const type = canvas.dataset.shader;
+    let src = SMOKE_FRAG; // default
+    new window.ShaderRunner(canvas, src);
+  });
+});
+</script>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-mark">Local <span>Launch</span> Sites</span>
+        <span class="nav-logo-pill">by All Spark Ent. Ltd.</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html" class="nav-cta">Get Started</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="nav-overlay"></div>
+  <div class="nav-drawer" id="nav-drawer">
+    <div class="drawer-header">
+      <span style="font-family:var(--font-display);font-weight:700;font-size:15px;color:#F2EDE4;">Local Launch Sites</span>
+      <button class="drawer-close-btn" id="drawerClose">✕</button>
+    </div>
+    <a href="index.html">Home →</a>
+    <a href="about.html">About →</a>
+    <a href="services.html">Services →</a>
+    <a href="pricing.html">Pricing →</a>
+    <a href="portfolio.html">Portfolio →</a>
+    <a href="contact.html">Contact →</a>
+    <a href="get-started.html" class="drawer-cta">Get Started →</a>
+  </div>
+
+  <header class="page-header">
+    <canvas data-shader="smoke" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;"></canvas>
+    <div class="page-header-inner">
+      <span class="label-tag">Legal</span>
+      <h1>Terms & Conditions</h1>
+      <p class="page-header-meta">Last updated: May 6, 2026</p>
+    </div>
+  </header>
+
+  <section class="legal-section">
+    <div class="legal-layout">
+
+          <p>These Terms govern web design services provided by the <strong>Local Launch Sites</strong> brand, owned and operated by <strong>All Spark Enterprises Ltd.</strong>, an Ontario corporation based in Devlin, Ontario. "We/us/our" means All Spark Enterprises Ltd. "You/client" means the individual or business engaging our services.</p>
+
+          <h2>1. Services</h2>
+          <p>Local Launch Sites provides custom static website design and development for small and local businesses. All services are project-based — no retainers or subscriptions unless explicitly agreed to in writing. The scope of each project is confirmed before any build work begins.</p>
+
+          <h2>2. The Process</h2>
+          <p>Our standard workflow:</p>
+          <ul>
+            <li>Client submits an intake form describing their project.</li>
+            <li>A Scope of Work is prepared and emailed to the client — typically the same day — outlining the proposed design, pages, features, and cost.</li>
+            <li>Client confirms the scope or requests changes. Work does not begin until scope is agreed upon.</li>
+            <li>We build a working site preview. No payment is required at this stage.</li>
+            <li>Client reviews the preview and requests revisions. Reasonable in-scope revisions are included.</li>
+            <li>Client approves the site → All Spark Enterprises Ltd. issues an invoice via Square.</li>
+            <li>Full payment is received → site files and accounts are transferred to the client and the site goes live.</li>
+            <li>Post-payment work (Google Maps listing, Cloudflare setup, domain linking, etc.) is completed after payment. Each item is invoiced and approved before work begins.</li>
+          </ul>
+          <p>No deposit or upfront payment is required under our standard model.</p>
+
+          <h2>3. Scope of Work</h2>
+          <p>The Scope of Work document emailed to the client defines what is included in the project. Reasonable revisions within that scope — wording tweaks, color adjustments, minor layout changes — are included. Work that exceeds the agreed scope (additional pages, new features, structural redesigns after approval) is billed at our current hourly rate. We will always obtain explicit written approval before beginning out-of-scope work.</p>
+
+          <h2>4. Pricing, Invoicing &amp; Payment</h2>
+          <p>All prices are in <strong>Canadian dollars (CAD)</strong>. Applicable taxes — including <strong>13% HST</strong> — are added to all invoices as required under Ontario and federal law.</p>
+          <p>All invoices are issued by <strong>All Spark Enterprises Ltd.</strong> and processed through <strong>Square</strong>. The legal entity you are contracting with and paying is All Spark Enterprises Ltd. Payment is due upon invoice receipt unless otherwise agreed in writing.</p>
+          <p>We reserve the right to withhold final file delivery, live deployment, and completion of post-payment work until the invoice is paid in full.</p>
+
+          <h2>5. Post-Payment Work</h2>
+          <p>Certain work is completed after payment is received. This includes, but is not limited to: uploading and deploying the site to Cloudflare Pages, connecting a custom domain name, adding the business to Google Maps, and transferring accounts and files to the client. Each post-payment item is quoted and approved by the client before work begins — nothing is charged without your explicit go-ahead.</p>
+          <p>For tasks that require the client's credit card directly (such as purchasing a domain or setting up Google Workspace), we will schedule a brief call so the client can enter their own payment details in real time. No client payment information is stored by us.</p>
+
+          <h2>6. Client Responsibilities</h2>
+          <p>You agree to: provide accurate information and content; supply required assets (text, photos, logos) or authorize placeholder content; provide clear and consolidated feedback; ensure you have the rights to all content you supply; and pay invoices in full upon approval of completed work. Delays caused by the client do not constitute grounds for non-payment.</p>
+
+          <h2>7. Intellectual Property &amp; Ownership</h2>
+          <p>Upon receipt of full payment, you own the website — all custom HTML, CSS, and JavaScript code. You are free to use, modify, copy, or host it anywhere. All Spark Enterprises Ltd. retains the right to display completed work in our portfolio unless you request otherwise in writing before project completion. Third-party assets (fonts, stock imagery, libraries) remain subject to their respective licenses.</p>
+
+          <h2>8. Hosting &amp; Domain</h2>
+          <p>Sites are deployed to <strong>Cloudflare Pages</strong>. Setup and deployment are included in the project. After handoff, you are responsible for maintaining your own Cloudflare account and domain registration, including renewals. We are not responsible for ongoing management of third-party hosting accounts, domain renewals, or DNS changes after project handoff unless separately engaged.</p>
+
+          <h2>9. Post-Handoff Changes</h2>
+          <p>Any changes to the website after final approval and payment are billed at our current hourly rate. We are under no obligation to provide free support, updates, or changes after a project is completed and paid.</p>
+
+          <h2>10. Warranties &amp; Limitation of Liability</h2>
+          <p>We build sites with care and professionalism but make no guarantees about search engine rankings, traffic, revenue, business outcomes, or uptime of third-party hosting services. To the maximum extent permitted by law, All Spark Enterprises Ltd. shall not be liable for indirect, incidental, special, or consequential damages. Our total liability for any claim shall not exceed the total amount you paid for the specific project in question.</p>
+
+          <h2>11. Cancellation</h2>
+          <p>Either party may cancel a project before the client approves the final preview. If the client cancels after significant work has been completed, All Spark Enterprises Ltd. reserves the right to invoice for reasonable time spent at the agreed or standard hourly rate, up to the agreed project price. If All Spark Enterprises Ltd. cancels, no charge for incomplete work applies.</p>
+
+          <h2>12. Governing Law</h2>
+          <p>These Terms are governed by the laws of the Province of Ontario and the federal laws of Canada. Any disputes shall be subject to the exclusive jurisdiction of the courts of Ontario.</p>
+
+          <h2>13. Changes to These Terms</h2>
+          <p>We may update these Terms from time to time. The current version is always available on this page. Continued engagement with our services constitutes acceptance of updated terms.</p>
+
+          <h2>14. Contact</h2>
+          <p>Questions? Reach us through the <a href="contact.html">contact page</a>. All Spark Enterprises Ltd. · Devlin, Ontario, Canada.</p>
+
+        </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo-mark">Local <span>Launch</span> Sites</div>
+          <div class="footer-sub">A brand of All Spark Enterprises Ltd.</div>
+          <p class="footer-tagline">Professional web design for local businesses in Northwestern Ontario.</p>
+        </div>
+        <nav class="footer-nav">
+          <div class="footer-col"><h4>Navigate</h4><ul><li><a href="index.html">Home</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+          <div class="footer-col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 All Spark Enterprises Ltd. All rights reserved. Local Launch Sites is a brand of All Spark Enterprises Ltd., Devlin, Ontario.</p>
+        <div class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const h=document.getElementById('hamburger'),d=document.getElementById('nav-drawer'),o=document.getElementById('nav-overlay'),c=document.getElementById('drawerClose');
+    function openNav(){d.classList.add('open');o.classList.add('open');}
+    function closeNav(){d.classList.remove('open');o.classList.remove('open');}
+    h.addEventListener('click',openNav);
+    o.addEventListener('click',closeNav);
+    c&&c.addEventListener('click',closeNav);
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNav();});
+  </script>
+</body>
+</html>

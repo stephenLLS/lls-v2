@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account • Local Launch Sites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --fire1: #E8600A;
+  --fire2: #C84A08;
+  --amber: #D4820A;
+  --gold: #E8A020;
+  --bg: #140C04;
+  --card: rgba(20,12,4,0.82);
+  --border: rgba(232,96,10,0.16);
+  --text: #F5EDE0;
+  --text2: rgba(245,237,224,0.54);
+  --text3: rgba(245,237,224,0.22);
+  --serif: 'Bebas Neue', Impact, sans-serif;
+  --body: 'Outfit', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--body);overflow-x:hidden;}
+
+#stage{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 50% 38%,#241408 0%,#140C04 65%,#0C0802 100%);}
+#shader-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+
+.glass-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2;}
+.glass{position:absolute;border:0.5px solid rgba(232,140,40,0.07);border-radius:14px;background:linear-gradient(135deg,rgba(232,140,40,0.016),rgba(232,140,40,0.002) 60%);box-shadow:inset 0 1px 0 rgba(255,200,100,0.022),0 40px 100px -60px rgba(0,0,0,0.65);}
+.glass.g1{left:8%;top:16%;width:28%;height:64%;animation:drift1 38s ease-in-out infinite;}
+.glass.g2{right:9%;top:22%;width:34%;height:56%;animation:drift2 44s ease-in-out infinite;}
+.glass.g3{left:36%;top:30%;width:30%;height:40%;animation:drift3 52s ease-in-out infinite;opacity:0.65;}
+@keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(8px,-12px)}}
+@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-10px,8px)}}
+@keyframes drift3{0%,100%{transform:translate(0,0)}50%{transform:translate(0,-16px)}}
+
+.reticle{position:absolute;width:14px;height:14px;z-index:3;pointer-events:none;opacity:0.4;}
+.reticle::before,.reticle::after{content:'';position:absolute;background:rgba(232,140,60,0.45);}
+.reticle::before{left:0;top:0;width:100%;height:1px;}
+.reticle::after{left:0;top:0;width:1px;height:100%;}
+.reticle.br2{bottom:14px;right:14px;transform:scale(-1,-1);}
+
+/* NAV */
+.site-nav{position:fixed;top:0;left:0;right:0;height:68px;background:rgba(14,8,2,0.88);border-bottom:1px solid rgba(232,96,10,0.18);z-index:100;display:flex;align-items:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);width:100%;}
+.site-nav-inner{width:100%;max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;}
+.site-nav-logo{display:flex;align-items:baseline;gap:10px;text-decoration:none;}
+.site-nav-mark{font-family:'Outfit',system-ui,sans-serif;font-weight:800;font-size:20px;color:#F2EDE4;letter-spacing:-0.02em;}
+.site-nav-mark span{color:#FF5C3A;}
+.site-nav-links{list-style:none;display:flex;align-items:center;gap:32px;}
+.site-nav-links a{font-family:'Outfit',system-ui,sans-serif;font-size:14px;font-weight:600;color:rgba(242,237,228,0.55);text-decoration:none;transition:color 0.2s;}
+.site-nav-links a:hover{color:#F2EDE4;}
+.site-nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.site-nav-hamburger span{display:block;width:22px;height:2px;background:#F2EDE4;border-radius:2px;transition:all 0.2s;}
+.site-nav-drawer{position:fixed;top:68px;left:0;right:0;background:#131316;border-bottom:3px solid #FF5C3A;padding:24px 32px 32px;display:none;flex-direction:column;gap:18px;z-index:99;}
+.site-nav-drawer.open{display:flex;}
+.site-nav-drawer a{font-family:'Outfit',system-ui,sans-serif;font-size:15px;font-weight:700;color:#F2EDE4;text-decoration:none;}
+.logout-btn{background:var(--fire1)!important;color:#fff!important;padding:10px 20px;border-radius:8px;cursor:pointer;border:none;}
+@media(max-width:900px){.site-nav-links{display:none;}.site-nav-hamburger{display:flex;}}
+
+/* MAIN */
+.container{position:relative;z-index:4;max-width:1200px;margin:0 auto;padding:100px 32px 48px;}
+
+/* HEADER */
+.account-header{margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.account-header h1{font-family:var(--serif);font-size:42px;color:#FFFFFF;margin-bottom:8px;letter-spacing:0.5px;}
+.account-header p{color:var(--text2);font-size:15px;}
+
+.header-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-top:32px;}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;backdrop-filter:blur(28px);}
+.info-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.info-value{font-size:16px;color:var(--text);font-weight:600;}
+
+/* TABS */
+.tabs{display:flex;gap:24px;margin-bottom:32px;border-bottom:1px solid var(--border);padding-bottom:16px;}
+.tab{cursor:pointer;font-size:14px;font-weight:600;color:var(--text2);padding-bottom:8px;border-bottom:2px solid transparent;transition:all 0.2s;}
+.tab.active{color:var(--fire1);border-bottom-color:var(--fire1);}
+.tab:hover{color:var(--text);}
+
+/* TAB CONTENT */
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;margin-bottom:32px;}
+
+/* CARDS */
+.project-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;backdrop-filter:blur(28px);transition:all 0.3s;cursor:pointer;}
+.project-card:hover{border-color:var(--fire1);transform:translateY(-4px);box-shadow:0 20px 40px rgba(232,96,10,0.15);}
+
+.project-card-title{font-family:var(--serif);font-size:18px;color:var(--text);margin-bottom:8px;}
+.project-card-status{display:inline-block;font-size:11px;padding:6px 12px;background:rgba(232,96,10,0.2);border:1px solid rgba(232,96,10,0.4);border-radius:20px;color:var(--fire1);margin-bottom:16px;text-transform:uppercase;font-weight:600;}
+.project-card-status.completed{background:rgba(81,207,102,0.2);border-color:rgba(81,207,102,0.4);color:#51CF66;}
+.project-card-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px;}
+
+.card-actions{display:flex;gap:12px;}
+.card-btn{flex:1;padding:10px 16px;background:rgba(232,96,10,0.15);border:1px solid rgba(232,96,10,0.3);border-radius:8px;color:var(--fire1);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.card-btn:hover{background:rgba(232,96,10,0.25);border-color:var(--fire1);}
+.card-btn.primary{background:var(--fire1);color:#fff;border-color:var(--fire1);}
+.card-btn.primary:hover{background:var(--fire2);}
+
+/* INVOICE/BILL TABLE */
+.table{width:100%;border-collapse:collapse;margin-bottom:32px;}
+.table th{background:rgba(8,4,1,0.5);padding:14px;text-align:left;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);color:var(--text3);}
+.table td{padding:14px;border-bottom:1px solid var(--border);font-size:13px;}
+.table tr:hover{background:rgba(232,96,10,0.08);}
+
+.status-badge{display:inline-block;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase;}
+.status-paid{background:rgba(81,207,102,0.2);color:#51CF66;}
+.status-pending{background:rgba(232,96,10,0.2);color:var(--fire1);}
+.status-overdue{background:rgba(255,107,107,0.2);color:#FF6B6B;}
+
+.download-btn{color:var(--fire1);cursor:pointer;transition:color 0.2s;}
+.download-btn:hover{color:var(--fire2);}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:48px 32px;color:var(--text2);}
+.empty-state-icon{font-size:48px;margin-bottom:16px;}
+.empty-state h3{font-family:var(--serif);font-size:20px;color:var(--text);margin-bottom:8px;}
+
+.btn{display:inline-block;padding:12px 28px;background:var(--fire1);color:#fff;border:none;border-radius:10px;font-family:var(--body);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.btn:hover{background:var(--fire2);transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <canvas id="shader-canvas"></canvas>
+  <div class="glass-layer">
+    <div class="glass g1"></div>
+    <div class="glass g2"></div>
+    <div class="glass g3"></div>
+  </div>
+  <div class="reticle br2"></div>
+</div>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-nav-logo">
+      <div class="site-nav-mark">Local <span>Launch</span> Sites</div>
+    </a>
+    <ul class="site-nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li id="nav-account" style="display:none;"><a href="account.html">Account</a></li>
+      <li><button class="logout-btn" onclick="handleLogout()">Logout</button></li>
+    </ul>
+    <button class="site-nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="site-nav-drawer" id="nav-drawer">
+  <a href="index.html">Home</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="faq.html">FAQ</a>
+  <a href="account.html">My Account</a>
+  <button class="logout-btn" onclick="handleLogout()" style="width:100%;text-align:center;">Logout</button>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="account-header">
+    <h1 id="greeting">Welcome Back</h1>
+    <p id="business-display">Loading your account...</p>
+    
+    <div class="header-info">
+      <div class="info-card">
+        <div class="info-label">Account Status</div>
+        <div class="info-value">Active</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">Total Projects</div>
+        <div class="info-value" id="project-count">—</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">Total Spent</div>
+        <div class="info-value" id="total-spent">—</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">Member Since</div>
+        <div class="info-value" id="member-since">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('projects')">📦 Projects</div>
+    <div class="tab" onclick="switchTab('invoices')">📋 Invoices</div>
+    <div class="tab" onclick="switchTab('settings')">⚙️ Settings</div>
+  </div>
+
+  <!-- PROJECTS TAB -->
+  <div id="projects" class="tab-content active">
+    <div class="grid" id="projects-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- INVOICES TAB -->
+  <div id="invoices" class="tab-content">
+    <table class="table" id="invoices-table">
+      <thead>
+        <tr>
+          <th>Invoice #</th>
+          <th>Project</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="invoices-body">
+        <!-- Populated by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div id="settings" class="tab-content">
+    <div class="project-card" style="max-width:500px;">
+      <h2 style="font-family:var(--serif);font-size:20px;margin-bottom:20px;">Account Settings</h2>
+      
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:13px;margin-bottom:8px;color:var(--text2);">Email</label>
+        <input type="text" id="settings-email" readonly style="width:100%;padding:10px;background:rgba(8,4,1,0.5);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:13px;margin-bottom:8px;color:var(--text2);">Business Name</label>
+        <input type="text" id="settings-business" readonly style="width:100%;padding:10px;background:rgba(8,4,1,0.5);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+      </div>
+
+      <button class="btn" onclick="handleLogout()">Logout</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Check authentication
+if (!localStorage.getItem('authToken')) {
+  window.location.href = 'login.html';
+}
+
+const userEmail = localStorage.getItem('userEmail');
+const businessName = localStorage.getItem('businessName') || 'Your Business';
+
+// Update header
+document.getElementById('greeting').textContent = `Welcome, ${businessName}`;
+document.getElementById('business-display').textContent = `Email: ${userEmail}`;
+document.getElementById('settings-email').value = userEmail;
+document.getElementById('settings-business').value = businessName;
+
+// MOCK DATA - Replace with real API calls
+const mockProjects = [
+  {
+    id: 1,
+    name: "Devlin Corner Store",
+    status: "completed",
+    preview: "https://devlincorner.allsparkenterprisesltd.ca",
+    date: "2024-04-15"
+  },
+  {
+    id: 2,
+    name: "Lil K's Kickin Chicken",
+    status: "completed",
+    preview: "https://lilkskickinchicken.allsparkenterprisesltd.ca",
+    date: "2024-03-20"
+  },
+  {
+    id: 3,
+    name: "Allspark Enterprise",
+    status: "completed",
+    preview: "https://allspark.allsparkenterprisesltd.ca",
+    date: "2024-02-10"
+  }
+];
+
+const mockInvoices = [
+  {
+    id: "INV-001",
+    project: "Devlin Corner Store",
+    date: "2024-04-15",
+    amount: "$299.00",
+    status: "paid"
+  },
+  {
+    id: "INV-002",
+    project: "Lil K's Kickin Chicken",
+    date: "2024-03-20",
+    amount: "$299.00",
+    status: "paid"
+  },
+  {
+    id: "INV-003",
+    project: "Custom Development",
+    date: "2024-05-10",
+    amount: "$1,200.00",
+    status: "pending"
+  }
+];
+
+// Populate projects
+function loadProjects() {
+  const grid = document.getElementById('projects-grid');
+  grid.innerHTML = mockProjects.map(p => `
+    <div class="project-card">
+      <div class="project-card-status ${p.status === 'completed' ? 'completed' : ''}">${p.status}</div>
+      <div class="project-card-title">${p.name}</div>
+      <div class="project-card-desc">Launched on ${new Date(p.date).toLocaleDateString()}</div>
+      <div class="card-actions">
+        <a href="${p.preview}" target="_blank" class="card-btn primary">View Site</a>
+        <button class="card-btn" onclick="downloadPreview('${p.id}')">Download</button>
+      </div>
+    </div>
+  `).join('');
+  
+  document.getElementById('project-count').textContent = mockProjects.length;
+  document.getElementById('total-spent').textContent = '$897.00';
+  document.getElementById('member-since').textContent = 'Feb 2024';
+}
+
+// Populate invoices
+function loadInvoices() {
+  const tbody = document.getElementById('invoices-body');
+  tbody.innerHTML = mockInvoices.map(inv => `
+    <tr>
+      <td><strong>${inv.id}</strong></td>
+      <td>${inv.project}</td>
+      <td>${new Date(inv.date).toLocaleDateString()}</td>
+      <td>${inv.amount}</td>
+      <td><span class="status-badge status-${inv.status}">${inv.status}</span></td>
+      <td><a href="#" class="download-btn" onclick="downloadInvoice('${inv.id}');return false;">📥 PDF</a></td>
+    </tr>
+  `).join('');
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  
+  event.target.classList.add('active');
+  document.getElementById(tab).classList.add('active');
+}
+
+function downloadPreview(projectId) {
+  alert('Preview download: Project #' + projectId);
+}
+
+function downloadInvoice(invoiceId) {
+  alert('Downloading invoice: ' + invoiceId);
+}
+
+function handleLogout() {
+  localStorage.clear();
+  window.location.href = 'login.html';
+}
+
+// Hamburger menu
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('nav-drawer').classList.toggle('open');
+});
+
+document.addEventListener('click', (e) => {
+  const hamburger = document.getElementById('hamburger');
+  const drawer = document.getElementById('nav-drawer');
+  if (!hamburger.contains(e.target) && !drawer.contains(e.target)) {
+    drawer.classList.remove('open');
+  }
+});
+
+// Load data on page load
+loadProjects();
+loadInvoices();
+</script>
+
+</body>
+</html>
