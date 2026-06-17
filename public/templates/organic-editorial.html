@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roots &amp; Greens — Farm-to-Table Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --sage: #8FAF8A;
+      --sage-dark: #2D4A27;
+      --sage-mid: #6A9165;
+      --cream: #F7F3EE;
+      --cream-dark: #EDE7DC;
+      --text-dark: #1C2B19;
+      --text-mid: #3D5239;
+      --white: #FFFFFF;
+      --font-display: 'Yeseva One', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: transparent;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(143, 175, 138, 0.92);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      background-color: var(--sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Subtle texture overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .hero-inner {
+      position: relative;
+      width: 100%;
+      max-width: 1300px;
+      padding: 0 3rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+      justify-items: center;
+    }
+
+    /* Big background text — behind the image */
+    .hero-text-back {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      text-align: center;
+      z-index: 1;
+      pointer-events: none;
+      padding: 0 1rem;
+    }
+
+    .hero-text-back .line {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 13vw, 14rem);
+      color: var(--cream);
+      line-height: 0.88;
+      opacity: 0.18;
+      letter-spacing: -0.01em;
+    }
+
+    /* Floating product image */
+    .hero-image-wrap {
+      position: relative;
+      z-index: 2;
+      margin: 12vh 0 8vh;
+    }
+
+    .hero-image {
+      width: clamp(260px, 38vw, 540px);
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      border-radius: 2px;
+      box-shadow:
+        0 30px 80px rgba(30, 50, 25, 0.45),
+        0 10px 30px rgba(30, 50, 25, 0.25);
+      transform: rotate(-3deg);
+      animation: heroFloat 4s ease-in-out infinite;
+      display: block;
+    }
+
+    @keyframes heroFloat {
+      0%, 100% { transform: rotate(-3deg) translateY(0px); }
+      50%       { transform: rotate(-3deg) translateY(-18px); }
+    }
+
+    /* Front text — over the image */
+    .hero-text-front {
+      position: absolute;
+      bottom: -2.5rem;
+      right: -3.5rem;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .hero-text-front .line {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 8vw, 9rem);
+      color: var(--cream);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+    }
+
+    /* Centered headline above image */
+    .hero-headline {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 4;
+      text-align: center;
+      pointer-events: none;
+      width: max-content;
+    }
+
+    .hero-headline .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.75;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-tagline {
+      position: absolute;
+      bottom: 3.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .hero-tagline p {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.7;
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hero-scroll-hint span {
+      font-family: var(--font-body);
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.5;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: var(--cream);
+      opacity: 0.35;
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.35; transform: scaleY(1); }
+      50%       { opacity: 0.7;  transform: scaleY(0.6); }
+    }
+
+    /* Giant stacked hero text composition */
+    .hero-composition {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-word-top {
+      position: absolute;
+      top: 18vh;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 11vw, 12.5rem);
+      color: var(--cream);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      opacity: 0.9;
+    }
+
+    .hero-word-mid {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 8rem);
+      color: var(--cream);
+      line-height: 1;
+      letter-spacing: 0em;
+      white-space: nowrap;
+      opacity: 0.85;
+      text-align: center;
+    }
+
+    .hero-word-mid .amp {
+      font-style: italic;
+      opacity: 0.7;
+    }
+
+    .hero-word-bot {
+      position: absolute;
+      bottom: 16vh;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 11vw, 12.5rem);
+      color: var(--cream);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      opacity: 0.9;
+    }
+
+    .hero-sub {
+      position: absolute;
+      bottom: 11.5vh;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 6;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.55;
+      white-space: nowrap;
+    }
+
+    /* ─── FADE-IN ANIMATION ─── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.32s; }
+
+    /* ─── SECTION SHARED ─── */
+    section {
+      position: relative;
+    }
+
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 3rem;
+    }
+
+    /* ─── OUR STORY ─── */
+    .story {
+      background: var(--cream);
+      padding: 8rem 0;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .story-photo-wrap {
+      position: relative;
+    }
+
+    .story-photo {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      border-radius: 2px;
+      display: block;
+      box-shadow: 0 20px 60px rgba(30, 50, 25, 0.18);
+    }
+
+    .story-photo-accent {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      width: 55%;
+      aspect-ratio: 1;
+      background: var(--sage);
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0.35;
+    }
+
+    .story-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage-mid);
+      display: block;
+      margin-bottom: 1.1rem;
+    }
+
+    .story-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      color: var(--text-dark);
+      line-height: 1.1;
+      margin-bottom: 1.75rem;
+    }
+
+    .story-body {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text-mid);
+      margin-bottom: 1.25rem;
+    }
+
+    .story-signature {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--sage-mid);
+      margin-top: 2rem;
+      display: block;
+    }
+
+    /* ─── FEATURED ITEMS ─── */
+    .featured {
+      background: var(--sage);
+      padding: 8rem 0;
+    }
+
+    .section-header {
+      margin-bottom: 4rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .section-header .label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.65;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--cream);
+      line-height: 1.1;
+    }
+
+    .section-header .view-all {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.65;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(247, 243, 238, 0.3);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+      margin-bottom: 0.25rem;
+    }
+
+    .section-header .view-all:hover {
+      opacity: 1;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+
+    .card {
+      background: var(--sage-mid);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 60px rgba(20, 40, 15, 0.35);
+    }
+
+    .card-image {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover .card-image {
+      transform: scale(1.04);
+    }
+
+    .card-body {
+      padding: 1.6rem 1.75rem 2rem;
+    }
+
+    .card-tag {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.55;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--cream);
+      opacity: 0.75;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-price {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--cream);
+    }
+
+    /* ─── HOURS & LOCATION ─── */
+    .hours {
+      background: var(--sage-dark);
+      padding: 8rem 0;
+    }
+
+    .hours-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .hours .section-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0.45;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .hours h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hours-desc {
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--white);
+      opacity: 0.65;
+    }
+
+    .hours-col-label {
+      font-size: 0.64rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0.4;
+      display: block;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .hours-day {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--white);
+      opacity: 0.75;
+    }
+
+    .hours-time {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--white);
+      opacity: 0.9;
+    }
+
+    .location-address {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+    }
+
+    .location-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .location-detail-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .location-detail-icon svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: var(--white);
+      stroke-width: 1.8;
+      opacity: 0.7;
+    }
+
+    .location-detail span {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--white);
+      opacity: 0.65;
+    }
+
+    .map-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 2rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 0.85rem 1.6rem;
+      border-radius: 2px;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .map-btn:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--sage);
+      padding: 4rem 0 3rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(247, 243, 238, 0.18);
+      margin-bottom: 2rem;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .footer-tagline {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--cream);
+      opacity: 0.55;
+      margin-top: 0.4rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.65;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .footer-links a:hover { opacity: 1; }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      color: var(--cream);
+      opacity: 0.4;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .social-link {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(247,243,238,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: background 0.25s, border-color 0.25s;
+    }
+
+    .social-link:hover {
+      background: rgba(247,243,238,0.12);
+      border-color: rgba(247,243,238,0.5);
+    }
+
+    .social-link svg {
+      width: 13px;
+      height: 13px;
+      fill: var(--cream);
+      opacity: 0.7;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1.1rem 1.5rem; }
+      .container { padding: 0 1.5rem; }
+      .story-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .cards-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+      .hours-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-inner { flex-direction: column; gap: 2rem; text-align: center; }
+      .footer-bottom { flex-direction: column; gap: 1rem; }
+      .hero-word-top, .hero-word-bot { font-size: clamp(3rem, 9vw, 7rem); }
+      .hero-word-mid { font-size: clamp(2rem, 6vw, 5rem); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ─── -->
+  <nav id="main-nav">
+    <a href="#" class="nav-logo">Roots &amp; Greens</a>
+    <ul class="nav-links">
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#story">About</a></li>
+      <li><a href="#hours">Visit</a></li>
+      <li><a href="#order">Order</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero" id="home">
+    <div class="hero-composition">
+
+      <!-- Word BEHIND image -->
+      <div class="hero-word-top">ROOTS</div>
+
+      <!-- Floating food image -->
+      <div class="hero-image-wrap">
+        <img
+          class="hero-image"
+          src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&q=85&auto=format&fit=crop"
+          alt="Fresh organic vegetables and herbs"
+          loading="eager"
+        />
+      </div>
+
+      <!-- Word OVER image -->
+      <div class="hero-word-bot">&amp; GREENS</div>
+
+      <!-- Middle line sits across the image boundary -->
+      <div class="hero-word-mid">
+        <span class="amp">Farm-to-Table</span>
+      </div>
+
+      <!-- Sub label -->
+      <div class="hero-sub">Est. 2019 &nbsp;·&nbsp; Locally Sourced &nbsp;·&nbsp; Made with Love</div>
+
+      <!-- Scroll hint -->
+      <div class="hero-scroll-hint">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── OUR STORY ─── -->
+  <section class="story" id="story">
+    <div class="container">
+      <div class="story-grid">
+
+        <div class="story-photo-wrap fade-in">
+          <img
+            class="story-photo"
+            src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80&auto=format&fit=crop"
+            alt="Chef preparing fresh ingredients"
+          />
+          <div class="story-photo-accent"></div>
+        </div>
+
+        <div>
+          <span class="story-label fade-in">Our Story</span>
+          <h2 class="story-heading fade-in fade-in-delay-1">
+            Good food starts<br />with good soil.
+          </h2>
+          <p class="story-body fade-in fade-in-delay-1">
+            We started Roots &amp; Greens because we believed something simple: a meal made with honest ingredients — grown nearby, harvested in season, handled with care — tastes like nothing else. That belief became a kitchen, and that kitchen became a community.
+          </p>
+          <p class="story-body fade-in fade-in-delay-2">
+            Every morning, our team sources produce directly from farms within 100 km. What arrives at our door that day shapes the menu. Nothing is forced. Everything is fresh. We work with the land, not against it.
+          </p>
+          <span class="story-signature fade-in fade-in-delay-2">— Maya &amp; Tom, Founders</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURED ITEMS ─── -->
+  <section class="featured" id="menu">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div>
+          <span class="label">On the Menu</span>
+          <h2>Made fresh, daily.</h2>
+        </div>
+        <a href="#" class="view-all">View full menu</a>
+      </div>
+
+      <div class="cards-grid">
+
+        <div class="card fade-in">
+          <img
+            class="card-image"
+            src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80&auto=format&fit=crop"
+            alt="Seasonal grain bowl"
+          />
+          <div class="card-body">
+            <span class="card-tag">Signature Bowl</span>
+            <h3 class="card-title">Harvest Grain Bowl</h3>
+            <p class="card-desc">Farro, roasted root vegetables, labneh, herb oil, and toasted seeds. Warm, nourishing, complete.</p>
+            <span class="card-price">$18</span>
+          </div>
+        </div>
+
+        <div class="card fade-in fade-in-delay-1">
+          <img
+            class="card-image"
+            src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80&auto=format&fit=crop"
+            alt="Sourdough toast with avocado"
+          />
+          <div class="card-body">
+            <span class="card-tag">Breakfast</span>
+            <h3 class="card-title">Garden Avocado Toast</h3>
+            <p class="card-desc">House-baked sourdough, smashed avocado, shaved radish, micro greens, chili flake, lemon.</p>
+            <span class="card-price">$14</span>
+          </div>
+        </div>
+
+        <div class="card fade-in fade-in-delay-2">
+          <img
+            class="card-image"
+            src="https://images.unsplash.com/photo-1482012792084-a0c3725f289f?w=600&q=80&auto=format&fit=crop"
+            alt="Herbal cold brew"
+          />
+          <div class="card-body">
+            <span class="card-tag">Drinks</span>
+            <h3 class="card-title">Botanist Cold Brew</h3>
+            <p class="card-desc">24-hour cold-brewed single origin, lavender simple syrup, oat milk, fresh mint sprig.</p>
+            <span class="card-price">$7</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOURS & LOCATION ─── -->
+  <section class="hours" id="hours">
+    <div class="container">
+      <div class="hours-grid">
+
+        <div class="fade-in">
+          <span class="section-label">Find Us</span>
+          <h2>Come as<br />you are.</h2>
+          <p class="hours-desc">We're open seven days a week, rain or shine. Pull up a stool at the counter, settle into the garden patio, or grab something for the road. There's always a seat for you.</p>
+          <a href="#" class="map-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Get Directions
+          </a>
+        </div>
+
+        <div class="fade-in fade-in-delay-1">
+          <span class="hours-col-label">Hours</span>
+          <div class="hours-row">
+            <span class="hours-day">Monday – Friday</span>
+            <span class="hours-time">7am – 5pm</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Saturday</span>
+            <span class="hours-time">8am – 6pm</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Sunday</span>
+            <span class="hours-time">9am – 4pm</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Holidays</span>
+            <span class="hours-time">10am – 3pm</span>
+          </div>
+        </div>
+
+        <div class="fade-in fade-in-delay-2">
+          <span class="hours-col-label">Location</span>
+          <p class="location-address">142 Fieldstone<br />Avenue West</p>
+
+          <div class="location-detail">
+            <div class="location-detail-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 11 19.79 19.79 0 01.88 2.38 2 2 0 012.88.22h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <span>(519) 555-0143</span>
+          </div>
+
+          <div class="location-detail">
+            <div class="location-detail-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <span>hello@rootsandgreens.ca</span>
+          </div>
+
+          <div class="location-detail">
+            <div class="location-detail-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <span>Kitchen closes 30 min early</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer id="order">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <a href="#" class="footer-logo">Roots &amp; Greens</a>
+          <p class="footer-tagline">Farm-to-Table Cafe &nbsp;·&nbsp; 142 Fieldstone Ave W</p>
+        </div>
+        <ul class="footer-links">
+          <li><a href="#">Menu</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Visit</a></li>
+          <li><a href="#">Order Online</a></li>
+          <li><a href="#">Catering</a></li>
+        </ul>
+        <div class="footer-social">
+          <!-- Instagram -->
+          <a href="#" class="social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a href="#" class="social-link" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+          <!-- TikTok/Twitter placeholder -->
+          <a href="#" class="social-link" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Roots &amp; Greens. All rights reserved.</p>
+        <p class="footer-copy">Website by <span style="opacity:0.7">Local Launch Sites</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── JS ─── -->
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // IntersectionObserver fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

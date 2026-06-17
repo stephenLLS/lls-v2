@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ironside Construction & Renovation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --off-white: #F5F3F0;
+      --near-black: #111111;
+      --red: #CC2200;
+      --grey: #888888;
+      --white: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--off-white);
+      color: var(--near-black);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--near-black);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--red); }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; color: var(--red); }
+
+    /* ── HERO ── */
+    .hero {
+      padding-top: 64px;
+      background: var(--off-white);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-text {
+      padding: 80px 0 80px 48px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateX(-60px);
+      animation: slideInLeft 0.7s ease forwards 0.2s;
+    }
+
+    .hero-headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: clamp(5rem, 10vw, 11rem);
+      line-height: 0.88;
+      text-transform: uppercase;
+      color: var(--near-black);
+      letter-spacing: -0.01em;
+      margin-left: -4px;
+      opacity: 0;
+      transform: translateX(-80px);
+      animation: slideInLeft 0.8s ease forwards 0.35s;
+    }
+
+    .hero-headline .accent { color: var(--red); }
+
+    .hero-sub {
+      margin-top: 32px;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--grey);
+      max-width: 380px;
+      font-weight: 400;
+      opacity: 0;
+      transform: translateX(-60px);
+      animation: slideInLeft 0.7s ease forwards 0.55s;
+    }
+
+    .hero-cta-group {
+      margin-top: 40px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      opacity: 0;
+      transform: translateX(-60px);
+      animation: slideInLeft 0.7s ease forwards 0.7s;
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 14px 36px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { background: #a81c00; transform: translateY(-2px); }
+
+    .btn-outline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--near-black);
+      text-decoration: none;
+      border-bottom: 2px solid var(--near-black);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-outline:hover { color: var(--red); border-color: var(--red); }
+
+    .hero-image-wrap {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 0.5s;
+    }
+
+    .hero-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      clip-path: polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%);
+      display: block;
+    }
+
+    .hero-tag {
+      position: absolute;
+      bottom: 48px;
+      left: 40px;
+      background: var(--near-black);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 8px 18px;
+    }
+
+    @keyframes slideInLeft {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* ── SECTION COMMON ── */
+    section { position: relative; }
+
+    .section-label {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+
+    .section-heading {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      text-transform: uppercase;
+      line-height: 0.92;
+      margin-bottom: 48px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── OUR WORK ── */
+    #work {
+      background: var(--near-black);
+      padding: 100px 48px;
+    }
+
+    #work .section-heading { color: var(--white); }
+    #work .section-label { color: var(--red); }
+
+    .work-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 52px;
+    }
+
+    .work-header-text .section-heading { margin-bottom: 0; }
+
+    .work-count {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--red);
+      opacity: 0.25;
+    }
+
+    .masonry-grid {
+      columns: 3;
+      column-gap: 16px;
+    }
+
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .masonry-item.visible { opacity: 1; transform: translateY(0); }
+
+    .masonry-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .masonry-item:hover img { transform: scale(1.05); }
+
+    .masonry-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px 18px;
+    }
+
+    .masonry-item:hover .masonry-overlay { opacity: 1; }
+
+    .overlay-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
+
+    .overlay-cat {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-top: 4px;
+    }
+
+    /* ── WHAT WE BUILD ── */
+    #services {
+      background: var(--white);
+      padding: 100px 48px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: #e8e6e3;
+    }
+
+    .service-tile {
+      background: var(--white);
+      padding: 52px 48px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.25s;
+    }
+
+    .service-tile:hover { background: var(--off-white); }
+
+    .service-number-line {
+      width: 40px;
+      height: 3px;
+      background: var(--red);
+      margin-bottom: 20px;
+    }
+
+    .service-number {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 3.5rem;
+      color: var(--near-black);
+      line-height: 1;
+      opacity: 0.12;
+      position: absolute;
+      top: 44px;
+      right: 44px;
+    }
+
+    .service-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 1.75rem;
+      text-transform: uppercase;
+      color: var(--near-black);
+      letter-spacing: 0.01em;
+      margin-bottom: 14px;
+      line-height: 1.1;
+    }
+
+    .service-desc {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--grey);
+      max-width: 320px;
+    }
+
+    /* ── WHY US / STATS ── */
+    #stats {
+      background: var(--near-black);
+      padding: 100px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #stats .section-label { text-align: center; }
+    #stats .section-heading { color: var(--white); text-align: center; }
+
+    .stats-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      width: 100%;
+      max-width: 960px;
+      margin-top: 16px;
+    }
+
+    .stat-block {
+      flex: 1;
+      padding: 48px 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .stat-block + .stat-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 25%;
+      height: 50%;
+      width: 1px;
+      background: var(--red);
+      opacity: 0.45;
+    }
+
+    .stat-number {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      color: var(--white);
+      line-height: 1;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .stat-suffix {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 3.5vw, 3.5rem);
+      color: var(--red);
+    }
+
+    .stat-label {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      font-size: 0.82rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-top: 12px;
+    }
+
+    /* ── QUOTE FORM ── */
+    #quote {
+      background: var(--off-white);
+      padding: 100px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .quote-text .section-heading { margin-bottom: 20px; }
+
+    .quote-text p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--grey);
+      margin-bottom: 28px;
+      max-width: 400px;
+    }
+
+    .quote-detail {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .quote-detail-line {
+      width: 24px;
+      height: 2px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+
+    .quote-detail span {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--near-black);
+    }
+
+    .quote-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-row { display: flex; gap: 16px; }
+    .form-row .form-group { flex: 1; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--near-black);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--white);
+      border: 1px solid #ddd;
+      border-radius: 0;
+      padding: 13px 16px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.9rem;
+      color: var(--near-black);
+      transition: border-color 0.2s;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--red);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .select-wrap { position: relative; }
+
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--grey);
+      pointer-events: none;
+      font-size: 0.8rem;
+    }
+
+    .btn-submit {
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 16px 48px;
+      border: none;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover { background: #a81c00; transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--near-black);
+      border-top: 3px solid var(--red);
+      padding: 52px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .footer-brand-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand-name span { color: var(--red); }
+
+    .footer-tagline {
+      font-size: 0.8rem;
+      color: var(--grey);
+      line-height: 1.55;
+    }
+
+    .footer-col-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--grey);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--white); }
+
+    .footer-contact-line {
+      font-size: 0.85rem;
+      color: var(--grey);
+      line-height: 1.7;
+    }
+
+    .footer-contact-line strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .footer-bottom {
+      background: var(--near-black);
+      border-top: 1px solid #222;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: #555;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-bottom-badge {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { gap: 20px; }
+
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-text { padding: 60px 24px 40px; }
+      .hero-image-wrap { height: 60vw; }
+      .hero-image-wrap img { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+
+      #work, #services, #stats, #quote, footer { padding: 64px 24px; }
+
+      .masonry-grid { columns: 2; }
+
+      .services-grid { grid-template-columns: 1fr; }
+
+      .stats-row { flex-direction: column; }
+      .stat-block + .stat-block::before { top: 0; left: 25%; width: 50%; height: 1px; }
+
+      #quote { grid-template-columns: 1fr; gap: 48px; }
+
+      footer { grid-template-columns: 1fr; }
+
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+
+      .work-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Ironside<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#stats">About</a></li>
+      <li><a href="#quote">Get a Quote</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Licensed &amp; Bonded — Since 2009</p>
+      <h1 class="hero-headline">
+        Iron<br>
+        <span class="accent">Side</span>
+      </h1>
+      <p class="hero-sub">
+        Construction &amp; Renovation. We build what others won't touch —
+        custom metalwork, full gut renovations, structural builds done right.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#quote" class="btn-primary">Get a Quote</a>
+        <a href="#work" class="btn-outline">See Our Work</a>
+      </div>
+    </div>
+    <div class="hero-image-wrap">
+      <img
+        src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80&auto=format&fit=crop"
+        alt="Stunning custom kitchen renovation"
+        loading="eager"
+      />
+      <div class="hero-tag">Custom Kitchen Renovation — Oakville, ON</div>
+    </div>
+  </section>
+
+  <!-- OUR WORK -->
+  <section id="work">
+    <div class="work-header">
+      <div class="work-header-text">
+        <p class="section-label">Portfolio</p>
+        <h2 class="section-heading" style="color:#fff;">Our<br>Work</h2>
+      </div>
+      <div class="work-count">200+</div>
+    </div>
+    <div class="masonry-grid">
+
+      <div class="masonry-item">
+        <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=700&q=75&auto=format&fit=crop" alt="Open concept renovation" loading="lazy" />
+        <div class="masonry-overlay">
+          <div class="overlay-title">Ridgewood Open Concept</div>
+          <div class="overlay-cat">Full Renovation</div>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=700&q=75&auto=format&fit=crop" alt="Steel staircase fabrication" loading="lazy" style="height:340px;object-fit:cover;" />
+        <div class="masonry-overlay">
+          <div class="overlay-title">Burnside Stair Rail</div>
+          <div class="overlay-cat">Steel Fabrication</div>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&q=75&auto=format&fit=crop" alt="New construction home build" loading="lazy" />
+        <div class="masonry-overlay">
+          <div class="overlay-title">Lakeview Custom Build</div>
+          <div class="overlay-cat">New Construction</div>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=75&auto=format&fit=crop" alt="Kitchen remodel" loading="lazy" style="height:280px;object-fit:cover;" />
+        <div class="masonry-overlay">
+          <div class="overlay-title">Northshore Kitchen</div>
+          <div class="overlay-cat">Kitchen Remodel</div>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://images.unsplash.com/photo-1524230572899-a752b3835840?w=700&q=75&auto=format&fit=crop" alt="Architectural exterior build" loading="lazy" />
+        <div class="masonry-overlay">
+          <div class="overlay-title">Elmwood Exterior</div>
+          <div class="overlay-cat">Architecture &amp; Build</div>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=700&q=75&auto=format&fit=crop" alt="Industrial metal gate" loading="lazy" style="height:310px;object-fit:cover;" />
+        <div class="masonry-overlay">
+          <div class="overlay-title">Prestige Gate &amp; Fence</div>
+          <div class="overlay-cat">Custom Metalwork</div>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=75&auto=format&fit=crop" alt="Living room renovation" loading="lazy" />
+        <div class="masonry-overlay">
+          <div class="overlay-title">Harborview Living</div>
+          <div class="overlay-cat">Interior Renovation</div>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=700&q=75&auto=format&fit=crop" alt="Bathroom renovation" loading="lazy" style="height:260px;object-fit:cover;" />
+        <div class="masonry-overlay">
+          <div class="overlay-title">Spa-Style Master Bath</div>
+          <div class="overlay-cat">Bathroom Remodel</div>
+        </div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=700&q=75&auto=format&fit=crop" alt="Deck and outdoor build" loading="lazy" />
+        <div class="masonry-overlay">
+          <div class="overlay-title">Countryside Deck &amp; Pergola</div>
+          <div class="overlay-cat">Outdoor Construction</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHAT WE BUILD -->
+  <section id="services">
+    <p class="section-label">Capabilities</p>
+    <h2 class="section-heading">What We<br>Build</h2>
+    <div class="services-grid">
+
+      <div class="service-tile">
+        <div class="service-number-line"></div>
+        <div class="service-number">01</div>
+        <div class="service-name">New Construction<br>&amp; Structural</div>
+        <p class="service-desc">Full builds from permit to handoff. We handle framing, structural steel, foundation work, and everything in between. No shortcuts.</p>
+      </div>
+
+      <div class="service-tile">
+        <div class="service-number-line"></div>
+        <div class="service-number">02</div>
+        <div class="service-name">Full Interior<br>Renovation</div>
+        <p class="service-desc">Gut renos, open-concept conversions, kitchens, bathrooms, and custom millwork. One crew, one point of contact, start to finish.</p>
+      </div>
+
+      <div class="service-tile">
+        <div class="service-number-line"></div>
+        <div class="service-number">03</div>
+        <div class="service-name">Custom Steel<br>&amp; Fabrication</div>
+        <p class="service-desc">Staircases, handrails, gates, structural beams, and architectural metalwork fabricated in-house and installed on-site.</p>
+      </div>
+
+      <div class="service-tile">
+        <div class="service-number-line"></div>
+        <div class="service-number">04</div>
+        <div class="service-name">Exterior &amp;<br>Landscaping</div>
+        <p class="service-desc">Decks, retaining walls, driveways, fencing, and outdoor structures built to last. We make the outside of your property as sharp as the inside.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHY US / STATS -->
+  <section id="stats">
+    <p class="section-label">By the Numbers</p>
+    <h2 class="section-heading">Built on<br>Results</h2>
+    <div class="stats-row">
+
+      <div class="stat-block">
+        <div class="stat-number">
+          <span class="counter" data-target="200">0</span>
+          <span class="stat-suffix">+</span>
+        </div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+
+      <div class="stat-block">
+        <div class="stat-number">
+          <span class="counter" data-target="15">0</span>
+          <span class="stat-suffix"> Yrs</span>
+        </div>
+        <div class="stat-label">In Business</div>
+      </div>
+
+      <div class="stat-block">
+        <div class="stat-number">
+          <span class="counter" data-target="100">0</span>
+          <span class="stat-suffix">%</span>
+        </div>
+        <div class="stat-label">Licensed &amp; Bonded</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GET A QUOTE -->
+  <section id="quote">
+    <div class="quote-text">
+      <p class="section-label">Contact</p>
+      <h2 class="section-heading">Get a<br>Quote</h2>
+      <p>No pressure, no obligation. Tell us what you're building and we'll come out, look it over, and give you a straight number.</p>
+      <div class="quote-detail">
+        <div class="quote-detail-line"></div>
+        <span>Fast turnaround — typically 48 hours</span>
+      </div>
+      <div class="quote-detail">
+        <div class="quote-detail-line"></div>
+        <span>On-site assessments, no charge</span>
+      </div>
+      <div class="quote-detail">
+        <div class="quote-detail-line"></div>
+        <span>Serving Southern Ontario &amp; surrounding areas</span>
+      </div>
+    </div>
+    <form class="quote-form" onsubmit="return false;">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" placeholder="John" />
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" placeholder="Smith" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="(519) 555-0100" />
+      </div>
+      <div class="form-group">
+        <label for="project">Project Type</label>
+        <div class="select-wrap">
+          <select id="project">
+            <option value="" disabled selected>Select a project type...</option>
+            <option>New Home Construction</option>
+            <option>Full Interior Renovation</option>
+            <option>Kitchen Remodel</option>
+            <option>Bathroom Remodel</option>
+            <option>Custom Steel / Fabrication</option>
+            <option>Structural Work</option>
+            <option>Deck / Outdoor Build</option>
+            <option>Commercial / Industrial</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="message">Project Details</label>
+        <textarea id="message" placeholder="Tell us about your project — size, timeline, any special requirements..."></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Send My Request</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="footer-brand-name">Ironside<span>.</span></div>
+      <p class="footer-tagline">Construction &amp; Renovation<br>Licensed. Bonded. Built to last.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Navigate</div>
+      <ul class="footer-links">
+        <li><a href="#work">Our Work</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#stats">About Us</a></li>
+        <li><a href="#quote">Get a Quote</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <div class="footer-contact-line">
+        <strong>Phone</strong><br>(519) 555-0100<br><br>
+        <strong>Email</strong><br>info@ironside.ca<br><br>
+        <strong>Location</strong><br>Southern Ontario &amp; Surrounding Areas
+      </div>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <span class="footer-copy">&copy; 2026 Ironside Construction &amp; Renovation. All rights reserved.</span>
+    <span class="footer-bottom-badge">Licensed &amp; Fully Insured</span>
+  </div>
+
+  <script>
+    // ── MASONRY SCROLL FADE-IN ──
+    (function () {
+      const items = document.querySelectorAll('.masonry-item');
+      if (!items.length) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const delay = Array.from(items).indexOf(el) * 80;
+            setTimeout(() => el.classList.add('visible'), delay);
+            observer.unobserve(el);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      items.forEach(item => observer.observe(item));
+    })();
+
+    // ── STATS COUNT-UP ──
+    (function () {
+      const counters = document.querySelectorAll('.counter');
+      if (!counters.length) return;
+
+      let fired = false;
+
+      const runCounters = () => {
+        counters.forEach(el => {
+          const target = parseInt(el.getAttribute('data-target'), 10);
+          const duration = 1600;
+          const step = 16;
+          const increment = target / (duration / step);
+          let current = 0;
+
+          const tick = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              el.textContent = target;
+              clearInterval(tick);
+            } else {
+              el.textContent = Math.floor(current);
+            }
+          }, step);
+        });
+      };
+
+      const statsSection = document.getElementById('stats');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !fired) {
+            fired = true;
+            runCounters();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      if (statsSection) observer.observe(statsSection);
+    })();
+  </script>
+</body>
+</html>

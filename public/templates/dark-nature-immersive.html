@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boreal Ridge Outfitters — Northern Ontario Wilderness Guides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --near-black:   #0D1510;
+      --forest-green: #1A3A20;
+      --deep-green:   #122B17;
+      --gold:         #C8972A;
+      --gold-light:   #E0AF50;
+      --white:        #FFFFFF;
+      --off-white:    #E8E8E0;
+      --text-muted:   #9AA89D;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--near-black);
+      color: var(--off-white);
+      overflow-x: hidden;
+    }
+
+    /* ─── PARTICLES ─── */
+    #particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      bottom: -4px;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.7);
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      10%  { opacity: 0.8; }
+      90%  { opacity: 0.4; }
+      100% { transform: translateY(-100vh) translateX(var(--drift)); opacity: 0; }
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      transition: background 0.4s ease, padding 0.3s ease, backdrop-filter 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(13, 21, 16, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 0.9rem 3rem;
+      border-bottom: 1px solid rgba(200,151,42,0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-logo span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.4rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80');
+      background-size: cover;
+      background-position: center 40%;
+      transform: scale(1.04);
+      transition: transform 8s ease-out;
+    }
+
+    .hero-bg.loaded { transform: scale(1); }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0.3) 0%,
+        rgba(0,0,0,0.45) 50%,
+        rgba(13,21,16,0.85) 100%
+      );
+    }
+
+    /* CSS Sparkle */
+    .sparkle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateY(-120px);
+      width: 20px;
+      height: 20px;
+      z-index: 3;
+    }
+
+    .sparkle::before,
+    .sparkle::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      clip-path: polygon(50% 0%, 55% 42%, 100% 50%, 55% 58%, 50% 100%, 45% 58%, 0% 50%, 45% 42%);
+      animation: sparkleGlow 2.8s ease-in-out infinite;
+    }
+
+    .sparkle::after {
+      transform: rotate(45deg) scale(0.55);
+      background: rgba(255,255,255,0.9);
+      animation-delay: -1.4s;
+    }
+
+    @keyframes sparkleGlow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.25); filter: drop-shadow(0 0 8px rgba(200,151,42,0.9)); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 4;
+      text-align: center;
+      padding: 0 1.5rem;
+      animation: heroReveal 1.4s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes heroReveal {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      color: var(--white);
+      letter-spacing: -0.01em;
+      text-shadow: 0 4px 40px rgba(0,0,0,0.6);
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.04em;
+      margin-bottom: 2.8rem;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-ghost {
+      display: inline-block;
+      padding: 0.85rem 2.4rem;
+      border: 1px solid rgba(255,255,255,0.5);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.3s, background 0.3s, color 0.3s;
+      backdrop-filter: blur(4px);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--gold);
+      background: rgba(200,151,42,0.15);
+      color: var(--gold-light);
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: bounceDown 2s ease-in-out infinite;
+    }
+
+    .hero-scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+    }
+
+    @keyframes bounceDown {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── REVEAL ANIMATION ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.34s; }
+
+    /* ─── SECTION LABELS ─── */
+    .section-eyebrow {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.9rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+    }
+
+    .section-text {
+      font-size: 0.97rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text-muted);
+      max-width: 540px;
+    }
+
+    /* ─── WHAT WE OFFER ─── */
+    #offers {
+      background: var(--near-black);
+      padding: 7rem 3rem;
+    }
+
+    .offers-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .offers-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .offers-header .section-text {
+      margin: 0 auto;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.6rem;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-top: 3px solid var(--forest-green);
+      padding: 2.4rem 2rem;
+      transition: border-top-color 0.3s, background 0.3s, transform 0.3s;
+    }
+
+    .card:hover {
+      border-top-color: var(--gold);
+      background: rgba(200,151,42,0.04);
+      transform: translateY(-4px);
+    }
+
+    .card-icon {
+      font-size: 2.4rem;
+      line-height: 1;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+
+    .card-text {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--text-muted);
+    }
+
+    /* ─── THE EXPERIENCE (SPLIT) ─── */
+    #experience {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+
+    .experience-photo {
+      background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=960&q=80');
+      background-size: cover;
+      background-position: center;
+      min-height: 500px;
+    }
+
+    .experience-content {
+      background: var(--deep-green);
+      padding: 6rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .experience-content .section-text {
+      margin-bottom: 1.4rem;
+    }
+
+    .experience-list {
+      list-style: none;
+      margin-top: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .experience-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+      color: var(--off-white);
+    }
+
+    .experience-list li::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* ─── BOOK CTA ─── */
+    #book {
+      background: var(--forest-green);
+      background: linear-gradient(135deg, var(--deep-green) 0%, var(--forest-green) 60%, #1F4425 100%);
+      padding: 7rem 3rem;
+      text-align: center;
+    }
+
+    .book-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .book-inner .section-title {
+      margin-bottom: 1rem;
+    }
+
+    .book-inner .section-text {
+      margin: 0 auto 2.8rem;
+    }
+
+    .btn-gold {
+      display: inline-block;
+      padding: 1rem 3rem;
+      background: var(--gold);
+      color: var(--near-black);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(200,151,42,0.35);
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials {
+      background: var(--near-black);
+      padding: 7rem 3rem;
+    }
+
+    .testimonials-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .testimonial {
+      padding: 2.4rem 2rem 2rem;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.02);
+      position: relative;
+    }
+
+    .testimonial::before {
+      content: '\201C';
+      position: absolute;
+      top: 1rem;
+      left: 1.8rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 4.5rem;
+      line-height: 1;
+      color: var(--gold);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .testimonial-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--off-white);
+      margin-top: 1.6rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .testimonial-author {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .testimonial-location {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      margin-top: 0.2rem;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #080E0A;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 3.5rem 3rem;
+    }
+
+    .footer-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .footer-logo span { color: var(--gold); }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(154,168,157,0.5);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      nav.scrolled { padding: 0.8rem 1.5rem; }
+      .nav-links { display: none; }
+
+      #offers, #book, #testimonials { padding: 5rem 1.5rem; }
+
+      #experience { grid-template-columns: 1fr; }
+      .experience-photo { min-height: 300px; }
+      .experience-content { padding: 4rem 1.8rem; }
+
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating particles -->
+  <div id="particles"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">Boreal <span>Ridge</span></a>
+    <ul class="nav-links">
+      <li><a href="#offers">Experiences</a></li>
+      <li><a href="#experience">The Wild</a></li>
+      <li><a href="#book">Book Now</a></li>
+      <li><a href="#testimonials">Stories</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="sparkle"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Northern Ontario</span>
+      <h1 class="hero-headline">WHERE THE<br>WILD CALLS</h1>
+      <p class="hero-sub">Guided wilderness experiences deep in the boreal forest — fishing, paddling, and off-grid adventure.</p>
+      <a href="#book" class="btn-ghost">Claim Your Journey</a>
+    </div>
+    <div class="hero-scroll-hint">Scroll</div>
+  </section>
+
+  <!-- WHAT WE OFFER -->
+  <section id="offers">
+    <div class="offers-inner">
+      <div class="offers-header reveal">
+        <span class="section-eyebrow">What We Offer</span>
+        <h2 class="section-title">Built for the True Wilderness</h2>
+        <p class="section-text">Every trip is guided by people who grew up on these lakes and rivers. No crowds. No shortcuts. Just the real boreal.</p>
+      </div>
+      <div class="cards-grid">
+        <div class="card reveal reveal-delay-1">
+          <span class="card-icon">🎣</span>
+          <div class="card-title">Guided Fishing Expeditions</div>
+          <p class="card-text">Walleye, pike, and bass on remote lakes accessible only by float plane or portage trail. We handle the boats, tackle, and licences.</p>
+        </div>
+        <div class="card reveal reveal-delay-2">
+          <span class="card-icon">🛶</span>
+          <div class="card-title">Canoe &amp; Kayak Rentals</div>
+          <p class="card-text">Multi-day paddling routes through crown land waterways. Gear, route maps, and satellite communication included.</p>
+        </div>
+        <div class="card reveal reveal-delay-3">
+          <span class="card-icon">🌲</span>
+          <div class="card-title">Wilderness Guide Services</div>
+          <p class="card-text">Hunting outfitters, backcountry skills, and deep bush navigation. Our certified guides carry 20+ years of boreal experience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE EXPERIENCE -->
+  <section id="experience">
+    <div class="experience-photo"></div>
+    <div class="experience-content">
+      <div class="reveal">
+        <span class="section-eyebrow">The Experience</span>
+        <h2 class="section-title">Silence You Can Actually Hear</h2>
+        <p class="section-text">There's a reason people come back every year. Out here, a loon call echoes for a kilometre. The mist lifts off the water at 5am. The stars are so thick you can navigate by them.</p>
+        <p class="section-text" style="margin-top:1rem;">Boreal Ridge Outfitters operates across 400,000 acres of licenced wilderness in the Temagami and Chapleau regions — two of Northern Ontario's last truly wild corners.</p>
+        <ul class="experience-list">
+          <li>Float-plane access to remote base camps</li>
+          <li>All-season expeditions — spring through late fall</li>
+          <li>Groups of 2 to 12, fully catered or self-guided</li>
+          <li>Satellite phones and emergency protocols on every trip</li>
+          <li>Leave No Trace certified operations</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK CTA -->
+  <section id="book">
+    <div class="book-inner reveal">
+      <span class="section-eyebrow">Book Your Adventure</span>
+      <h2 class="section-title">The Wilderness Is Waiting</h2>
+      <p class="section-text">Seasons book fast. Most remote camps are full by March. Reach out now to lock in your dates and we'll build the right trip around you.</p>
+      <a href="tel:+17055550182" class="btn-gold">Start Planning Your Trip</a>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="testimonials-inner">
+      <div class="testimonials-header reveal">
+        <span class="section-eyebrow">Stories from the Field</span>
+        <h2 class="section-title">They Came. They Stayed. They Came Back.</h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial reveal reveal-delay-1">
+          <p class="testimonial-text">Five days in the Temagami backcountry. We didn't see another human soul. The walleye were thick and the guides knew every rock. Best trip of my life — and I've been fishing for 30 years.</p>
+          <div class="testimonial-author">Dave K.
+            <span class="testimonial-location">Sudbury, Ontario</span>
+          </div>
+        </div>
+        <div class="testimonial reveal reveal-delay-2">
+          <p class="testimonial-text">My daughter and I did the 7-day canoe route. Professional, safe, incredibly well organized. She's twelve and she handled every portage. These guides made us feel capable out there.</p>
+          <div class="testimonial-author">Marie-Josée T.
+            <span class="testimonial-location">Ottawa, Ontario</span>
+          </div>
+        </div>
+        <div class="testimonial reveal reveal-delay-3">
+          <p class="testimonial-text">I've used three different outfitters in Northern Ontario. Boreal Ridge is in a different league. The camp setup, the food, the local knowledge — everything is dialled in perfectly.</p>
+          <div class="testimonial-author">Greg F.
+            <span class="testimonial-location">Mississauga, Ontario</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <a href="#" class="footer-logo">Boreal <span>Ridge</span> Outfitters</a>
+      <ul class="footer-links">
+        <li><a href="#offers">Experiences</a></li>
+        <li><a href="#book">Book</a></li>
+        <li><a href="#testimonials">Stories</a></li>
+        <li><a href="mailto:hello@borealridge.ca">Contact</a></li>
+      </ul>
+      <p class="footer-copy">&copy; 2026 Boreal Ridge Outfitters Ltd. — Northern Ontario, Canada</p>
+    </div>
+  </footer>
+
+  <script>
+    // ─── PARTICLES ───────────────────────────────────────────────
+    (function () {
+      const container = document.getElementById('particles');
+      const count = 28;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        const size = Math.random() * 2 + 1;
+        p.style.cssText = `
+          left: ${Math.random() * 100}%;
+          width: ${size}px;
+          height: ${size}px;
+          --drift: ${(Math.random() - 0.5) * 60}px;
+          animation-duration: ${Math.random() * 14 + 9}s;
+          animation-delay: ${Math.random() * 12}s;
+          opacity: ${Math.random() * 0.5 + 0.2};
+        `;
+        container.appendChild(p);
+      }
+    })();
+
+    // ─── NAV SCROLL ───────────────────────────────────────────────
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ─── HERO BG PARALLAX / LOAD ──────────────────────────────────
+    const heroBg = document.getElementById('heroBg');
+    setTimeout(() => heroBg.classList.add('loaded'), 100);
+
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroBg.style.transform = `scale(1) translateY(${y * 0.25}px)`;
+      }
+    }, { passive: true });
+
+    // ─── INTERSECTION OBSERVER (REVEAL) ───────────────────────────
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

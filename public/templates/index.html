@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Templates — Local Launch Sites</title>
+<meta name="description" content="Browse our website template library. Pick the style that fits your business, fill out your info, and we'll build it for you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0c1a2e;
+    --gold: #c8972a;
+    --cream: #f7f4f0;
+    --white: #ffffff;
+    --grey: #6b7280;
+    --light: #f0ede8;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+  }
+
+  /* NAV */
+  nav {
+    background: var(--navy);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo { text-decoration: none; }
+  .nav-logo .eyebrow { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+  .nav-logo .brand { font-size: 1rem; font-weight: 600; color: var(--white); }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--navy) !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+  .hero p {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    max-width: 560px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+  .hero-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(200,151,42,0.15);
+    border: 1px solid rgba(200,151,42,0.3);
+    color: var(--gold);
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    max-width: 1200px;
+    margin: 3.5rem auto 1.25rem;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .badge-popular {
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+  .badge-coming {
+    background: var(--light);
+    color: var(--grey);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: #ddd;
+  }
+
+  /* GRID */
+  .grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    transition: transform 0.25s, box-shadow 0.25s;
+    display: flex;
+    flex-direction: column;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.13);
+  }
+  .card.coming-soon {
+    opacity: 0.65;
+    pointer-events: none;
+  }
+  .card-preview {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-preview iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
+    transform: scale(0.333);
+    transform-origin: top left;
+    pointer-events: none;
+  }
+  .card-preview-static {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .card-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    z-index: 2;
+  }
+  .card-badge.popular { background: var(--gold); color: var(--navy); }
+  .card-badge.soon { background: rgba(0,0,0,0.5); color: #fff; }
+
+  .card-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-industry {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .card-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--grey);
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 1.25rem;
+  }
+  .card-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .btn-preview {
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem;
+    border: 1.5px solid var(--navy);
+    color: var(--navy);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-preview:hover { background: var(--navy); color: var(--white); }
+  .btn-request {
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem;
+    background: var(--gold);
+    color: var(--navy);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .btn-request:hover { background: #b8871a; }
+
+  /* Preview styles for coming-soon cards */
+  .preview-dark-cinematic { background: linear-gradient(135deg, #1a0a2e, #2d1b69); color: #fff; }
+  .preview-fintech { background: linear-gradient(135deg, #0a1628, #003d1a); color: #00ff66; }
+  .preview-dark-productivity { background: linear-gradient(135deg, #1a1a2e, #16213e); color: #c8972a; }
+  .preview-streetwear { background: linear-gradient(135deg, #0a0a0a, #1a1a1a); color: #fff; }
+  .preview-minimal-3d { background: linear-gradient(135deg, #f5f0e8, #ede8df); color: #333; }
+  .preview-white-space { background: #fafafa; color: #1a1a1a; }
+  .preview-playful-3d { background: linear-gradient(135deg, #87ceeb, #4a90d9); color: #fff; }
+  .preview-character { background: linear-gradient(135deg, #c8c8c8, #e8e8e8); color: #333; }
+  .preview-travel-app { background: linear-gradient(135deg, #f0f4ff, #e8f0fe); color: #5b21b6; }
+  .preview-fitness { background: linear-gradient(135deg, #0a0a0a, #111); color: #b0ff00; }
+  .preview-dark-ai { background: linear-gradient(135deg, #000, #1a0a00); color: #ff6600; }
+  .preview-travel-hero { background: linear-gradient(135deg, #1a3a1a, #2d5a2d); color: #fff; }
+  .preview-fashion { background: linear-gradient(135deg, #8b4513, #d2691e); color: #fff; }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: var(--navy);
+    padding: 5rem 2rem;
+    text-align: center;
+    margin-top: 4rem;
+  }
+  .cta-section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  .cta-section p {
+    color: rgba(255,255,255,0.6);
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.9rem 2.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .cta-btn:hover { background: #b8871a; transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer {
+    background: #06101e;
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255,255,255,0.35);
+    font-size: 0.8rem;
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">
+    <div class="eyebrow">Local Launch Sites</div>
+    <div class="brand">Website Templates</div>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="../services.html">Services</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html" class="nav-cta">Get a Quote</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Template Library</div>
+  <h1>Find the look<br>your business deserves</h1>
+  <p>Browse our growing library of professionally designed templates. Pick your style, tell us about your business, and we'll build it — custom, optimized, and ready to launch.</p>
+  <div class="hero-note">
+    <span>✦</span>
+    <span>18 styles available &nbsp;·&nbsp; More added regularly &nbsp;·&nbsp; All fully custom-built for you</span>
+  </div>
+</section>
+
+<!-- MOST POPULAR -->
+<div class="section-label reveal">
+  <h2>Most Popular</h2>
+  <span class="badge-popular">⭐ Top Picks</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="grid">
+
+  <div class="card reveal">
+    <div class="card-preview">
+      <span class="card-badge popular">Most Popular</span>
+      <iframe src="organic-editorial.html" loading="lazy" title="Organic Editorial Float preview"></iframe>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Restaurants · Cafes · Health Food</div>
+      <div class="card-name">Organic Editorial Float</div>
+      <div class="card-desc">Sage greens, floating produce photography, and bold stacked serif type. Perfect for farm-to-table restaurants, cafes, bakeries, and health food stores.</div>
+      <div class="card-actions">
+        <a href="organic-editorial.html" target="_blank" class="btn-preview">Preview →</a>
+        <a href="../contact.html?template=organic-editorial" class="btn-request">Request This</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-preview">
+      <span class="card-badge popular">Most Popular</span>
+      <iframe src="dark-nature-immersive.html" loading="lazy" title="Dark Nature Immersive preview"></iframe>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Outfitters · Eco-Tourism · Glamping</div>
+      <div class="card-name">Dark Nature Immersive</div>
+      <div class="card-desc">Near-black forest tones, floating firefly particles, and dramatic Northern Ontario atmosphere. Built for wilderness guides, hunting & fishing outfitters, and outdoor adventure businesses.</div>
+      <div class="card-actions">
+        <a href="dark-nature-immersive.html" target="_blank" class="btn-preview">Preview →</a>
+        <a href="../contact.html?template=dark-nature-immersive" class="btn-request">Request This</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-preview">
+      <span class="card-badge popular">Most Popular</span>
+      <iframe src="cinematic-luxury-resort.html" loading="lazy" title="Cinematic Luxury Resort preview"></iframe>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Hotels · B&Bs · Spas · Lodges</div>
+      <div class="card-name">Cinematic Luxury Resort</div>
+      <div class="card-desc">Cormorant Garamond elegance, Ken Burns hero zoom, and warm gold accents. Designed for boutique hotels, B&Bs, lodges, spas, and luxury retreats that want to look as good as they feel.</div>
+      <div class="card-actions">
+        <a href="cinematic-luxury-resort.html" target="_blank" class="btn-preview">Preview →</a>
+        <a href="../contact.html?template=cinematic-luxury-resort" class="btn-request">Request This</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-preview">
+      <span class="card-badge popular">Most Popular</span>
+      <iframe src="architectural-editorial.html" loading="lazy" title="Architectural Editorial preview"></iframe>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Contractors · Builders · Trades</div>
+      <div class="card-name">Architectural Editorial</div>
+      <div class="card-desc">Bold condensed type bleeding off the edge, diagonal photo crops, and animated stat counters. For contractors, renovators, welders, and tradespeople who want a site that looks as tough as their work.</div>
+      <div class="card-actions">
+        <a href="architectural-editorial.html" target="_blank" class="btn-preview">Preview →</a>
+        <a href="../contact.html?template=architectural-editorial" class="btn-request">Request This</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-preview">
+      <span class="card-badge popular">Most Popular</span>
+      <iframe src="warm-productivity.html" loading="lazy" title="Warm Productivity preview"></iframe>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Accountants · Consultants · Lawyers</div>
+      <div class="card-name">Warm Productivity</div>
+      <div class="card-desc">Cream and sage warmth, DM Serif headlines, and a trustworthy team photography layout. Perfect for professional services — bookkeepers, financial advisors, HR consultants, insurance brokers.</div>
+      <div class="card-actions">
+        <a href="warm-productivity.html" target="_blank" class="btn-preview">Preview →</a>
+        <a href="../contact.html?template=warm-productivity" class="btn-request">Request This</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ALL STYLES -->
+<div class="section-label reveal" style="margin-top:3rem;">
+  <h2>All Styles</h2>
+  <span class="badge-coming">More added regularly</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="grid">
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-dark-cinematic">Dark Cinematic SaaS</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Agencies · Law Firms · Tech</div>
+      <div class="card-name">Dark Cinematic SaaS</div>
+      <div class="card-desc">Dramatic cloud/mountain photography, dark charcoal tones, and a premium two-column layout. For agencies, law firms, and tech service businesses that mean business.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=dark-cinematic-saas" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-fintech">Bold FinTech Green</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Credit Unions · Financial Advisors</div>
+      <div class="card-name">Bold FinTech Green</div>
+      <div class="card-desc">Dark backgrounds with electric green accents, card mockups, and trust-building step-by-step sections. Ideal for financial services that want to look modern and sharp.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=bold-fintech-green" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-dark-productivity">Dark Productivity SaaS</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">IT Services · B2B · Project Mgmt</div>
+      <div class="card-name">Dark Productivity SaaS</div>
+      <div class="card-desc">Dark near-black with warm amber card accents. Mobile-first, card-based sections. Perfect for IT services, B2B consultants, and project management firms.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=dark-productivity-saas" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-streetwear">Dark Streetwear</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Clothing · Shoes · Barber Shops</div>
+      <div class="card-name">Dark Streetwear Ecommerce</div>
+      <div class="card-desc">Near-black with stark white type and bold product-forward hero. For clothing stores, shoe shops, barber shops, and anyone with a brand that needs edge.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=dark-streetwear" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-minimal-3d">Minimal 3D Concept</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Architects · Photographers · Studios</div>
+      <div class="card-name">Minimal 3D Concept</div>
+      <div class="card-desc">Off-white canvas, a large animated 3D centerpiece, and sparse bracket-style labeling. For creative studios, architects, and photographers who want to make a strong first impression.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=minimal-3d-concept" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-white-space" style="flex-direction:column;gap:0.5rem;">
+        <span style="font-size:0.7rem;letter-spacing:0.2em;color:#888;text-transform:uppercase;">Ultra Minimal</span>
+        <span style="font-size:1.5rem;">·</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Luxury Real Estate · High-End Services</div>
+      <div class="card-name">Ultra Minimalist White Space</div>
+      <div class="card-desc">Vast whitespace, a single perfectly placed image, and zero clutter. For luxury real estate agents, high-end law firms, and service providers where less says everything.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=ultra-minimalist" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-travel-hero">Cinematic Travel Hero</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Tourism · Outfitters · Guides</div>
+      <div class="card-name">Cinematic Travel Hero</div>
+      <div class="card-desc">Full-bleed landscape photography with a floating serif destination name and parallax depth layers. Perfect for tourism operators, canoe/kayak outfitters, and adventure guides.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=cinematic-travel-hero" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-fashion">Warm Fashion Editorial</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Boutiques · Apparel · Lifestyle Retail</div>
+      <div class="card-name">Warm Fashion Editorial</div>
+      <div class="card-desc">Amber and burnt orange tones, bold italic display type layered over product photography. For fashion boutiques, clothing retailers, and lifestyle brands with a strong visual identity.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=warm-fashion-editorial" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-playful-3d">Playful 3D Brand World</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Daycares · Kids Retail · Events</div>
+      <div class="card-name">Playful 3D Brand World</div>
+      <div class="card-desc">Sky blue backgrounds, fully 3D rendered scene heroes, and chunky bright type. For daycares, kids entertainment venues, toy retailers, and event spaces that want energy and fun.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=playful-3d-brand" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-character">3D Character Brand</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Gaming · Youth Programs · Kids</div>
+      <div class="card-name">3D Character Brand</div>
+      <div class="card-desc">A hero built around a 3D mascot or character with floating accessories and depth layers. For gaming cafes, youth programs, kids entertainment, and brands with a mascot identity.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=3d-character-brand" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-travel-app">Clean Travel App</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Booking · Tour Operators · Rentals</div>
+      <div class="card-name">Clean Travel App Mobile</div>
+      <div class="card-desc">White card UI with purple accents, swipeable destination cards, and a search-first layout. For booking services, tour operators, canoe rentals, and any business where customers need to find and book fast.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=clean-travel-app" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-fitness">Electric Fitness</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Gyms · Personal Trainers · Sports</div>
+      <div class="card-name">Electric Fitness App</div>
+      <div class="card-desc">Black background with electric lime green, bold all-caps type, and motion-capture style graphics. For gyms, personal trainers, sports clubs, and physiotherapy clinics that want to look powerful.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=electric-fitness" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card coming-soon reveal">
+    <div class="card-preview">
+      <span class="card-badge soon">Coming Soon</span>
+      <div class="card-preview-static preview-dark-ai">Dark AI Tool Landing</div>
+    </div>
+    <div class="card-body">
+      <div class="card-industry">Tech Companies · Agencies · SaaS</div>
+      <div class="card-name">Dark AI Tool Landing</div>
+      <div class="card-desc">Black background with an orange glow gradient, a centered prompt-style hero, and a template grid below. For tech companies, AI service providers, and agencies that want to look ahead of the curve.</div>
+      <div class="card-actions">
+        <a href="../contact.html?template=dark-ai-landing" class="btn-request" style="pointer-events:all;">Notify Me</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<section class="cta-section">
+  <h2>Don't see exactly what you need?</h2>
+  <p>Every site we build is custom. If none of these styles fit, tell us your vision and we'll make it happen.</p>
+  <a href="../contact.html" class="cta-btn">Talk to Us →</a>
+</section>
+
+<footer>
+  <p>© 2026 Local Launch Sites · A division of AllSpark Enterprises Ltd. · <a href="../privacy.html">Privacy</a></p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

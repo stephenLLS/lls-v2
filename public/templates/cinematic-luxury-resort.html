@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maplewood Lodge &amp; Spa — A Boutique Luxury Retreat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white:   #FDFAF6;
+      --charcoal:#1C1C1A;
+      --gold:    #B8962E;
+      --sage:    #8A9E8C;
+      --serif:   'Cormorant Garamond', Georgia, serif;
+      --sans:    'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--charcoal);
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ───────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 28px 48px;
+      transition: background 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(28,28,26,0.88);
+      backdrop-filter: blur(10px);
+      padding: 16px 48px;
+    }
+    .nav-left, .nav-right {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-right { justify-content: flex-end; }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    nav a:hover { opacity: 1; }
+    .monogram {
+      width: 52px; height: 52px;
+      border: 1px solid rgba(255,255,255,0.55);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: 17px;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .monogram:hover { border-color: rgba(255,255,255,0.9); }
+
+    /* ── HERO ──────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=1800&auto=format&fit=crop&q=85');
+      background-size: cover;
+      background-position: center 40%;
+      animation: kenBurns 22s ease-in-out infinite alternate;
+      transform-origin: center center;
+    }
+    @keyframes kenBurns {
+      from { transform: scale(1);    background-position: center 40%; }
+      to   { transform: scale(1.08); background-position: center 50%; }
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.08) 0%,
+        rgba(0,0,0,0.04) 50%,
+        rgba(0,0,0,0.32) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      text-align: center;
+      color: #fff;
+      padding: 0 24px;
+    }
+    .hero-label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(52px, 7vw, 96px);
+      line-height: 1.05;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+    .hero-title em { font-style: italic; }
+    .hero-sep {
+      width: 48px; height: 1px;
+      background: rgba(255,255,255,0.5);
+      margin: 24px auto;
+    }
+    .hero-tagline {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      opacity: 0.88;
+      margin-bottom: 32px;
+    }
+    .hero-cta {
+      display: inline-block;
+      color: #fff;
+      text-decoration: none;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255,255,255,0.5);
+      padding-bottom: 3px;
+      transition: border-color 0.2s, opacity 0.2s;
+      opacity: 0.85;
+    }
+    .hero-cta:hover { border-color: #fff; opacity: 1; }
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.5);
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .hero-scroll::after {
+      content: '';
+      display: block;
+      width: 1px; height: 40px;
+      background: rgba(255,255,255,0.3);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ── REVEAL ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── SECTION SHARED ────────────────────────────────── */
+    section { overflow: hidden; }
+    .section-label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    /* ── THE EXPERIENCE ────────────────────────────────── */
+    .experience {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 92vh;
+    }
+    .experience-text {
+      background: var(--white);
+      display: flex; align-items: center; justify-content: flex-end;
+      padding: 80px 64px 80px 80px;
+    }
+    .experience-inner { max-width: 440px; }
+    .pull-quote {
+      font-family: var(--serif);
+      font-size: clamp(36px, 3.5vw, 58px);
+      font-weight: 300;
+      line-height: 1.18;
+      letter-spacing: 0.02em;
+      color: var(--charcoal);
+      margin-bottom: 28px;
+    }
+    .pull-quote em { font-style: italic; color: var(--gold); }
+    .experience-body {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: #5a5a56;
+      max-width: 360px;
+      margin-bottom: 32px;
+    }
+    .text-link {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .text-link:hover { color: var(--gold); }
+    .experience-photo {
+      background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&auto=format&fit=crop&q=85');
+      background-size: cover;
+      background-position: center;
+      min-height: 600px;
+    }
+
+    /* ── ROOMS ─────────────────────────────────────────── */
+    .rooms { padding: 110px 80px; background: var(--white); }
+    .rooms-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+    }
+    .rooms-heading {
+      font-family: var(--serif);
+      font-size: clamp(36px, 3vw, 52px);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+    }
+    .rooms-subtext {
+      font-size: 13px;
+      font-weight: 300;
+      color: #7a7a74;
+      max-width: 280px;
+      text-align: right;
+    }
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .room-card {
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .room-photo {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .room-card:hover .room-photo { transform: scale(1.07); }
+    .room-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 55%);
+    }
+    .room-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 28px 32px;
+      color: #fff;
+    }
+    .room-name {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: 0.03em;
+      margin-bottom: 6px;
+    }
+    .room-price {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+    .room-price span { color: var(--gold); }
+    .room-card-1 .room-photo { background-image: url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&auto=format&fit=crop&q=85'); }
+    .room-card-2 .room-photo { background-image: url('https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=900&auto=format&fit=crop&q=85'); }
+    .room-card-3 .room-photo { background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=900&auto=format&fit=crop&q=85'); }
+
+    /* ── SPA ───────────────────────────────────────────── */
+    .spa { background: var(--charcoal); color: var(--white); padding: 110px 80px; }
+    .spa-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 64px;
+    }
+    .spa-heading {
+      font-family: var(--serif);
+      font-size: clamp(38px, 3.5vw, 58px);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: 0.03em;
+      margin-bottom: 20px;
+    }
+    .spa-body {
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(253,250,246,0.6);
+      line-height: 1.85;
+      margin-bottom: 36px;
+    }
+    .spa-photo-strip {
+      width: 100%;
+      height: 440px;
+      background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1800&auto=format&fit=crop&q=85');
+      background-size: cover;
+      background-position: center 30%;
+      margin-bottom: 64px;
+    }
+    .spa-treatments {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+    }
+    .treatment {
+      padding: 40px 32px;
+      background: var(--charcoal);
+      text-align: center;
+    }
+    .treatment-icon {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-style: italic;
+      color: var(--gold);
+      margin-bottom: 14px;
+      display: block;
+    }
+    .treatment-name {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(253,250,246,0.7);
+      margin-bottom: 8px;
+    }
+    .treatment-desc {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(253,250,246,0.4);
+      line-height: 1.6;
+    }
+
+    /* ── DINING ────────────────────────────────────────── */
+    .dining { background: #F8F4EE; padding: 110px 80px; }
+    .dining-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .dining-heading {
+      font-family: var(--serif);
+      font-size: clamp(38px, 3.5vw, 56px);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+    }
+    .dining-heading em { font-style: italic; color: var(--gold); }
+    .dining-body {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: #6a6a64;
+      margin-bottom: 32px;
+    }
+    .dining-detail {
+      display: flex; gap: 40px;
+      margin-bottom: 36px;
+    }
+    .dining-detail-item { }
+    .dining-detail-label {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .dining-detail-value {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--charcoal);
+    }
+    .dining-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 260px 200px;
+      gap: 12px;
+    }
+    .dining-photo {
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+    .dining-photo:first-child {
+      grid-row: span 2;
+    }
+    .dining-photo-1 { background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&auto=format&fit=crop&q=85'); }
+    .dining-photo-2 { background-image: url('https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=500&auto=format&fit=crop&q=85'); }
+    .dining-photo-3 { background-image: url('https://images.unsplash.com/photo-1551218808-94e220e084d2?w=500&auto=format&fit=crop&q=85'); }
+
+    /* ── RESERVE ───────────────────────────────────────── */
+    .reserve {
+      background: var(--white);
+      padding: 120px 80px;
+      text-align: center;
+    }
+    .reserve-heading {
+      font-family: var(--serif);
+      font-size: clamp(40px, 4vw, 64px);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
+    .reserve-sub {
+      font-size: 13px;
+      font-weight: 300;
+      color: #8a8a84;
+      letter-spacing: 0.06em;
+      margin-bottom: 60px;
+    }
+    .reserve-form {
+      display: inline-flex;
+      gap: 0;
+      border: 1px solid #d8d4cc;
+      max-width: 780px;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+    .reserve-field {
+      flex: 1;
+      border: none;
+      border-right: 1px solid #d8d4cc;
+      padding: 22px 24px;
+      background: transparent;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--charcoal);
+      outline: none;
+      text-transform: uppercase;
+    }
+    .reserve-field:last-of-type { border-right: none; }
+    .reserve-field::placeholder {
+      color: #b0aba2;
+      letter-spacing: 0.14em;
+    }
+    .reserve-field:focus { background: #faf6f0; }
+    .reserve-guests {
+      width: 160px;
+      flex: 0 0 160px;
+      appearance: none;
+      cursor: pointer;
+    }
+    .reserve-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      padding: 18px 56px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.15s;
+      text-decoration: none;
+      margin-top: 8px;
+    }
+    .reserve-btn:hover { background: #a0821f; transform: translateY(-1px); }
+    .reserve-note {
+      font-size: 11px;
+      font-weight: 300;
+      color: #b0aba2;
+      letter-spacing: 0.1em;
+      margin-top: 18px;
+    }
+
+    /* ── FOOTER ────────────────────────────────────────── */
+    footer {
+      background: var(--charcoal);
+      color: rgba(253,250,246,0.5);
+      padding: 64px 80px 40px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: start;
+      padding-bottom: 40px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--gold);
+      opacity: 0.9;
+    }
+    .footer-col-left { }
+    .footer-col-center { text-align: center; }
+    .footer-col-right { text-align: right; }
+    .footer-brand {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .footer-brand-sub {
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .footer-address {
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(253,250,246,0.45);
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: right;
+    }
+    .footer-links a {
+      color: rgba(253,250,246,0.45);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-monogram {
+      width: 56px; height: 56px;
+      border: 1px solid rgba(184,150,46,0.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: 18px;
+      letter-spacing: 0.1em;
+      color: rgba(253,250,246,0.6);
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: rgba(253,250,246,0.25);
+    }
+    .footer-bottom a {
+      color: rgba(253,250,246,0.25);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-bottom a:hover { color: rgba(253,250,246,0.5); }
+
+    /* ── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      nav { padding: 24px 32px; }
+      .rooms, .spa, .dining, .reserve, footer { padding-left: 40px; padding-right: 40px; }
+      .rooms-grid { gap: 16px; }
+      .experience-text { padding: 60px 40px 60px 48px; }
+    }
+    @media (max-width: 768px) {
+      nav .nav-left, nav .nav-right { display: none; }
+      nav { grid-template-columns: 1fr; justify-items: center; }
+      .experience { grid-template-columns: 1fr; }
+      .experience-photo { min-height: 380px; }
+      .rooms-grid { grid-template-columns: 1fr; }
+      .room-card { height: 380px; }
+      .dining-grid { grid-template-columns: 1fr; }
+      .spa-treatments { grid-template-columns: 1fr 1fr; }
+      .reserve-form { flex-direction: column; border: none; gap: 1px; }
+      .reserve-field { border: 1px solid #d8d4cc; border-right: 1px solid #d8d4cc; }
+      .reserve-guests { width: 100%; flex: unset; }
+      .footer-top { grid-template-columns: 1fr; gap: 32px; }
+      .footer-col-right { text-align: left; }
+      .footer-links { flex-direction: row; flex-wrap: wrap; gap: 16px; }
+      .rooms, .spa, .dining, .reserve { padding-left: 24px; padding-right: 24px; }
+      footer { padding-left: 24px; padding-right: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <ul class="nav-left">
+      <li><a href="#rooms">Rooms</a></li>
+      <li><a href="#dining">Dining</a></li>
+      <li><a href="#spa">Spa</a></li>
+    </ul>
+    <a href="#" class="monogram">ML</a>
+    <ul class="nav-right">
+      <li><a href="#reserve">Book</a></li>
+      <li><a href="#rooms">Gallery</a></li>
+      <li><a href="#reserve">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-label">Maplewood Lodge &amp; Spa · Ontario, Canada</span>
+      <h1 class="hero-title">Maplewood<br /><em>Lodge &amp; Spa</em></h1>
+      <div class="hero-sep"></div>
+      <p class="hero-tagline">Where stillness meets luxury.</p>
+      <a href="#reserve" class="hero-cta">Reserve Your Stay &nbsp;→</a>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <!-- THE EXPERIENCE -->
+  <section class="experience" id="experience">
+    <div class="experience-text">
+      <div class="experience-inner reveal">
+        <span class="section-label">The Experience</span>
+        <p class="pull-quote">"Every detail,<br /><em>considered.</em>"</p>
+        <p class="experience-body">
+          Tucked into the wilderness of the Canadian Shield, Maplewood Lodge &amp; Spa is a
+          sanctuary of quiet refinement. From hand-selected linens to locally foraged menus,
+          each element of your stay is designed to dissolve the distance between you and the
+          landscape around you.
+        </p>
+        <a href="#rooms" class="text-link">Explore the Property</a>
+      </div>
+    </div>
+    <div class="experience-photo"></div>
+  </section>
+
+  <!-- ROOMS -->
+  <section class="rooms" id="rooms">
+    <div class="rooms-header reveal">
+      <div>
+        <span class="section-label">Accommodation</span>
+        <h2 class="rooms-heading">Our Rooms<br />&amp; Suites</h2>
+      </div>
+      <p class="rooms-subtext">Each space is a private retreat — shaped by the seasons and the forest beyond your window.</p>
+    </div>
+    <div class="rooms-grid">
+      <div class="room-card room-card-1 reveal">
+        <div class="room-photo"></div>
+        <div class="room-overlay"></div>
+        <div class="room-info">
+          <div class="room-name">Forest Suite</div>
+          <div class="room-price">From <span>$480</span> / night</div>
+        </div>
+      </div>
+      <div class="room-card room-card-2 reveal" style="transition-delay:0.12s">
+        <div class="room-photo"></div>
+        <div class="room-overlay"></div>
+        <div class="room-info">
+          <div class="room-name">Lakeview King</div>
+          <div class="room-price">From <span>$640</span> / night</div>
+        </div>
+      </div>
+      <div class="room-card room-card-3 reveal" style="transition-delay:0.24s">
+        <div class="room-photo"></div>
+        <div class="room-overlay"></div>
+        <div class="room-info">
+          <div class="room-name">The Maple Cabin</div>
+          <div class="room-price">From <span>$920</span> / night</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPA -->
+  <section class="spa" id="spa">
+    <div class="spa-header reveal">
+      <span class="section-label">Spa &amp; Wellness</span>
+      <h2 class="spa-heading">Restore.<br />Renew. Release.</h2>
+      <p class="spa-body">
+        Our full-service spa draws on the natural abundance of the boreal forest —
+        wild pine, birch bark, and cedar smoke — woven into treatments designed to
+        return you to yourself.
+      </p>
+      <a href="#reserve" class="text-link" style="color:rgba(253,250,246,0.6); border-bottom-color:var(--gold);">Book a Treatment &nbsp;→</a>
+    </div>
+    <div class="spa-photo-strip reveal"></div>
+    <div class="spa-treatments">
+      <div class="treatment reveal">
+        <span class="treatment-icon">I</span>
+        <div class="treatment-name">Stone Therapy</div>
+        <div class="treatment-desc">Heated basalt stones, deep tissue release, 90 min</div>
+      </div>
+      <div class="treatment reveal" style="transition-delay:0.1s">
+        <span class="treatment-icon">II</span>
+        <div class="treatment-name">Forest Ritual</div>
+        <div class="treatment-desc">Cedar wrap, birch exfoliant, woodland steam, 120 min</div>
+      </div>
+      <div class="treatment reveal" style="transition-delay:0.2s">
+        <span class="treatment-icon">III</span>
+        <div class="treatment-name">Nordic Circuit</div>
+        <div class="treatment-desc">Hot &amp; cold plunge, sauna, guided breathwork, 60 min</div>
+      </div>
+      <div class="treatment reveal" style="transition-delay:0.3s">
+        <span class="treatment-icon">IV</span>
+        <div class="treatment-name">Couples Escape</div>
+        <div class="treatment-desc">Private suite, champagne, dual massage, 2.5 hrs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DINING -->
+  <section class="dining" id="dining">
+    <div class="dining-grid">
+      <div class="reveal">
+        <span class="section-label">Dining</span>
+        <h2 class="dining-heading">The Table<br /><em>at Maplewood</em></h2>
+        <p class="dining-body">
+          Executive Chef Élise Tremblay draws her seasonal menus from the land itself —
+          foraged chanterelles, line-caught trout, and heirloom root vegetables from our
+          kitchen garden. Intimate. Unhurried. Extraordinary.
+        </p>
+        <div class="dining-detail">
+          <div class="dining-detail-item">
+            <span class="dining-detail-label">Breakfast</span>
+            <span class="dining-detail-value">7 – 11am</span>
+          </div>
+          <div class="dining-detail-item">
+            <span class="dining-detail-label">Dinner</span>
+            <span class="dining-detail-value">6 – 10pm</span>
+          </div>
+          <div class="dining-detail-item">
+            <span class="dining-detail-label">Lounge</span>
+            <span class="dining-detail-value">4pm – close</span>
+          </div>
+        </div>
+        <a href="#reserve" class="text-link">Request a Reservation</a>
+      </div>
+      <div class="dining-photos reveal">
+        <div class="dining-photo dining-photo-1"></div>
+        <div class="dining-photo dining-photo-2"></div>
+        <div class="dining-photo dining-photo-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVE -->
+  <section class="reserve" id="reserve">
+    <div class="reveal">
+      <span class="section-label" style="text-align:center; display:block;">Make a Reservation</span>
+      <h2 class="reserve-heading">Begin Your<br />Stay</h2>
+      <p class="reserve-sub">Check availability or call us directly at 1-800-MAPLEWOOD</p>
+      <div class="reserve-form">
+        <input class="reserve-field" type="text" placeholder="Arrival" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'" />
+        <input class="reserve-field" type="text" placeholder="Departure" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'" />
+        <select class="reserve-field reserve-guests">
+          <option value="" disabled selected>Guests</option>
+          <option>1 Guest</option>
+          <option>2 Guests</option>
+          <option>3 Guests</option>
+          <option>4 Guests</option>
+          <option>5+ Guests</option>
+        </select>
+      </div>
+      <br />
+      <button class="reserve-btn">Check Availability</button>
+      <p class="reserve-note">Complimentary cancellation up to 48 hours before arrival</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-col-left">
+        <span class="footer-brand">Maplewood Lodge &amp; Spa</span>
+        <span class="footer-brand-sub">Boutique Luxury Retreat · Est. 2008</span>
+        <br /><br />
+        <p class="footer-address">
+          12 Lakeshore Drive<br />
+          Muskoka, Ontario P0C 1H0<br />
+          Canada<br /><br />
+          reservations@maplewoodlodge.ca<br />
+          1-800-MAPLEWOOD
+        </p>
+      </div>
+      <div class="footer-col-center">
+        <div class="footer-monogram">ML</div>
+        <p style="font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(253,250,246,0.3);">Since 2008</p>
+      </div>
+      <div class="footer-col-right">
+        <ul class="footer-links">
+          <li><a href="#">Rooms &amp; Suites</a></li>
+          <li><a href="#">Spa &amp; Wellness</a></li>
+          <li><a href="#">Dining</a></li>
+          <li><a href="#">Weddings &amp; Events</a></li>
+          <li><a href="#">Gift Cards</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Maplewood Lodge &amp; Spa. All rights reserved.</span>
+      <span>
+        <a href="#">Privacy Policy</a>
+        &nbsp;·&nbsp;
+        <a href="#">Terms</a>
+        &nbsp;·&nbsp;
+        <a href="#">Accessibility</a>
+      </span>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
