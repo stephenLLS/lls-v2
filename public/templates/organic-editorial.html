@@ -3,237 +3,172 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roots &amp; Greens — Farm-to-Table Cafe</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <title>Roots & Greens — Farm-to-Table Cafe</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --sage: #8FAF8A;
-      --sage-dark: #2D4A27;
-      --sage-mid: #6A9165;
+      --deep-sage: #2D4A27;
       --cream: #F7F3EE;
-      --cream-dark: #EDE7DC;
-      --text-dark: #1C2B19;
-      --text-mid: #3D5239;
-      --white: #FFFFFF;
+      --dark-cream: #EDE8DF;
+      --near-black: #1A1A1A;
+      --gold: #C4963A;
       --font-display: 'Yeseva One', Georgia, serif;
       --font-body: 'Inter', system-ui, sans-serif;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: auto; }
 
     body {
       font-family: var(--font-body);
-      background-color: var(--cream);
-      color: var(--text-dark);
+      background: var(--cream);
+      color: var(--near-black);
       overflow-x: hidden;
     }
 
     /* ─── NAV ─── */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+      top: 0; left: 0; right: 0;
       z-index: 100;
+      padding: 1.25rem 3rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.25rem 3rem;
-      background: transparent;
-      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.3s ease;
     }
-
     nav.scrolled {
-      background: rgba(143, 175, 138, 0.92);
-      backdrop-filter: blur(10px);
+      background: rgba(143, 175, 138, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 0.85rem 3rem;
     }
-
     .nav-logo {
       font-family: var(--font-display);
       font-size: 1.35rem;
       color: var(--cream);
       text-decoration: none;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
     }
-
     .nav-links {
       display: flex;
       gap: 2.5rem;
       list-style: none;
     }
-
     .nav-links a {
       font-family: var(--font-body);
       font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
+      font-weight: 500;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--cream);
       text-decoration: none;
-      opacity: 0.9;
-      transition: opacity 0.2s ease;
+      opacity: 0.85;
+      transition: opacity 0.2s;
     }
-
-    .nav-links a:hover {
-      opacity: 1;
-    }
+    .nav-links a:hover { opacity: 1; }
 
     /* ─── HERO ─── */
     .hero {
       position: relative;
       min-height: 100vh;
-      background-color: var(--sage);
+      background: var(--sage);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      padding: 6rem 2rem 4rem;
     }
 
-    /* Subtle texture overlay */
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.5;
-      z-index: 0;
-    }
-
-    .hero-inner {
+    .hero-text-behind {
       position: relative;
-      width: 100%;
-      max-width: 1300px;
-      padding: 0 3rem;
-      display: grid;
-      grid-template-columns: 1fr;
-      align-items: center;
-      justify-items: center;
-    }
-
-    /* Big background text — behind the image */
-    .hero-text-back {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%;
-      text-align: center;
       z-index: 1;
-      pointer-events: none;
-      padding: 0 1rem;
+      text-align: center;
+      width: 100%;
     }
-
-    .hero-text-back .line {
-      display: block;
+    .hero-roots {
       font-family: var(--font-display);
-      font-size: clamp(5rem, 13vw, 14rem);
+      font-size: clamp(7rem, 20vw, 18rem);
       color: var(--cream);
       line-height: 0.88;
-      opacity: 0.18;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
+      display: block;
+      opacity: 0;
+      transform: translateX(-80px);
     }
 
-    /* Floating product image */
     .hero-image-wrap {
       position: relative;
       z-index: 2;
-      margin: 12vh 0 8vh;
-    }
-
-    .hero-image {
-      width: clamp(260px, 38vw, 540px);
-      aspect-ratio: 3/4;
-      object-fit: cover;
-      border-radius: 2px;
-      box-shadow:
-        0 30px 80px rgba(30, 50, 25, 0.45),
-        0 10px 30px rgba(30, 50, 25, 0.25);
+      margin: -2rem 0;
       transform: rotate(-3deg);
-      animation: heroFloat 4s ease-in-out infinite;
+      filter: drop-shadow(0 30px 60px rgba(26,26,26,0.35));
+      will-change: transform;
+    }
+    .hero-image-wrap img {
+      width: clamp(280px, 45vw, 560px);
+      height: clamp(200px, 32vw, 400px);
+      object-fit: cover;
+      border-radius: 4px;
       display: block;
+      opacity: 0;
+      transform: scale(0.8);
     }
 
-    @keyframes heroFloat {
-      0%, 100% { transform: rotate(-3deg) translateY(0px); }
-      50%       { transform: rotate(-3deg) translateY(-18px); }
-    }
-
-    /* Front text — over the image */
     .hero-text-front {
-      position: absolute;
-      bottom: -2.5rem;
-      right: -3.5rem;
+      position: relative;
       z-index: 3;
-      pointer-events: none;
+      text-align: center;
+      width: 100%;
     }
-
-    .hero-text-front .line {
-      display: block;
+    .hero-greens {
       font-family: var(--font-display);
-      font-size: clamp(3.5rem, 8vw, 9rem);
+      font-size: clamp(7rem, 20vw, 18rem);
       color: var(--cream);
-      line-height: 0.9;
+      line-height: 0.88;
       letter-spacing: -0.02em;
-    }
-
-    /* Centered headline above image */
-    .hero-headline {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 4;
-      text-align: center;
-      pointer-events: none;
-      width: max-content;
-    }
-
-    .hero-headline .eyebrow {
-      font-family: var(--font-body);
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.75;
       display: block;
-      margin-bottom: 0.75rem;
+      opacity: 0;
+      transform: translateX(80px);
     }
 
-    .hero-tagline {
-      position: absolute;
-      bottom: 3.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 5;
-      text-align: center;
-      white-space: nowrap;
+    .hero-cta-wrap {
+      position: relative;
+      z-index: 4;
+      margin-top: 3rem;
+      opacity: 0;
     }
-
-    .hero-tagline p {
+    .btn-cta {
+      display: inline-block;
       font-family: var(--font-body);
       font-size: 0.8rem;
-      font-weight: 400;
-      letter-spacing: 0.12em;
+      font-weight: 600;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.7;
+      color: var(--near-black);
+      background: var(--cream);
+      border: none;
+      padding: 1.1rem 2.8rem;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      will-change: transform;
     }
+    .btn-cta:hover { background: var(--dark-cream); }
 
     .hero-scroll-hint {
       position: absolute;
-      bottom: 2rem;
+      bottom: 2.5rem;
       left: 50%;
       transform: translateX(-50%);
       z-index: 5;
@@ -241,835 +176,1016 @@
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
-    }
-
-    .hero-scroll-hint span {
-      font-family: var(--font-body);
-      font-size: 0.62rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
       color: var(--cream);
       opacity: 0.5;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
     }
-
     .scroll-line {
       width: 1px;
       height: 40px;
       background: var(--cream);
-      opacity: 0.35;
       animation: scrollPulse 2s ease-in-out infinite;
     }
-
     @keyframes scrollPulse {
-      0%, 100% { opacity: 0.35; transform: scaleY(1); }
-      50%       { opacity: 0.7;  transform: scaleY(0.6); }
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(0.55); }
     }
 
-    /* Giant stacked hero text composition */
-    .hero-composition {
-      position: relative;
-      width: 100%;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    @keyframes floatDrift {
+      0%, 100% { transform: rotate(-3deg) translateY(0px); }
+      50%       { transform: rotate(-1deg) translateY(-12px); }
+    }
+    .hero-image-wrap.floating {
+      animation: floatDrift 4s ease-in-out infinite;
     }
 
-    .hero-word-top {
-      position: absolute;
-      top: 18vh;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1;
-      font-family: var(--font-display);
-      font-size: clamp(4.5rem, 11vw, 12.5rem);
-      color: var(--cream);
-      line-height: 1;
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-      opacity: 0.9;
-    }
-
-    .hero-word-mid {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 3;
-      font-family: var(--font-display);
-      font-size: clamp(3rem, 7vw, 8rem);
-      color: var(--cream);
-      line-height: 1;
-      letter-spacing: 0em;
-      white-space: nowrap;
-      opacity: 0.85;
-      text-align: center;
-    }
-
-    .hero-word-mid .amp {
-      font-style: italic;
-      opacity: 0.7;
-    }
-
-    .hero-word-bot {
-      position: absolute;
-      bottom: 16vh;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 5;
-      font-family: var(--font-display);
-      font-size: clamp(4.5rem, 11vw, 12.5rem);
-      color: var(--cream);
-      line-height: 1;
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-      opacity: 0.9;
-    }
-
-    .hero-sub {
-      position: absolute;
-      bottom: 11.5vh;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 6;
-      font-family: var(--font-body);
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.55;
-      white-space: nowrap;
-    }
-
-    /* ─── FADE-IN ANIMATION ─── */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .fade-in-delay-1 { transition-delay: 0.1s; }
-    .fade-in-delay-2 { transition-delay: 0.2s; }
-    .fade-in-delay-3 { transition-delay: 0.32s; }
-
-    /* ─── SECTION SHARED ─── */
-    section {
-      position: relative;
-    }
-
-    .container {
-      max-width: 1220px;
-      margin: 0 auto;
-      padding: 0 3rem;
-    }
-
-    /* ─── OUR STORY ─── */
+    /* ─── SECTION 1 — OUR STORY ─── */
     .story {
       background: var(--cream);
       padding: 8rem 0;
+      overflow: hidden;
     }
-
-    .story-grid {
+    .story-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 3rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 5rem;
+      gap: 6rem;
       align-items: center;
     }
-
     .story-photo-wrap {
       position: relative;
-    }
-
-    .story-photo {
-      width: 100%;
-      aspect-ratio: 4/5;
-      object-fit: cover;
+      overflow: hidden;
+      clip-path: inset(0 100% 0 0);
       border-radius: 2px;
+    }
+    .story-photo-wrap img {
+      width: 100%;
+      height: 620px;
+      object-fit: cover;
       display: block;
-      box-shadow: 0 20px 60px rgba(30, 50, 25, 0.18);
     }
-
-    .story-photo-accent {
-      position: absolute;
-      bottom: -1.5rem;
-      right: -1.5rem;
-      width: 55%;
-      aspect-ratio: 1;
-      background: var(--sage);
-      border-radius: 50%;
-      z-index: -1;
-      opacity: 0.35;
-    }
-
-    .story-label {
+    .story-eyebrow {
       font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--sage-mid);
-      display: block;
-      margin-bottom: 1.1rem;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
     }
-
-    .story-heading {
+    .story-quote {
       font-family: var(--font-display);
-      font-size: clamp(2.2rem, 4vw, 3.4rem);
-      color: var(--text-dark);
-      line-height: 1.1;
-      margin-bottom: 1.75rem;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      color: var(--deep-sage);
+      line-height: 1.2;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(30px);
     }
-
     .story-body {
       font-size: 1rem;
       font-weight: 300;
-      line-height: 1.8;
-      color: var(--text-mid);
-      margin-bottom: 1.25rem;
+      line-height: 1.9;
+      color: #4A4A42;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateY(20px);
     }
-
-    .story-signature {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      color: var(--sage-mid);
-      margin-top: 2rem;
-      display: block;
+    .story-link {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--deep-sage);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--deep-sage);
+      padding-bottom: 3px;
+      opacity: 0;
+      transform: translateY(20px);
+      display: inline-block;
+      transition: color 0.2s, border-color 0.2s;
     }
+    .story-link:hover { color: var(--gold); border-color: var(--gold); }
 
-    /* ─── FEATURED ITEMS ─── */
-    .featured {
+    /* ─── SECTION 2 — MENU CARDS ─── */
+    .menu {
       background: var(--sage);
       padding: 8rem 0;
     }
-
-    .section-header {
-      margin-bottom: 4rem;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
+    .menu-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 3rem;
     }
-
-    .section-header .label {
+    .section-header { margin-bottom: 4rem; }
+    .section-eyebrow {
       font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--cream);
-      opacity: 0.65;
-      display: block;
-      margin-bottom: 0.75rem;
+      opacity: 0.6;
+      margin-bottom: 1rem;
     }
-
-    .section-header h2 {
+    .section-title {
       font-family: var(--font-display);
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
       color: var(--cream);
-      line-height: 1.1;
+      line-height: 1.08;
     }
-
-    .section-header .view-all {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.65;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(247, 243, 238, 0.3);
-      padding-bottom: 2px;
-      transition: opacity 0.2s;
-      white-space: nowrap;
-      margin-bottom: 0.25rem;
-    }
-
-    .section-header .view-all:hover {
-      opacity: 1;
-    }
-
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.75rem;
     }
-
-    .card {
-      background: var(--sage-mid);
-      border-radius: 3px;
+    .menu-card {
+      background: var(--cream);
+      border-radius: 4px;
       overflow: hidden;
-      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      opacity: 0;
+      transform: translateY(60px);
+      transition: box-shadow 0.4s ease;
       cursor: pointer;
     }
-
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 24px 60px rgba(20, 40, 15, 0.35);
+    .menu-card:hover {
+      box-shadow: 0 24px 64px rgba(26,26,26,0.22);
     }
-
-    .card-image {
+    .menu-card:hover .card-photo img {
+      transform: scale(1.05);
+    }
+    .card-photo {
       width: 100%;
-      aspect-ratio: 4/3;
+      height: 240px;
+      overflow: hidden;
+    }
+    .card-photo img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+      transition: transform 0.65s ease;
       display: block;
-      transition: transform 0.5s ease;
     }
-
-    .card:hover .card-image {
-      transform: scale(1.04);
-    }
-
-    .card-body {
-      padding: 1.6rem 1.75rem 2rem;
-    }
-
-    .card-tag {
-      font-size: 0.62rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.55;
-      display: block;
-      margin-bottom: 0.6rem;
-    }
-
-    .card-title {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      color: var(--cream);
-      line-height: 1.2;
-      margin-bottom: 0.75rem;
-    }
-
-    .card-desc {
-      font-size: 0.88rem;
-      font-weight: 300;
-      line-height: 1.65;
-      color: var(--cream);
-      opacity: 0.75;
-      margin-bottom: 1.5rem;
-    }
-
-    .card-price {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: var(--cream);
-    }
-
-    /* ─── HOURS & LOCATION ─── */
-    .hours {
-      background: var(--sage-dark);
-      padding: 8rem 0;
-    }
-
-    .hours-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    .hours .section-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--white);
-      opacity: 0.45;
-      display: block;
-      margin-bottom: 1rem;
-    }
-
-    .hours h2 {
-      font-family: var(--font-display);
-      font-size: clamp(2.2rem, 4vw, 3.2rem);
-      color: var(--white);
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-    }
-
-    .hours-desc {
-      font-size: 0.92rem;
-      font-weight: 300;
-      line-height: 1.75;
-      color: var(--white);
-      opacity: 0.65;
-    }
-
-    .hours-col-label {
+    .card-body { padding: 1.75rem; }
+    .card-category {
       font-size: 0.64rem;
       font-weight: 600;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--white);
-      opacity: 0.4;
-      display: block;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
+      color: var(--gold);
+      margin-bottom: 0.6rem;
     }
-
-    .hours-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .hours-day {
-      font-size: 0.85rem;
-      font-weight: 400;
-      color: var(--white);
-      opacity: 0.75;
-    }
-
-    .hours-time {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--white);
-      opacity: 0.9;
-    }
-
-    .location-address {
+    .card-title {
       font-family: var(--font-display);
       font-size: 1.5rem;
-      color: var(--white);
-      line-height: 1.3;
-      margin-bottom: 1.5rem;
+      color: var(--near-black);
+      margin-bottom: 0.8rem;
+      line-height: 1.2;
     }
-
-    .location-detail {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .location-detail-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .location-detail-icon svg {
-      width: 14px;
-      height: 14px;
-      fill: none;
-      stroke: var(--white);
-      stroke-width: 1.8;
-      opacity: 0.7;
-    }
-
-    .location-detail span {
+    .card-desc {
       font-size: 0.88rem;
       font-weight: 300;
-      color: var(--white);
-      opacity: 0.65;
+      line-height: 1.75;
+      color: #5A5A52;
+      margin-bottom: 1.5rem;
     }
-
-    .map-btn {
-      display: inline-flex;
+    .card-footer {
+      display: flex;
       align-items: center;
-      gap: 0.6rem;
-      margin-top: 2rem;
+      justify-content: space-between;
+    }
+    .card-price {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--deep-sage);
+    }
+    .card-link {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--near-black);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+      transition: color 0.2s;
+    }
+    .card-link:hover { color: var(--gold); }
+
+    /* ─── SECTION 3 — HORIZONTAL SCROLL ─── */
+    .horiz-container { position: relative; overflow: hidden; }
+    .horiz-track {
+      display: flex;
+      width: 300vw;
+    }
+    .horiz-panel {
+      width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .horiz-panel:nth-child(1) { background: var(--deep-sage); }
+    .horiz-panel:nth-child(2) { background: var(--near-black); }
+    .horiz-panel:nth-child(3) { background: var(--dark-cream); }
+
+    .panel-photo {
+      position: absolute;
+      inset: 0;
+    }
+    .panel-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.28;
+      display: block;
+    }
+    .panel-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      padding: 4rem;
+      padding-left: clamp(3rem, 8vw, 8rem);
+    }
+    .panel-number {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 12vw, 10rem);
+      color: var(--gold);
+      opacity: 0.22;
+      line-height: 1;
+      margin-bottom: -1.5rem;
+      display: block;
+    }
+    .panel-tag {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: block;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .panel-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 4.8rem);
+      color: var(--cream);
+      line-height: 1.08;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    .horiz-panel:nth-child(3) .panel-title { color: var(--deep-sage); }
+    .panel-text {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(247,243,238,0.7);
+      max-width: 440px;
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    .horiz-panel:nth-child(3) .panel-text { color: #5A5A52; }
+
+    /* ─── SECTION 4 — HOURS & FIND US ─── */
+    .find-us {
+      background: var(--deep-sage);
+      padding: 8rem 0;
+    }
+    .find-us-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 3rem;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 4rem;
+    }
+    .find-col {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    .find-tagline {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 2.5rem;
+    }
+    .btn-outline {
+      display: inline-block;
+      font-family: var(--font-body);
       font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--white);
-      text-decoration: none;
-      border: 1px solid rgba(255,255,255,0.25);
-      padding: 0.85rem 1.6rem;
+      color: var(--cream);
+      border: 1.5px solid rgba(247,243,238,0.4);
+      padding: 0.9rem 2.2rem;
       border-radius: 2px;
-      transition: background 0.25s ease, border-color 0.25s ease;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: var(--cream);
+      background: rgba(247,243,238,0.07);
+    }
+    .col-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.75rem;
+      display: block;
+    }
+    .hours-table { width: 100%; border-collapse: collapse; }
+    .hours-table td {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: rgba(247,243,238,0.78);
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(247,243,238,0.07);
+    }
+    .hours-table td:last-child { text-align: right; }
+    .hours-table tr:last-child td { border-bottom: none; }
+    .address-block {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 2;
+      color: rgba(247,243,238,0.78);
+      margin-bottom: 1.75rem;
+    }
+    .map-placeholder {
+      width: 100%;
+      height: 160px;
+      background: rgba(247,243,238,0.06);
+      border: 1px solid rgba(247,243,238,0.12);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: rgba(247,243,238,0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
-    .map-btn:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.5);
+    /* ─── SECTION 5 — TESTIMONIALS ─── */
+    .testimonials {
+      background: var(--cream);
+      padding: 8rem 0;
+    }
+    .testimonials-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 3rem;
+    }
+    .testi-header {
+      text-align: center;
+      margin-bottom: 4.5rem;
+    }
+    .testi-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .testi-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: var(--deep-sage);
+    }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .testi-card {
+      background: var(--dark-cream);
+      padding: 2.5rem 2.25rem;
+      border-radius: 4px;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    .testi-quote-mark {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      color: var(--gold);
+      line-height: 0.55;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .testi-text {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--near-black);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .testi-author {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #4A4A42;
+    }
+    .testi-date {
+      font-size: 0.72rem;
+      color: #8A8A80;
+      margin-top: 0.3rem;
     }
 
     /* ─── FOOTER ─── */
     footer {
       background: var(--sage);
-      padding: 4rem 0 3rem;
+      padding: 4.5rem 3rem 3rem;
     }
-
-    .footer-inner {
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-top {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      padding-bottom: 2.5rem;
-      border-bottom: 1px solid rgba(247, 243, 238, 0.18);
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(247,243,238,0.2);
       margin-bottom: 2rem;
     }
-
     .footer-logo {
       font-family: var(--font-display);
-      font-size: 1.5rem;
+      font-size: 1.9rem;
       color: var(--cream);
-      text-decoration: none;
     }
-
-    .footer-tagline {
-      font-size: 0.8rem;
-      font-weight: 300;
-      color: var(--cream);
-      opacity: 0.55;
-      margin-top: 0.4rem;
-    }
-
     .footer-links {
       display: flex;
       gap: 2.5rem;
       list-style: none;
+      align-items: center;
     }
-
     .footer-links a {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 500;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.65;
+      color: rgba(247,243,238,0.65);
       text-decoration: none;
-      transition: opacity 0.2s;
+      transition: color 0.2s;
     }
-
-    .footer-links a:hover { opacity: 1; }
-
+    .footer-links a:hover { color: var(--cream); }
     .footer-bottom {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
     .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(247,243,238,0.38);
+    }
+    .footer-credit {
       font-size: 0.72rem;
-      color: var(--cream);
-      opacity: 0.4;
-    }
-
-    .footer-social {
-      display: flex;
-      gap: 1.25rem;
-    }
-
-    .social-link {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1px solid rgba(247,243,238,0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--gold);
       text-decoration: none;
-      transition: background 0.25s, border-color 0.25s;
+      transition: color 0.2s;
     }
+    .footer-credit:hover { color: var(--cream); }
 
-    .social-link:hover {
-      background: rgba(247,243,238,0.12);
-      border-color: rgba(247,243,238,0.5);
-    }
-
-    .social-link svg {
-      width: 13px;
-      height: 13px;
-      fill: var(--cream);
-      opacity: 0.7;
-    }
-
-    /* ─── RESPONSIVE ─── */
+    /* ─── MOBILE ─── */
     @media (max-width: 900px) {
-      nav { padding: 1.1rem 1.5rem; }
-      .container { padding: 0 1.5rem; }
-      .story-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .cards-grid { grid-template-columns: 1fr; gap: 1.25rem; }
-      .hours-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .footer-inner { flex-direction: column; gap: 2rem; text-align: center; }
-      .footer-bottom { flex-direction: column; gap: 1rem; }
-      .hero-word-top, .hero-word-bot { font-size: clamp(3rem, 9vw, 7rem); }
-      .hero-word-mid { font-size: clamp(2rem, 6vw, 5rem); }
+      nav { padding: 1rem 1.5rem; }
+      nav.scrolled { padding: 0.75rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .nav-links li:nth-child(1),
+      .nav-links li:nth-child(2) { display: none; }
+
+      .story-inner { grid-template-columns: 1fr; gap: 3rem; padding: 0 1.5rem; }
+      .story-photo-wrap img { height: 360px; }
+
+      .menu-inner { padding: 0 1.5rem; }
+      .cards-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+
+      .find-us-inner { grid-template-columns: 1fr; gap: 3rem; padding: 0 1.5rem; }
+      .testi-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .testimonials-inner { padding: 0 1.5rem; }
+
+      footer { padding: 3rem 1.5rem 2rem; }
+      .footer-top { flex-direction: column; gap: 2rem; }
+      .footer-links { flex-wrap: wrap; gap: 1.5rem; }
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1rem 3rem; }
+      .hero-roots, .hero-greens { font-size: clamp(5rem, 26vw, 9rem); }
+      .hero-image-wrap img { width: 90vw; height: 56vw; }
+      .story { padding: 5rem 0; }
+      .menu { padding: 5rem 0; }
+      .find-us { padding: 5rem 0; }
+      .testimonials { padding: 5rem 0; }
+      .section-header { margin-bottom: 2.5rem; }
+      .testi-header { margin-bottom: 2.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ─── NAV ─── -->
-  <nav id="main-nav">
-    <a href="#" class="nav-logo">Roots &amp; Greens</a>
+  <!-- NAV -->
+  <nav id="mainNav">
+    <a href="#" class="nav-logo">Roots & Greens</a>
     <ul class="nav-links">
       <li><a href="#menu">Menu</a></li>
-      <li><a href="#story">About</a></li>
-      <li><a href="#hours">Visit</a></li>
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#find-us">Visit</a></li>
       <li><a href="#order">Order</a></li>
     </ul>
   </nav>
 
-  <!-- ─── HERO ─── -->
+  <!-- HERO -->
   <section class="hero" id="home">
-    <div class="hero-composition">
+    <div class="hero-text-behind">
+      <span class="hero-roots" id="heroRoots">ROOTS</span>
+    </div>
 
-      <!-- Word BEHIND image -->
-      <div class="hero-word-top">ROOTS</div>
+    <div class="hero-image-wrap" id="heroImg">
+      <img
+        src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=85"
+        alt="Fresh organic vegetables in a bowl"
+        loading="eager"
+      />
+    </div>
 
-      <!-- Floating food image -->
-      <div class="hero-image-wrap">
+    <div class="hero-text-front">
+      <span class="hero-greens" id="heroGreens">& GREENS</span>
+    </div>
+
+    <div class="hero-cta-wrap" id="heroCta">
+      <a href="#order" class="btn-cta" id="ctaBtn">Order Now</a>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 — OUR STORY -->
+  <section class="story" id="story">
+    <div class="story-inner">
+      <div class="story-photo-wrap" id="storyPhoto">
         <img
-          class="hero-image"
-          src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&q=85&auto=format&fit=crop"
-          alt="Fresh organic vegetables and herbs"
-          loading="eager"
+          src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=85"
+          alt="Lush garden rows of fresh herbs and vegetables"
+          loading="lazy"
         />
       </div>
-
-      <!-- Word OVER image -->
-      <div class="hero-word-bot">&amp; GREENS</div>
-
-      <!-- Middle line sits across the image boundary -->
-      <div class="hero-word-mid">
-        <span class="amp">Farm-to-Table</span>
-      </div>
-
-      <!-- Sub label -->
-      <div class="hero-sub">Est. 2019 &nbsp;·&nbsp; Locally Sourced &nbsp;·&nbsp; Made with Love</div>
-
-      <!-- Scroll hint -->
-      <div class="hero-scroll-hint">
-        <div class="scroll-line"></div>
-        <span>Scroll</span>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─── OUR STORY ─── -->
-  <section class="story" id="story">
-    <div class="container">
-      <div class="story-grid">
-
-        <div class="story-photo-wrap fade-in">
-          <img
-            class="story-photo"
-            src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80&auto=format&fit=crop"
-            alt="Chef preparing fresh ingredients"
-          />
-          <div class="story-photo-accent"></div>
-        </div>
-
-        <div>
-          <span class="story-label fade-in">Our Story</span>
-          <h2 class="story-heading fade-in fade-in-delay-1">
-            Good food starts<br />with good soil.
-          </h2>
-          <p class="story-body fade-in fade-in-delay-1">
-            We started Roots &amp; Greens because we believed something simple: a meal made with honest ingredients — grown nearby, harvested in season, handled with care — tastes like nothing else. That belief became a kitchen, and that kitchen became a community.
-          </p>
-          <p class="story-body fade-in fade-in-delay-2">
-            Every morning, our team sources produce directly from farms within 100 km. What arrives at our door that day shapes the menu. Nothing is forced. Everything is fresh. We work with the land, not against it.
-          </p>
-          <span class="story-signature fade-in fade-in-delay-2">— Maya &amp; Tom, Founders</span>
-        </div>
-
+      <div class="story-content">
+        <p class="story-eyebrow" id="storyEyebrow">Grown with intention</p>
+        <h2 class="story-quote" id="storyQuote">Every ingredient tells a story.</h2>
+        <p class="story-body" id="storyBody">
+          We started Roots & Greens because we believed food could be both beautiful
+          and honest. Every bowl, every plate that leaves our kitchen begins at the
+          farm — sourced within 80 kilometres, harvested the morning before it reaches
+          your table. No shortcuts. No compromises. Just real food, made with real care.
+        </p>
+        <a href="#team" class="story-link" id="storyLink">Meet the team →</a>
       </div>
     </div>
   </section>
 
-  <!-- ─── FEATURED ITEMS ─── -->
-  <section class="featured" id="menu">
-    <div class="container">
-      <div class="section-header fade-in">
-        <div>
-          <span class="label">On the Menu</span>
-          <h2>Made fresh, daily.</h2>
-        </div>
-        <a href="#" class="view-all">View full menu</a>
+  <!-- SECTION 2 — FEATURED MENU -->
+  <section class="menu" id="menu">
+    <div class="menu-inner">
+      <div class="section-header">
+        <p class="section-eyebrow">What's on today</p>
+        <h2 class="section-title">From Our Kitchen</h2>
       </div>
-
       <div class="cards-grid">
 
-        <div class="card fade-in">
-          <img
-            class="card-image"
-            src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80&auto=format&fit=crop"
-            alt="Seasonal grain bowl"
-          />
-          <div class="card-body">
-            <span class="card-tag">Signature Bowl</span>
-            <h3 class="card-title">Harvest Grain Bowl</h3>
-            <p class="card-desc">Farro, roasted root vegetables, labneh, herb oil, and toasted seeds. Warm, nourishing, complete.</p>
-            <span class="card-price">$18</span>
+        <article class="menu-card" id="card1">
+          <div class="card-photo">
+            <img
+              src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=85"
+              alt="Vibrant harvest salad with roasted vegetables"
+              loading="lazy"
+            />
           </div>
+          <div class="card-body">
+            <p class="card-category">Salads</p>
+            <h3 class="card-title">Harvest Bowl</h3>
+            <p class="card-desc">Roasted root vegetables, baby kale, candied walnuts, shaved fennel, and a warm lemon-tahini dressing.</p>
+            <div class="card-footer">
+              <span class="card-price">$17</span>
+              <a href="#order" class="card-link">Add to order →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="menu-card" id="card2">
+          <div class="card-photo">
+            <img
+              src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=600&q=85"
+              alt="Artisan sourdough toast with seasonal toppings"
+              loading="lazy"
+            />
+          </div>
+          <div class="card-body">
+            <p class="card-category">Breakfast</p>
+            <h3 class="card-title">Garden Toast</h3>
+            <p class="card-desc">Sourdough from our local bakery, whipped ricotta, heirloom tomatoes, microgreens, and a drizzle of wildflower honey.</p>
+            <div class="card-footer">
+              <span class="card-price">$14</span>
+              <a href="#order" class="card-link">Add to order →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="menu-card" id="card3">
+          <div class="card-photo">
+            <img
+              src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&q=85"
+              alt="Colourful smoothie bowl with fresh fruit toppings"
+              loading="lazy"
+            />
+          </div>
+          <div class="card-body">
+            <p class="card-category">Bowls</p>
+            <h3 class="card-title">Morning Bloom</h3>
+            <p class="card-desc">Frozen pitaya, banana, coconut milk base, topped with seasonal fruit, house-made granola, and hemp seeds.</p>
+            <div class="card-footer">
+              <span class="card-price">$16</span>
+              <a href="#order" class="card-link">Add to order →</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 — HORIZONTAL SCROLL STORYTELLING -->
+  <div class="horiz-container" id="horizContainer">
+    <div class="horiz-track" id="horizTrack">
+
+      <div class="horiz-panel" id="panel1">
+        <div class="panel-photo">
+          <img
+            src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1400&q=80"
+            alt="Rolling farm fields at sunrise"
+            loading="lazy"
+          />
+        </div>
+        <div class="panel-content">
+          <span class="panel-number">01</span>
+          <span class="panel-tag" id="ptag1">Our Farms</span>
+          <h2 class="panel-title" id="ptitle1">Sourced<br>locally.</h2>
+          <p class="panel-text" id="ptext1">
+            We partner with 12 family farms within 80 km of our kitchen. Every
+            grower is visited in person, every practice understood before a single
+            crate is ordered. When you eat here, you're supporting land that has
+            been tended for generations.
+          </p>
+        </div>
+      </div>
+
+      <div class="horiz-panel" id="panel2">
+        <div class="panel-photo">
+          <img
+            src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1400&q=80"
+            alt="Chef preparing fresh ingredients in the kitchen"
+            loading="lazy"
+          />
+        </div>
+        <div class="panel-content">
+          <span class="panel-number">02</span>
+          <span class="panel-tag" id="ptag2">Our Kitchen</span>
+          <h2 class="panel-title" id="ptitle2">Made<br>daily.</h2>
+          <p class="panel-text" id="ptext2">
+            Nothing on our menu is pre-made, frozen, or held overnight. Our team
+            arrives at 6am to bake, blanch, roast, and plate from scratch.
+            Freshness isn't a marketing word here — it's a discipline we hold
+            ourselves to every single morning.
+          </p>
+        </div>
+      </div>
+
+      <div class="horiz-panel" id="panel3">
+        <div class="panel-photo">
+          <img
+            src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1400&q=80"
+            alt="Warm, inviting dining room interior"
+            loading="lazy"
+          />
+        </div>
+        <div class="panel-content">
+          <span class="panel-number">03</span>
+          <span class="panel-tag" id="ptag3">Our Space</span>
+          <h2 class="panel-title" id="ptitle3">Served<br>with love.</h2>
+          <p class="panel-text" id="ptext3">
+            We designed our dining room to feel like a friend's kitchen — open
+            shelves, morning light, the smell of fresh bread drifting through.
+            Pull up a chair, stay a while. Every table here is a good table.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 4 — HOURS & FIND US -->
+  <section class="find-us" id="find-us">
+    <div class="find-us-inner">
+
+      <div class="find-col" id="fcol1">
+        <h2 class="find-tagline">Come share a meal with us.</h2>
+        <a href="#reserve" class="btn-outline">Reserve a Table</a>
+      </div>
+
+      <div class="find-col" id="fcol2">
+        <span class="col-label">Hours</span>
+        <table class="hours-table">
+          <tbody>
+            <tr><td>Monday – Friday</td><td>7:30am – 4pm</td></tr>
+            <tr><td>Saturday</td><td>8am – 5pm</td></tr>
+            <tr><td>Sunday</td><td>9am – 3pm</td></tr>
+            <tr><td>Kitchen closes</td><td>30 min early</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="find-col" id="fcol3">
+        <span class="col-label">Find Us</span>
+        <p class="address-block">
+          142 Harvest Lane<br>
+          Mapleton, ON &nbsp;N1R 4K7<br><br>
+          hello@rootsandgreens.ca<br>
+          (519) 555-0182
+        </p>
+        <div class="map-placeholder">Map embed here</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 5 — TESTIMONIALS -->
+  <section class="testimonials" id="testimonials">
+    <div class="testimonials-inner">
+      <div class="testi-header">
+        <p class="testi-eyebrow">What people are saying</p>
+        <h2 class="testi-title">Grown on good reviews.</h2>
+      </div>
+      <div class="testi-grid">
+
+        <div class="testi-card" id="tcard1">
+          <span class="testi-quote-mark">"</span>
+          <p class="testi-text">The harvest bowl changed what I expect from a salad. I've been back four times this week and I don't plan to stop.</p>
+          <p class="testi-author">Amara K.</p>
+          <p class="testi-date">May 2026</p>
         </div>
 
-        <div class="card fade-in fade-in-delay-1">
-          <img
-            class="card-image"
-            src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80&auto=format&fit=crop"
-            alt="Sourdough toast with avocado"
-          />
-          <div class="card-body">
-            <span class="card-tag">Breakfast</span>
-            <h3 class="card-title">Garden Avocado Toast</h3>
-            <p class="card-desc">House-baked sourdough, smashed avocado, shaved radish, micro greens, chili flake, lemon.</p>
-            <span class="card-price">$14</span>
-          </div>
+        <div class="testi-card" id="tcard2">
+          <span class="testi-quote-mark">"</span>
+          <p class="testi-text">There's something rare about a place where you can taste how much the people care. Roots & Greens has it in spades.</p>
+          <p class="testi-author">James & Priya L.</p>
+          <p class="testi-date">April 2026</p>
         </div>
 
-        <div class="card fade-in fade-in-delay-2">
-          <img
-            class="card-image"
-            src="https://images.unsplash.com/photo-1482012792084-a0c3725f289f?w=600&q=80&auto=format&fit=crop"
-            alt="Herbal cold brew"
-          />
-          <div class="card-body">
-            <span class="card-tag">Drinks</span>
-            <h3 class="card-title">Botanist Cold Brew</h3>
-            <p class="card-desc">24-hour cold-brewed single origin, lavender simple syrup, oat milk, fresh mint sprig.</p>
-            <span class="card-price">$7</span>
-          </div>
+        <div class="testi-card" id="tcard3">
+          <span class="testi-quote-mark">"</span>
+          <p class="testi-text">Best morning bloom bowl in the province. I said what I said. The granola alone is worth the drive from the city.</p>
+          <p class="testi-author">Thomas R.</p>
+          <p class="testi-date">June 2026</p>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- ─── HOURS & LOCATION ─── -->
-  <section class="hours" id="hours">
-    <div class="container">
-      <div class="hours-grid">
-
-        <div class="fade-in">
-          <span class="section-label">Find Us</span>
-          <h2>Come as<br />you are.</h2>
-          <p class="hours-desc">We're open seven days a week, rain or shine. Pull up a stool at the counter, settle into the garden patio, or grab something for the road. There's always a seat for you.</p>
-          <a href="#" class="map-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            Get Directions
-          </a>
-        </div>
-
-        <div class="fade-in fade-in-delay-1">
-          <span class="hours-col-label">Hours</span>
-          <div class="hours-row">
-            <span class="hours-day">Monday – Friday</span>
-            <span class="hours-time">7am – 5pm</span>
-          </div>
-          <div class="hours-row">
-            <span class="hours-day">Saturday</span>
-            <span class="hours-time">8am – 6pm</span>
-          </div>
-          <div class="hours-row">
-            <span class="hours-day">Sunday</span>
-            <span class="hours-time">9am – 4pm</span>
-          </div>
-          <div class="hours-row">
-            <span class="hours-day">Holidays</span>
-            <span class="hours-time">10am – 3pm</span>
-          </div>
-        </div>
-
-        <div class="fade-in fade-in-delay-2">
-          <span class="hours-col-label">Location</span>
-          <p class="location-address">142 Fieldstone<br />Avenue West</p>
-
-          <div class="location-detail">
-            <div class="location-detail-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 11 19.79 19.79 0 01.88 2.38 2 2 0 012.88.22h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-            </div>
-            <span>(519) 555-0143</span>
-          </div>
-
-          <div class="location-detail">
-            <div class="location-detail-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
-            <span>hello@rootsandgreens.ca</span>
-          </div>
-
-          <div class="location-detail">
-            <div class="location-detail-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <span>Kitchen closes 30 min early</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── FOOTER ─── -->
-  <footer id="order">
-    <div class="container">
-      <div class="footer-inner">
-        <div>
-          <a href="#" class="footer-logo">Roots &amp; Greens</a>
-          <p class="footer-tagline">Farm-to-Table Cafe &nbsp;·&nbsp; 142 Fieldstone Ave W</p>
-        </div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-logo">Roots & Greens</div>
         <ul class="footer-links">
-          <li><a href="#">Menu</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Visit</a></li>
-          <li><a href="#">Order Online</a></li>
-          <li><a href="#">Catering</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#story">Our Story</a></li>
+          <li><a href="#find-us">Visit</a></li>
+          <li><a href="#order">Order Online</a></li>
+          <li><a href="#testimonials">Reviews</a></li>
         </ul>
-        <div class="footer-social">
-          <!-- Instagram -->
-          <a href="#" class="social-link" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </a>
-          <!-- Facebook -->
-          <a href="#" class="social-link" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-          </a>
-          <!-- TikTok/Twitter placeholder -->
-          <a href="#" class="social-link" aria-label="Twitter">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
-          </a>
-        </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copy">&copy; 2026 Roots &amp; Greens. All rights reserved.</p>
-        <p class="footer-copy">Website by <span style="opacity:0.7">Local Launch Sites</span></p>
+        <p class="footer-copy">© 2026 Roots & Greens. All rights reserved.</p>
+        <a href="https://locallaunchsites.ca" class="footer-credit">Website by Local Launch Sites</a>
       </div>
     </div>
   </footer>
 
-  <!-- ─── JS ─── -->
   <script>
-    // Nav scroll effect
-    const nav = document.getElementById('main-nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 60);
-    }, { passive: true });
+    /* ─── LENIS + GSAP INIT ─── */
+    const lenis = new Lenis({ lerp: 0.08 });
+    gsap.registerPlugin(ScrollTrigger);
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
 
-    // IntersectionObserver fade-in
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.12,
-      rootMargin: '0px 0px -40px 0px'
+    /* ─── NAV SCROLL STATE ─── */
+    const mainNav = document.getElementById('mainNav');
+    lenis.on('scroll', ({ scroll }) => {
+      mainNav.classList.toggle('scrolled', scroll > 60);
     });
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  </script>
+    /* ─── HERO ENTRANCE ─── */
+    gsap.set('#mainNav', { opacity: 0, y: -20 });
+    const heroTl = gsap.timeline({ delay: 0.15 });
+    heroTl
+      .to('#mainNav',    { opacity: 1, y: 0,  duration: 0.7, ease: 'power2.out' }, 0)
+      .to('#heroRoots',  { opacity: 1, x: 0,  duration: 1.0, ease: 'expo.out'   }, 0.2)
+      .to('#heroImg img',{ opacity: 1, scale: 1, duration: 1.1, ease: 'back.out(1.3)' }, 0.5)
+      .to('#heroGreens', { opacity: 1, x: 0,  duration: 1.0, ease: 'expo.out'   }, 0.65)
+      .to('#heroCta',    { opacity: 1, y: 0,  duration: 0.6, ease: 'power2.out' }, 0.95);
 
+    heroTl.call(() => {
+      document.getElementById('heroImg').classList.add('floating');
+    });
+
+    /* ─── MAGNETIC CTA ─── */
+    const ctaBtn = document.getElementById('ctaBtn');
+    ctaBtn.addEventListener('mousemove', (e) => {
+      const r  = ctaBtn.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width  / 2)) * 0.38;
+      const dy = (e.clientY - (r.top  + r.height / 2)) * 0.38;
+      gsap.to(ctaBtn, { x: dx, y: dy, duration: 0.35, ease: 'power2.out' });
+    });
+    ctaBtn.addEventListener('mouseleave', () => {
+      gsap.to(ctaBtn, { x: 0, y: 0, duration: 0.55, ease: 'elastic.out(1,0.4)' });
+    });
+
+    /* ─── STORY: CURTAIN REVEAL + TEXT ─── */
+    ScrollTrigger.create({
+      trigger: '.story',
+      start: 'top 68%',
+      once: true,
+      onEnter: () => {
+        gsap.to('#storyPhoto', {
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 1.3,
+          ease: 'expo.inOut'
+        });
+        gsap.to(['#storyEyebrow','#storyQuote','#storyBody','#storyLink'], {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          stagger: 0.14,
+          ease: 'power3.out',
+          delay: 0.3
+        });
+      }
+    });
+
+    /* ─── MENU CARDS ─── */
+    ScrollTrigger.create({
+      trigger: '.cards-grid',
+      start: 'top 78%',
+      once: true,
+      onEnter: () => {
+        gsap.to(['#card1','#card2','#card3'], {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out'
+        });
+      }
+    });
+
+    /* Card hover lift — keep in sync with CSS transition but GSAP for the lift */
+    ['card1','card2','card3'].forEach(id => {
+      const card = document.getElementById(id);
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, { y: -10, duration: 0.35, ease: 'power2.out' });
+      });
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, { y: 0, duration: 0.4, ease: 'power2.out' });
+      });
+    });
+
+    /* ─── HORIZONTAL SCROLL ─── */
+    const track     = document.getElementById('horizTrack');
+    const container = document.getElementById('horizContainer');
+
+    const mm = gsap.matchMedia();
+
+    mm.add('(min-width: 901px)', () => {
+      const getWidth = () => track.scrollWidth - window.innerWidth;
+
+      const hAnim = gsap.to(track, {
+        x: () => -getWidth(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: container,
+          start: 'top top',
+          end: () => `+=${getWidth()}`,
+          pin: true,
+          scrub: 1.2,
+          anticipatePin: 1,
+          invalidateOnRefresh: true
+        }
+      });
+
+      /* Panel content stagger as each panel enters the viewport via scrub */
+      const panelData = [
+        { ids: ['#ptag1','#ptitle1','#ptext1'], panel: '#panel1' },
+        { ids: ['#ptag2','#ptitle2','#ptext2'], panel: '#panel2' },
+        { ids: ['#ptag3','#ptitle3','#ptext3'], panel: '#panel3' }
+      ];
+
+      panelData.forEach((pd, i) => {
+        gsap.to(pd.ids, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.12,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: container,
+            containerAnimation: hAnim,
+            start: () => `left+=${i * window.innerWidth * 0.1} center`,
+            end: () => `left+=${i * window.innerWidth * 0.6} center`,
+            toggleActions: 'play none none reverse',
+            scrub: false
+          }
+        });
+      });
+
+      return () => { ScrollTrigger.getAll().forEach(t => t.kill()); };
+    });
+
+    mm.add('(max-width: 900px)', () => {
+      /* Stack panels vertically on mobile */
+      track.style.flexDirection = 'column';
+      track.style.width = '100%';
+      document.querySelectorAll('.horiz-panel').forEach(p => {
+        p.style.width = '100%';
+        p.style.minHeight = '100svh';
+      });
+
+      [
+        ['#ptag1','#ptitle1','#ptext1','#panel1'],
+        ['#ptag2','#ptitle2','#ptext2','#panel2'],
+        ['#ptag3','#ptitle3','#ptext3','#panel3']
+      ].forEach(([tag, title, text, panelSel]) => {
+        const panel = document.querySelector(panelSel);
+        [tag, title, text].forEach(sel => {
+          gsap.to(sel, {
+            opacity: 1, y: 0,
+            duration: 0.65,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: panel, start: 'top 70%', once: true }
+          });
+        });
+      });
+    });
+
+    /* ─── FIND US ─── */
+    ScrollTrigger.create({
+      trigger: '.find-us',
+      start: 'top 70%',
+      once: true,
+      onEnter: () => {
+        gsap.to(['#fcol1','#fcol2','#fcol3'], {
+          opacity: 1, y: 0,
+          duration: 0.8,
+          stagger: 0.14,
+          ease: 'power3.out'
+        });
+      }
+    });
+
+    /* ─── TESTIMONIALS ─── */
+    ScrollTrigger.create({
+      trigger: '.testi-grid',
+      start: 'top 75%',
+      once: true,
+      onEnter: () => {
+        gsap.to(['#tcard1','#tcard2','#tcard3'], {
+          opacity: 1, y: 0,
+          duration: 0.75,
+          stagger: 0.13,
+          ease: 'power3.out'
+        });
+      }
+    });
+
+    /* ─── REFRESH ON RESIZE ─── */
+    window.addEventListener('resize', () => ScrollTrigger.refresh());
+  </script>
 </body>
 </html>

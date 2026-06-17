@@ -1,1052 +1,724 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clearpath Financial Services — Bookkeeping & Financial Consulting</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clearpath Financial Services — Northern Ontario Bookkeeping & Consulting</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --cream:      #FDFAF5;
-      --sage:       #6B8F71;
-      --sage-dark:  #507559;
-      --brown:      #7B5E3A;
-      --soft-black: #1A1A1A;
-      --sand:       #E8E0D0;
-      --sand-dark:  #D4C9B5;
-      --text-muted: #5A5A5A;
-      --shadow:     0 4px 24px rgba(26,26,26,0.08);
-      --shadow-md:  0 8px 40px rgba(26,26,26,0.12);
-    }
+  :root {
+    --cream: #FDFAF5;
+    --sage: #6B8F71;
+    --sage-dark: #4e6e53;
+    --brown: #7B5E3A;
+    --soft-black: #1A1A1A;
+    --sand: #E8E0D0;
+    --light-sage: #EBF0EB;
+    --grey-text: #6B6560;
+    --white: #ffffff;
+  }
 
-    html { scroll-behavior: smooth; }
+  html { scroll-behavior: auto; }
+  body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--soft-black); overflow-x: hidden; }
+  h1, h2, h3, h4, .logo { font-family: 'DM Serif Display', serif; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--cream);
-      color: var(--soft-black);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--cream);
+    padding: 0 5%;
+    height: 72px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: box-shadow 0.3s ease;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(26,26,26,0.08); }
+  .logo { font-size: 1.5rem; color: var(--soft-black); text-decoration: none; letter-spacing: -0.02em; }
+  .logo span { color: var(--sage); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.9rem; color: var(--soft-black); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--sage); }
+  .nav-cta {
+    background: var(--sage); color: var(--white);
+    padding: 0.6rem 1.4rem; border-radius: 100px;
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.875rem;
+    text-decoration: none; transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--sage-dark); transform: translateY(-1px); }
 
-    /* ===== UTILITIES ===== */
-    .serif { font-family: 'DM Serif Display', serif; }
-    .container { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    background: var(--cream);
+    display: flex; align-items: center;
+    padding: 100px 5% 80px;
+    gap: 5%;
+  }
+  .hero-left { flex: 0 0 55%; max-width: 55%; }
+  .hero-right { flex: 0 0 40%; max-width: 40%; }
 
-    /* ===== REVEAL ANIMATION ===== */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-left {
-      opacity: 0;
-      transform: translateX(-36px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal-left.visible { opacity: 1; transform: translateX(0); }
-    .reveal-right {
-      opacity: 0;
-      transform: translateX(36px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+  .eyebrow {
+    font-family: 'Inter', sans-serif; font-weight: 500;
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--sage); margin-bottom: 1.5rem; display: block; opacity: 0;
+  }
+  .hero-headline {
+    font-size: clamp(3rem, 5.5vw, 5rem);
+    line-height: 1.05; letter-spacing: -0.025em;
+    color: var(--soft-black); margin-bottom: 1.5rem;
+  }
+  .hero-headline .word { display: inline-block; }
+  .hero-headline .word-inner { display: inline-block; transform: translateY(60px); opacity: 0; }
+  .hero-sub {
+    font-family: 'Inter', sans-serif; font-weight: 300; font-size: 1.1rem;
+    line-height: 1.7; color: var(--grey-text); max-width: 460px;
+    margin-bottom: 2.5rem; opacity: 0;
+  }
+  .hero-ctas { display: flex; align-items: center; gap: 1.5rem; opacity: 0; }
+  .btn-primary {
+    background: var(--sage); color: var(--white);
+    padding: 0.85rem 2rem; border-radius: 100px;
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.95rem;
+    text-decoration: none; transition: background 0.2s, transform 0.15s; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--sage-dark); transform: translateY(-2px); }
+  .btn-text {
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.95rem;
+    color: var(--soft-black); text-decoration: none; transition: color 0.2s;
+  }
+  .btn-text:hover { color: var(--sage); }
 
-    /* ===== NAV ===== */
-    nav {
-      background: var(--cream);
-      border-bottom: 1px solid var(--sand);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 72px;
-      gap: 24px;
-    }
-    .nav-logo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.35rem;
-      color: var(--soft-black);
-      text-decoration: none;
-      white-space: nowrap;
-    }
-    .nav-logo span { color: var(--sage); }
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--soft-black); }
-    .nav-cta {
-      background: var(--sage);
-      color: #fff;
-      font-size: 0.875rem;
-      font-weight: 600;
-      padding: 10px 22px;
-      border-radius: 999px;
-      text-decoration: none;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
-    .nav-cta:hover { background: var(--sage-dark); }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; transform: translateX(80px); opacity: 0; }
+  .hero-card {
+    border-radius: 20px; overflow: hidden; aspect-ratio: 3/4;
+    box-shadow: 0 8px 30px rgba(26,26,26,0.10);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;
+  }
+  .hero-card:nth-child(2) { margin-top: 32px; }
+  .hero-card:nth-child(4) { margin-top: -32px; }
+  .hero-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(26,26,26,0.14); }
+  .hero-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* ===== HERO ===== */
-    .hero {
-      background: var(--cream);
-      padding: 96px 0 80px;
-      overflow: hidden;
-    }
-    .hero-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-    .hero-text { }
-    .hero-eyebrow {
-      display: inline-block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--brown);
-      margin-bottom: 18px;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.1s forwards;
-    }
-    .hero-headline {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2.4rem, 4vw, 3.4rem);
-      line-height: 1.15;
-      color: var(--soft-black);
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.25s forwards;
-    }
-    .hero-sub {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      max-width: 420px;
-      line-height: 1.7;
-      margin-bottom: 36px;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.4s forwards;
-    }
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.55s forwards;
-    }
-    .btn-primary {
-      background: var(--sage);
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 14px 28px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-      display: inline-block;
-    }
-    .btn-primary:hover { background: var(--sage-dark); transform: translateY(-1px); }
-    .btn-text {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--brown);
-      text-decoration: none;
-      transition: gap 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn-text:hover { gap: 10px; }
+  /* ===== SHARED ===== */
+  .section-label {
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.72rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--sage); margin-bottom: 1rem; display: block;
+  }
+  .section-headline {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    letter-spacing: -0.02em; line-height: 1.1;
+    color: var(--soft-black); margin-bottom: 1rem;
+  }
+  .section-sub {
+    font-family: 'Inter', sans-serif; font-weight: 300; font-size: 1.05rem;
+    color: var(--grey-text); line-height: 1.7;
+  }
 
-    /* Hero photo strip */
-    .hero-photos {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      opacity: 0;
-      transform: translateX(40px);
-      animation: slideInRight 0.8s ease 0.5s forwards;
-    }
-    .photo-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 14px;
-    }
-    .photo-card {
-      width: 170px;
-      height: 170px;
-      border-radius: 20px;
-      background: var(--sand);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-      position: relative;
-    }
-    .photo-card:nth-child(2) { margin-top: 24px; }
-    .photo-card:nth-child(4) { margin-top: -24px; }
-    .photo-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    /* Placeholder gradients for photos */
-    .photo-card.p1 { background: linear-gradient(135deg, #C4AE94 0%, #8B7355 100%); }
-    .photo-card.p2 { background: linear-gradient(135deg, #9BB49F 0%, #6B8F71 100%); }
-    .photo-card.p3 { background: linear-gradient(135deg, #B8A898 0%, #7B5E3A 100%); }
-    .photo-card.p4 { background: linear-gradient(135deg, #A8C4AB 0%, #507559 100%); }
-    .photo-card .face-icon {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .photo-card .face-icon svg { width: 64px; height: 64px; opacity: 0.55; }
-    .photo-badge {
-      position: absolute;
-      bottom: -12px;
-      right: -8px;
-      background: var(--cream);
-      border: 2px solid var(--sand);
-      border-radius: 12px;
-      padding: 8px 14px;
-      box-shadow: var(--shadow);
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--soft-black);
-      white-space: nowrap;
-    }
-    .photo-badge span { color: var(--sage); }
+  /* ===== SERVICES ===== */
+  .services { background: var(--white); padding: 120px 5%; }
+  .services-header { text-align: center; max-width: 600px; margin: 0 auto 70px; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; max-width: 1100px; margin: 0 auto; }
+  .service-card {
+    background: var(--cream); border-radius: 20px; padding: 2.5rem 2rem;
+    opacity: 0; transform: translateY(30px);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(107,143,113,0.12); }
+  .service-icon {
+    width: 52px; height: 52px; background: var(--light-sage);
+    border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
+  }
+  .service-icon svg { width: 26px; height: 26px; stroke: var(--sage); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .service-name { font-size: 1.25rem; color: var(--soft-black); margin-bottom: 0.6rem; line-height: 1.2; }
+  .service-desc { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.9rem; color: var(--grey-text); line-height: 1.65; margin-bottom: 1.25rem; }
+  .service-link { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.875rem; color: var(--sage); text-decoration: none; transition: color 0.2s; }
+  .service-link:hover { color: var(--sage-dark); }
 
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideInRight {
-      to { opacity: 1; transform: translateX(0); }
-    }
+  /* ===== PROCESS ===== */
+  .process { background: var(--sand); padding: 120px 5%; }
+  .process-header { text-align: center; max-width: 600px; margin: 0 auto 90px; }
+  .process-step { display: flex; align-items: center; gap: 8%; max-width: 1100px; margin: 0 auto 100px; }
+  .process-step:last-child { margin-bottom: 0; }
+  .process-step.reverse { flex-direction: row-reverse; }
+  .process-text { flex: 0 0 46%; }
+  .process-photo { flex: 0 0 46%; }
+  .step-number {
+    font-family: 'DM Serif Display', serif; font-size: 7rem;
+    color: var(--brown); opacity: 0.12; line-height: 1; margin-bottom: -1.5rem;
+    display: block; letter-spacing: -0.04em;
+  }
+  .step-name { font-size: 1.9rem; color: var(--soft-black); margin-bottom: 1rem; line-height: 1.15; }
+  .step-desc { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 1rem; color: var(--grey-text); line-height: 1.75; }
+  .process-photo img { width: 100%; height: 360px; object-fit: cover; border-radius: 20px; display: block; box-shadow: 0 12px 40px rgba(26,26,26,0.10); }
 
-    /* ===== SECTION SHARED ===== */
-    section { padding: 96px 0; }
-    .section-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--brown);
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(1.9rem, 3vw, 2.6rem);
-      line-height: 1.2;
-      color: var(--soft-black);
-      margin-bottom: 16px;
-    }
-    .section-sub {
-      font-size: 1rem;
-      color: var(--text-muted);
-      max-width: 520px;
-      line-height: 1.7;
-    }
-    .section-header { margin-bottom: 56px; }
+  /* ===== STATS ===== */
+  .stats-section { background: var(--sage); padding: 120px 5%; }
+  .stats-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+  .stats-eyebrow { color: var(--light-sage); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; font-family: 'Inter', sans-serif; font-weight: 500; margin-bottom: 1rem; display: block; }
+  .stats-headline { font-family: 'DM Serif Display', serif; font-size: clamp(2rem,3.5vw,3rem); color: var(--white); margin-bottom: 60px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .stat-card {
+    background: var(--cream); border-radius: 20px; padding: 3rem 2rem;
+    box-shadow: 0 8px 32px rgba(26,26,26,0.12); opacity: 0; transform: translateY(40px);
+  }
+  .stat-number { font-family: 'DM Serif Display', serif; font-size: clamp(3rem, 5vw, 4.5rem); color: var(--soft-black); display: block; line-height: 1; margin-bottom: 0.5rem; }
+  .stat-label { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 1rem; color: var(--grey-text); }
 
-    /* ===== HOW WE HELP ===== */
-    #services { background: var(--cream); }
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-    }
-    .service-card {
-      padding: 36px 28px;
-      border-radius: 16px;
-      border: 1px solid var(--sand);
-      background: #fff;
-      transition: box-shadow 0.25s, transform 0.25s;
-    }
-    .service-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
-    .service-icon {
-      width: 52px;
-      height: 52px;
-      background: var(--sand);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .service-icon svg { width: 26px; height: 26px; stroke: var(--sage); }
-    .service-name {
-      font-weight: 700;
-      font-size: 1.05rem;
-      margin-bottom: 10px;
-      color: var(--soft-black);
-    }
-    .service-desc {
-      font-size: 0.92rem;
-      color: var(--text-muted);
-      line-height: 1.65;
-      margin-bottom: 18px;
-    }
-    .service-link {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--sage);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: gap 0.2s;
-    }
-    .service-link:hover { gap: 9px; }
+  /* ===== TESTIMONIALS ===== */
+  .testimonials { background: var(--cream); padding: 120px 5%; }
+  .testimonials-header { text-align: center; max-width: 600px; margin: 0 auto 70px; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; max-width: 1100px; margin: 0 auto; }
+  .testimonial-card {
+    background: var(--white); border-radius: 20px; padding: 2.5rem 2rem;
+    opacity: 0; transform: translateY(30px); box-shadow: 0 2px 16px rgba(26,26,26,0.05);
+  }
+  .quote-mark { font-family: 'DM Serif Display', serif; font-size: 5rem; color: var(--brown); opacity: 0.18; line-height: 0.6; display: block; margin-bottom: 1.2rem; }
+  .quote-text { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.1rem; line-height: 1.65; color: var(--soft-black); margin-bottom: 1.5rem; }
+  .quote-author { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.875rem; color: var(--soft-black); }
+  .quote-company { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.8rem; color: var(--grey-text); display: block; margin-top: 0.5rem; padding-top: 0.75rem; border-top: 2px solid var(--sage); width: fit-content; }
 
-    /* ===== OUR PROCESS ===== */
-    #process { background: var(--sand); }
-    .process-steps { display: flex; flex-direction: column; gap: 80px; }
-    .process-step {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-    .process-step.reverse .step-text { order: 2; }
-    .process-step.reverse .step-visual { order: 1; }
-    .step-number {
-      font-family: 'DM Serif Display', serif;
-      font-size: 4.5rem;
-      color: var(--brown);
-      opacity: 0.18;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-    .step-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.7rem;
-      color: var(--soft-black);
-      margin-bottom: 12px;
-    }
-    .step-desc {
-      font-size: 0.97rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-      max-width: 400px;
-    }
-    .step-visual {
-      border-radius: 20px;
-      overflow: hidden;
-      aspect-ratio: 4/3;
-      background: var(--sand-dark);
-      position: relative;
-    }
-    .step-visual-inner {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .step-img-p1 { background: linear-gradient(145deg, #C4AE94, #8B7355); }
-    .step-img-p2 { background: linear-gradient(145deg, #9BB49F, #6B8F71); }
-    .step-img-p3 { background: linear-gradient(145deg, #B0C4B8, #6B8F71); }
-    .step-img-p4 { background: linear-gradient(145deg, #C8A882, #7B5E3A); }
-    .step-visual-inner svg { width: 72px; height: 72px; opacity: 0.35; stroke: #fff; }
+  /* ===== CONTACT ===== */
+  .contact { background: var(--sand); padding: 120px 5%; overflow: hidden; position: relative; }
+  .contact-curtain { position: absolute; inset: 0; background: var(--brown); transform-origin: left center; }
+  .contact-inner { display: flex; gap: 8%; max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; opacity: 0; }
+  .contact-left { flex: 0 0 44%; }
+  .contact-right { flex: 1; }
+  .contact-headline { font-size: clamp(2rem,3.5vw,3rem); color: var(--soft-black); margin-bottom: 1rem; line-height: 1.1; }
+  .contact-desc { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 1rem; color: var(--grey-text); line-height: 1.75; margin-bottom: 2rem; }
+  .contact-bullets { list-style: none; }
+  .contact-bullets li { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.9rem; color: var(--grey-text); line-height: 1.6; padding: 0.4rem 0 0.4rem 1.5rem; position: relative; }
+  .contact-bullets li::before { content: ''; position: absolute; left: 0; top: 0.8rem; width: 7px; height: 7px; border-radius: 50%; background: var(--sage); }
 
-    /* ===== RESULTS ===== */
-    #results { background: var(--sage); }
-    .results-header .section-title { color: #fff; }
-    .results-header .section-sub { color: rgba(255,255,255,0.75); }
-    .results-header .section-label { color: rgba(255,255,255,0.6); }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .stat-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 44px 32px;
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(26,26,26,0.14);
-      transition: transform 0.25s;
-    }
-    .stat-card:hover { transform: translateY(-4px); }
-    .stat-number {
-      font-family: 'DM Serif Display', serif;
-      font-size: 3rem;
-      color: var(--soft-black);
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-    .stat-number .suffix { color: var(--sage); }
-    .stat-label {
-      font-size: 0.92rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.03em;
-    }
-    .stat-desc {
-      font-size: 0.82rem;
-      color: #9A9A9A;
-      margin-top: 6px;
-    }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.8rem; color: var(--soft-black); letter-spacing: 0.04em; }
+  input, select, textarea {
+    font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 400;
+    background: var(--white); border: 1.5px solid rgba(26,26,26,0.12);
+    border-radius: 10px; padding: 0.75rem 1rem; color: var(--soft-black);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%;
+    appearance: none; -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--sage); box-shadow: 0 0 0 3px rgba(107,143,113,0.12); }
+  textarea { resize: vertical; min-height: 110px; }
+  .btn-submit {
+    background: var(--sage); color: var(--white); border: none; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.95rem;
+    padding: 0.9rem 2.2rem; border-radius: 100px; margin-top: 8px;
+    transition: background 0.2s, transform 0.15s; display: inline-block; position: relative;
+  }
+  .btn-submit:hover { background: var(--sage-dark); }
 
-    /* ===== TESTIMONIALS ===== */
-    #testimonials { background: var(--cream); }
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-    }
-    .testimonial-card {
-      background: #fff;
-      border: 1px solid var(--sand);
-      border-radius: 16px;
-      padding: 36px 28px;
-      position: relative;
-    }
-    .quote-mark {
-      font-family: 'DM Serif Display', serif;
-      font-size: 5rem;
-      line-height: 0.7;
-      color: var(--brown);
-      opacity: 0.18;
-      display: block;
-      margin-bottom: 16px;
-    }
-    .testimonial-text {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin-bottom: 28px;
-      font-style: italic;
-    }
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .author-avatar {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-    .av1 { background: linear-gradient(135deg, #C4AE94, #8B7355); }
-    .av2 { background: linear-gradient(135deg, #9BB49F, #6B8F71); }
-    .av3 { background: linear-gradient(135deg, #B8A898, #7B5E3A); }
-    .author-avatar svg { width: 100%; height: 100%; opacity: 0.5; }
-    .author-name {
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--soft-black);
-    }
-    .author-company {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
+  /* ===== FOOTER ===== */
+  footer { background: var(--soft-black); padding: 80px 5% 40px; }
+  .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(232,224,208,0.15); margin-bottom: 2rem; }
+  .footer-brand .logo { color: var(--sage); }
+  .footer-brand p { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.875rem; color: rgba(232,224,208,0.6); line-height: 1.65; margin-top: 1rem; max-width: 240px; }
+  .footer-col h4 { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(232,224,208,0.5); margin-bottom: 1.25rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.6rem; }
+  .footer-col ul li a { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.875rem; color: rgba(232,224,208,0.7); text-decoration: none; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--sand); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+  .footer-bottom p { font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 300; color: rgba(232,224,208,0.35); }
 
-    /* ===== BOOK A CALL ===== */
-    #contact { background: var(--sand); }
-    .contact-inner {
-      max-width: 640px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .contact-inner .section-title { margin-bottom: 12px; }
-    .contact-inner .section-sub {
-      margin: 0 auto 40px;
-      text-align: center;
-    }
-    .contact-form {
-      background: #fff;
-      border-radius: 20px;
-      padding: 44px 40px;
-      box-shadow: var(--shadow-md);
-      text-align: left;
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--soft-black);
-      margin-bottom: 7px;
-      letter-spacing: 0.03em;
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid var(--sand);
-      border-radius: 8px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.93rem;
-      color: var(--soft-black);
-      background: var(--cream);
-      transition: border-color 0.2s, box-shadow 0.2s;
-      outline: none;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--sage);
-      box-shadow: 0 0 0 3px rgba(107,143,113,0.15);
-    }
-    .form-group textarea { resize: vertical; min-height: 90px; }
-    .form-submit {
-      width: 100%;
-      background: var(--sage);
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      margin-top: 4px;
-    }
-    .form-submit:hover { background: var(--sage-dark); transform: translateY(-1px); }
-    .form-note {
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 14px;
-    }
-
-    /* ===== FOOTER ===== */
-    footer {
-      background: var(--soft-black);
-      padding: 64px 0 32px;
-    }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 1.8fr 1fr 1fr 1fr;
-      gap: 48px;
-      padding-bottom: 48px;
-      border-bottom: 1px solid rgba(232,224,208,0.12);
-    }
-    .footer-brand .footer-logo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.3rem;
-      color: #fff;
-      margin-bottom: 14px;
-      display: block;
-    }
-    .footer-brand .footer-logo span { color: var(--sage); }
-    .footer-brand p {
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.7;
-      max-width: 260px;
-    }
-    .footer-col h4 {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 18px;
-    }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 10px; }
-    .footer-col ul li a {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.65);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-col ul li a:hover { color: #fff; }
-    .footer-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 28px;
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.3);
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-photos { display: none; }
-      .services-grid { grid-template-columns: 1fr; }
-      .stats-grid { grid-template-columns: 1fr; }
-      .testimonials-grid { grid-template-columns: 1fr; }
-      .process-step { grid-template-columns: 1fr; }
-      .process-step.reverse .step-text,
-      .process-step.reverse .step-visual { order: unset; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .nav-links { display: none; }
-      .form-row { grid-template-columns: 1fr; }
-    }
-  </style>
+  /* ===== MOBILE ===== */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hero { flex-direction: column; padding: 100px 5% 60px; gap: 3rem; }
+    .hero-left, .hero-right { flex: none; max-width: 100%; width: 100%; }
+    .hero-headline { font-size: 2.6rem; }
+    .hero-card:nth-child(2), .hero-card:nth-child(4) { margin-top: 0; }
+    .services { padding: 80px 5%; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process { padding: 80px 5%; }
+    .process-step, .process-step.reverse { flex-direction: column; gap: 2rem; }
+    .process-text, .process-photo { flex: none; width: 100%; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .contact-inner { flex-direction: column; }
+    .contact-left, .contact-right { flex: none; width: 100%; }
+    .form-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+    .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
 </head>
 <body>
 
-<!-- ===== NAV ===== -->
-<nav>
-  <div class="container nav-inner">
-    <a href="#" class="nav-logo">Clearpath <span>Financial</span></a>
-    <ul class="nav-links">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#process">About</a></li>
-      <li><a href="#process">Process</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <a href="#contact" class="nav-cta">Book Now</a>
-  </div>
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#" class="logo">Clearpath <span>Financial</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Book Now</a>
 </nav>
 
-<!-- ===== HERO ===== -->
-<section class="hero">
-  <div class="container hero-inner">
-    <div class="hero-text">
-      <span class="hero-eyebrow">Bookkeeping &amp; Financial Consulting</span>
-      <h1 class="hero-headline">Your Business,<br />Running Smoother.</h1>
-      <p class="hero-sub">We handle the numbers so you can focus on what you do best. Clear books, confident decisions, zero stress.</p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn-primary">Book a Free Call</a>
-        <a href="#services" class="btn-text">See our services <span>→</span></a>
-      </div>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-left">
+    <span class="eyebrow">Trusted by 500+ Ontario businesses</span>
+    <h1 class="hero-headline">
+      <span class="word"><span class="word-inner">Your</span></span>&nbsp;<span class="word"><span class="word-inner">Business,</span></span><br>
+      <span class="word"><span class="word-inner">Running</span></span>&nbsp;<span class="word"><span class="word-inner">Smoother.</span></span>
+    </h1>
+    <p class="hero-sub">Clear, confident financial guidance for Northern Ontario businesses. We handle the numbers so you can focus on what you do best.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Book a Free Call</a>
+      <a href="#services" class="btn-text">See our services &rarr;</a>
     </div>
-
-    <div class="hero-photos">
-      <div style="position:relative;">
-        <div class="photo-grid">
-          <div class="photo-card p1">
-            <div class="face-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            </div>
-          </div>
-          <div class="photo-card p2">
-            <div class="face-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            </div>
-          </div>
-          <div class="photo-card p3">
-            <div class="face-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            </div>
-          </div>
-          <div class="photo-card p4">
-            <div class="face-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            </div>
-          </div>
-        </div>
-        <div class="photo-badge">Trusted by <span>500+</span> businesses</div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-grid">
+      <div class="hero-card">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=85" alt="Professional woman" loading="eager">
+      </div>
+      <div class="hero-card">
+        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=85" alt="Professional man" loading="eager">
+      </div>
+      <div class="hero-card">
+        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=85" alt="Woman smiling professional" loading="eager">
+      </div>
+      <div class="hero-card">
+        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=85" alt="Man smiling professional" loading="eager">
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== HOW WE HELP ===== -->
-<section id="services">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="section-label">What We Do</div>
-      <h2 class="section-title">How We Help You Thrive</h2>
-      <p class="section-sub">From monthly bookkeeping to full financial strategy — we've got every angle covered.</p>
+<!-- SECTION 1 — SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <span class="section-label">What We Do</span>
+    <h2 class="section-headline">How We Help Your Business</h2>
+    <p class="section-sub">From day-to-day bookkeeping to long-term tax strategy, we provide the financial clarity your business needs to grow with confidence.</p>
+  </div>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <h3 class="service-name">Tax Planning</h3>
+      <p class="service-desc">Proactive strategies that minimize your tax burden and keep more money working in your business year-round.</p>
+      <a href="#contact" class="service-link">Learn more &rarr;</a>
     </div>
-    <div class="services-grid">
-      <div class="service-card reveal" style="transition-delay:0.05s">
-        <div class="service-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12h8M8 8h4M8 16h6"/>
-          </svg>
-        </div>
-        <div class="service-name">Monthly Bookkeeping</div>
-        <p class="service-desc">Accurate, timely books every month. Bank reconciliations, categorized transactions, and reports you actually understand.</p>
-        <a href="#contact" class="service-link">Learn more →</a>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       </div>
-      <div class="service-card reveal" style="transition-delay:0.12s">
-        <div class="service-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-          </svg>
-        </div>
-        <div class="service-name">Tax Preparation &amp; Planning</div>
-        <p class="service-desc">Year-round strategy to minimize what you owe. Corporate and personal returns filed on time, every time.</p>
-        <a href="#contact" class="service-link">Learn more →</a>
+      <h3 class="service-name">Bookkeeping</h3>
+      <p class="service-desc">Accurate, timely records so you always know exactly where your business stands financially.</p>
+      <a href="#contact" class="service-link">Learn more &rarr;</a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
-      <div class="service-card reveal" style="transition-delay:0.19s">
-        <div class="service-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-          </svg>
-        </div>
-        <div class="service-name">Cash Flow &amp; Forecasting</div>
-        <p class="service-desc">Know exactly where your money is going — and where it's headed. Make decisions with confidence, not guesswork.</p>
-        <a href="#contact" class="service-link">Learn more →</a>
+      <h3 class="service-name">Business Consulting</h3>
+      <p class="service-desc">Strategic advice tailored to Northern Ontario businesses — growth planning, cash flow, and operational efficiency.</p>
+      <a href="#contact" class="service-link">Learn more &rarr;</a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
       </div>
-      <div class="service-card reveal" style="transition-delay:0.05s">
-        <div class="service-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-          </svg>
-        </div>
-        <div class="service-name">Payroll Management</div>
-        <p class="service-desc">Compliant payroll run on time — every pay period. We handle remittances, T4s, and source deductions.</p>
-        <a href="#contact" class="service-link">Learn more →</a>
+      <h3 class="service-name">Financial Reporting</h3>
+      <p class="service-desc">Clear, meaningful reports that translate your numbers into decisions you can act on with confidence.</p>
+      <a href="#contact" class="service-link">Learn more &rarr;</a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
       </div>
-      <div class="service-card reveal" style="transition-delay:0.12s">
-        <div class="service-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
-          </svg>
-        </div>
-        <div class="service-name">Financial Reporting</div>
-        <p class="service-desc">Clear P&amp;L, balance sheets, and management reports — ready for your banker, investor, or peace of mind.</p>
-        <a href="#contact" class="service-link">Learn more →</a>
+      <h3 class="service-name">Payroll Services</h3>
+      <p class="service-desc">Streamlined payroll processing that ensures your team is paid accurately and on time, every time.</p>
+      <a href="#contact" class="service-link">Learn more &rarr;</a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
       </div>
-      <div class="service-card reveal" style="transition-delay:0.19s">
-        <div class="service-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-          </svg>
-        </div>
-        <div class="service-name">CFO Advisory</div>
-        <p class="service-desc">Part-time CFO support for growing businesses. Strategy, systems, and financial leadership — without the full-time cost.</p>
-        <a href="#contact" class="service-link">Learn more →</a>
-      </div>
+      <h3 class="service-name">Audit Prep</h3>
+      <p class="service-desc">We organize and prepare your records so CRA audits become a straightforward process — not a stressful one.</p>
+      <a href="#contact" class="service-link">Learn more &rarr;</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 2 — PROCESS -->
+<section class="process" id="process">
+  <div class="process-header">
+    <span class="section-label">Our Process</span>
+    <h2 class="section-headline">How It Works</h2>
+    <p class="section-sub">A clear, collaborative approach built around your business — not a one-size-fits-all formula.</p>
+  </div>
+
+  <div class="process-step" data-dir="left">
+    <div class="process-text">
+      <span class="step-number">01</span>
+      <h3 class="step-name">Discovery Call</h3>
+      <p class="step-desc">We start with a free 30-minute call to understand your business, your goals, and where your finances stand today. No pressure, no jargon — just an honest conversation about what you need.</p>
+    </div>
+    <div class="process-photo">
+      <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=85" alt="Discovery call meeting">
+    </div>
+  </div>
+
+  <div class="process-step reverse" data-dir="right">
+    <div class="process-text">
+      <span class="step-number">02</span>
+      <h3 class="step-name">Review Your Books</h3>
+      <p class="step-desc">We take a thorough look at your current financials — identifying gaps, inefficiencies, and opportunities that might otherwise go unnoticed.</p>
+    </div>
+    <div class="process-photo">
+      <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&q=85" alt="Reviewing financial books">
+    </div>
+  </div>
+
+  <div class="process-step" data-dir="left">
+    <div class="process-text">
+      <span class="step-number">03</span>
+      <h3 class="step-name">Build Your Plan</h3>
+      <p class="step-desc">We create a customized financial strategy aligned with your business goals — clear milestones, realistic projections, and a roadmap you can actually follow.</p>
+    </div>
+    <div class="process-photo">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=85" alt="Building your financial plan">
+    </div>
+  </div>
+
+  <div class="process-step reverse" data-dir="right">
+    <div class="process-text">
+      <span class="step-number">04</span>
+      <h3 class="step-name">Ongoing Support</h3>
+      <p class="step-desc">We don't disappear after the setup. You get a dedicated advisor, regular check-ins, and a team that's always reachable when questions come up.</p>
+    </div>
+    <div class="process-photo">
+      <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=85" alt="Ongoing business support">
     </div>
   </div>
 </section>
 
-<!-- ===== OUR PROCESS ===== -->
-<section id="process">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="section-label">Our Process</div>
-      <h2 class="section-title">Simple, Transparent,<br />Always On Your Side</h2>
-    </div>
-    <div class="process-steps">
-
-      <div class="process-step">
-        <div class="step-text reveal-left">
-          <div class="step-number">01</div>
-          <h3 class="step-title">Free Discovery Call</h3>
-          <p class="step-desc">We start with a no-pressure 30-minute call to understand your business, your pain points, and exactly what you need. No jargon, no sales pitch — just a real conversation.</p>
-        </div>
-        <div class="step-visual step-img-p1 reveal-right">
-          <div class="step-visual-inner">
-            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.7A2 2 0 012 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16z"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <div class="process-step reverse">
-        <div class="step-text reveal-right">
-          <div class="step-number">02</div>
-          <h3 class="step-title">Custom Service Plan</h3>
-          <p class="step-desc">We put together a tailored scope and flat-rate proposal — so you always know what you're getting and what you'll pay. No surprises, no hidden fees.</p>
-        </div>
-        <div class="step-visual step-img-p2 reveal-left">
-          <div class="step-visual-inner">
-            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <div class="process-step">
-        <div class="step-text reveal-left">
-          <div class="step-number">03</div>
-          <h3 class="step-title">Seamless Onboarding</h3>
-          <p class="step-desc">We handle the transition from your current system — connecting to QuickBooks, Xero, or whatever you use. Most clients are fully set up within a week.</p>
-        </div>
-        <div class="step-visual step-img-p3 reveal-right">
-          <div class="step-visual-inner">
-            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <div class="process-step reverse">
-        <div class="step-text reveal-right">
-          <div class="step-number">04</div>
-          <h3 class="step-title">Ongoing Support &amp; Clarity</h3>
-          <p class="step-desc">Monthly deliverables, proactive check-ins, and always a real person available to answer your questions. We grow with your business.</p>
-        </div>
-        <div class="step-visual step-img-p4 reveal-left">
-          <div class="step-visual-inner">
-            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ===== RESULTS ===== -->
-<section id="results">
-  <div class="container">
-    <div class="section-header results-header reveal" style="text-align:center;">
-      <div class="section-label">By the Numbers</div>
-      <h2 class="section-title">Results That Speak<br />for Themselves</h2>
-      <p class="section-sub" style="margin:0 auto; color:rgba(255,255,255,0.72);">Over a decade helping professionals like you take back control of their finances.</p>
-    </div>
+<!-- SECTION 3 — STATS -->
+<section class="stats-section" id="about">
+  <div class="stats-inner">
+    <span class="stats-eyebrow">By the Numbers</span>
+    <h2 class="stats-headline">Real results for real businesses.</h2>
     <div class="stats-grid">
-      <div class="stat-card reveal" style="transition-delay:0.05s">
-        <div class="stat-number"><span class="count-up" data-target="500">0</span><span class="suffix">+</span></div>
-        <div class="stat-label">Clients Served</div>
-        <div class="stat-desc">Across professional services, trades, and retail</div>
+      <div class="stat-card">
+        <span class="stat-number" data-target="500" data-suffix="+">0+</span>
+        <p class="stat-label">Clients Served Across Ontario</p>
       </div>
-      <div class="stat-card reveal" style="transition-delay:0.13s">
-        <div class="stat-number">$<span class="count-up" data-target="2" data-suffix="M">0</span></div>
-        <div class="stat-label">Saved in Tax &amp; Errors</div>
-        <div class="stat-desc">Average savings identified in year one</div>
+      <div class="stat-card">
+        <span class="stat-number" data-target="2" data-prefix="$" data-suffix="M+">$0M+</span>
+        <p class="stat-label">Saved for Our Clients</p>
       </div>
-      <div class="stat-card reveal" style="transition-delay:0.21s">
-        <div class="stat-number"><span class="count-up" data-target="12">0</span><span class="suffix">+</span></div>
-        <div class="stat-label">Years in Business</div>
-        <div class="stat-desc">Serving Canadian businesses since 2012</div>
+      <div class="stat-card">
+        <span class="stat-number" data-static="true">12 Years</span>
+        <p class="stat-label">Combined Experience</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== TESTIMONIALS ===== -->
-<section id="testimonials">
-  <div class="container">
-    <div class="section-header reveal" style="text-align:center;">
-      <div class="section-label">Client Stories</div>
-      <h2 class="section-title">What Our Clients Say</h2>
-      <p class="section-sub" style="margin:0 auto;">Real words from real business owners we've had the privilege of working with.</p>
+<!-- SECTION 4 — TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-header">
+    <span class="section-label">What Clients Say</span>
+    <h2 class="section-headline">Trusted by Ontario Business Owners</h2>
+  </div>
+  <div class="testimonials-grid">
+
+    <div class="testimonial-card">
+      <span class="quote-mark">&ldquo;</span>
+      <p class="quote-text">Clearpath took over our books and within three months we had a clearer picture of our finances than we'd had in six years. They actually explain things in plain English.</p>
+      <p class="quote-author">Sandra Beaumont</p>
+      <span class="quote-company">Beaumont Contracting Ltd., Sudbury</span>
     </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card reveal" style="transition-delay:0.05s">
-        <span class="quote-mark">"</span>
-        <p class="testimonial-text">Clearpath took over our books when we were drowning in receipts. Within two months we had clean reports and actually understood where our money was going. Best decision we made all year.</p>
-        <div class="testimonial-author">
-          <div class="author-avatar av1">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+
+    <div class="testimonial-card">
+      <span class="quote-mark">&ldquo;</span>
+      <p class="quote-text">We were dreading our first CRA audit. Clearpath had everything organized and walked us through the whole process. We came out of it with zero issues and zero stress.</p>
+      <p class="quote-author">James Fortin</p>
+      <span class="quote-company">Fortin Property Group, North Bay</span>
+    </div>
+
+    <div class="testimonial-card">
+      <span class="quote-mark">&ldquo;</span>
+      <p class="quote-text">Best investment I've made in my business. The tax planning alone saved us more than their annual fee. I wish I'd called them three years earlier.</p>
+      <p class="quote-author">Priya Nair</p>
+      <span class="quote-company">Nair Wellness Clinic, Sault Ste. Marie</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 5 — CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-curtain" id="contact-curtain"></div>
+  <div class="contact-inner" id="contact-inner">
+    <div class="contact-left">
+      <span class="section-label">Get in Touch</span>
+      <h2 class="contact-headline">Let's talk about your business.</h2>
+      <p class="contact-desc">Book a free 30-minute discovery call. We'll listen first, and only recommend what actually makes sense for where you are right now.</p>
+      <ul class="contact-bullets">
+        <li>A clear picture of your current financial health</li>
+        <li>Honest answers to your most pressing questions</li>
+        <li>A recommended next step — no obligation</li>
+        <li>An advisor who speaks plain language, not jargon</li>
+      </ul>
+    </div>
+    <div class="contact-right">
+      <form onsubmit="return false;">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="f-name">Full Name</label>
+            <input type="text" id="f-name" placeholder="Your name">
           </div>
-          <div>
-            <div class="author-name">Sarah M.</div>
-            <div class="author-company">Owner — Maplewood Law Practice</div>
+          <div class="form-group">
+            <label for="f-biz">Business Name</label>
+            <input type="text" id="f-biz" placeholder="Your business">
+          </div>
+          <div class="form-group">
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" placeholder="you@yourbusiness.com">
+          </div>
+          <div class="form-group">
+            <label for="f-phone">Phone</label>
+            <input type="tel" id="f-phone" placeholder="(705) 000-0000">
+          </div>
+          <div class="form-group full">
+            <label for="f-service">Service You're Interested In</label>
+            <select id="f-service">
+              <option value="" disabled selected>Select a service...</option>
+              <option>Tax Planning</option>
+              <option>Bookkeeping</option>
+              <option>Business Consulting</option>
+              <option>Financial Reporting</option>
+              <option>Payroll Services</option>
+              <option>Audit Prep</option>
+              <option>Not Sure — Let's Talk</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label for="f-message">Tell Us About Your Business</label>
+            <textarea id="f-message" placeholder="A brief description of your situation or what you're looking for..."></textarea>
           </div>
         </div>
-      </div>
-      <div class="testimonial-card reveal" style="transition-delay:0.13s">
-        <span class="quote-mark">"</span>
-        <p class="testimonial-text">I used to dread tax season. Now I barely notice it. The Clearpath team has everything organized before I even think to ask. Professional, responsive, and genuinely helpful.</p>
-        <div class="testimonial-author">
-          <div class="author-avatar av2">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-          </div>
-          <div>
-            <div class="author-name">David K.</div>
-            <div class="author-company">Principal — Korsen HR Consulting</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card reveal" style="transition-delay:0.21s">
-        <span class="quote-mark">"</span>
-        <p class="testimonial-text">As an insurance broker, I need accurate financials fast. Clearpath delivers every time. The cash flow reports alone have helped me make two major growth decisions this year.</p>
-        <div class="testimonial-author">
-          <div class="author-avatar av3">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-          </div>
-          <div>
-            <div class="author-name">Priya T.</div>
-            <div class="author-company">Broker — Fairview Insurance Group</div>
-          </div>
-        </div>
-      </div>
+        <button type="submit" class="btn-submit" id="submit-btn">Send Message</button>
+      </form>
     </div>
   </div>
 </section>
 
-<!-- ===== BOOK A CALL ===== -->
-<section id="contact">
-  <div class="container">
-    <div class="contact-inner reveal">
-      <div class="section-label" style="text-align:center;">Get Started</div>
-      <h2 class="section-title">Book Your Free Call</h2>
-      <p class="section-sub">Tell us a little about your business and we'll set up a 30-minute no-obligation conversation. No hard sell — just good advice.</p>
-      <div class="contact-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" placeholder="Jane Smith" />
-          </div>
-          <div class="form-group">
-            <label for="biz">Business Name</label>
-            <input type="text" id="biz" placeholder="Acme Corp" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" placeholder="jane@yourbusiness.com" />
-          </div>
-          <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" placeholder="(613) 555-0100" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="need">What do you need help with?</label>
-          <select id="need">
-            <option value="" disabled selected>Select a service…</option>
-            <option>Monthly Bookkeeping</option>
-            <option>Tax Preparation &amp; Planning</option>
-            <option>Payroll Management</option>
-            <option>Cash Flow &amp; Forecasting</option>
-            <option>Financial Reporting</option>
-            <option>CFO Advisory</option>
-            <option>Not sure — need to talk it through</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="message">Anything else we should know?</label>
-          <textarea id="message" placeholder="Tell us about your business, current challenges, or questions…"></textarea>
-        </div>
-        <button type="button" class="form-submit" onclick="handleSubmit()">Book My Free Call →</button>
-        <p class="form-note">We respond within 1 business day. No spam, ever.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== FOOTER ===== -->
+<!-- FOOTER -->
 <footer>
-  <div class="container">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <span class="footer-logo">Clearpath <span>Financial</span></span>
-        <p>Bookkeeping and financial consulting for professionals who want clarity, confidence, and a team they can trust.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Services</h4>
-        <ul>
-          <li><a href="#services">Bookkeeping</a></li>
-          <li><a href="#services">Tax Planning</a></li>
-          <li><a href="#services">Payroll</a></li>
-          <li><a href="#services">CFO Advisory</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#process">About Us</a></li>
-          <li><a href="#process">Our Process</a></li>
-          <li><a href="#testimonials">Client Stories</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="tel:+16135550100">(613) 555-0100</a></li>
-          <li><a href="mailto:hello@clearpathfinancial.ca">hello@clearpathfinancial.ca</a></li>
-          <li><a href="#">Ottawa, ON</a></li>
-          <li><a href="#contact">Book a Call</a></li>
-        </ul>
-      </div>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="logo">Clearpath <span>Financial</span></a>
+      <p>Bookkeeping and financial consulting for Northern Ontario businesses. Clear numbers. Confident decisions.</p>
     </div>
-    <div class="footer-bottom">
-      <span>© 2024 Clearpath Financial Services. All rights reserved.</span>
-      <span>Built with care by Local Launch Sites</span>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Tax Planning</a></li>
+        <li><a href="#services">Bookkeeping</a></li>
+        <li><a href="#services">Consulting</a></li>
+        <li><a href="#services">Financial Reporting</a></li>
+        <li><a href="#services">Payroll</a></li>
+      </ul>
     </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#process">Our Process</a></li>
+        <li><a href="#">Our Team</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">CRA Deadlines</a></li>
+        <li><a href="#">Tax Tips</a></li>
+        <li><a href="#">Business Guide</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:+17055550100">(705) 555-0100</a></li>
+        <li><a href="mailto:hello@clearpathfinancial.ca">hello@clearpathfinancial.ca</a></li>
+        <li><a href="#">Sudbury, ON</a></li>
+        <li><a href="#contact">Book a Call</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Clearpath Financial Services Ltd. All rights reserved.</p>
+    <p>Northern Ontario &bull; Proudly Canadian</p>
   </div>
 </footer>
 
-<!-- ===== JS ===== -->
 <script>
-  // IntersectionObserver — reveal on scroll
-  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+const lenis = new Lenis({ lerp: 0.09 });
+gsap.registerPlugin(ScrollTrigger);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+
+// Nav scroll shadow
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+
+// HERO — eyebrow
+gsap.to('.eyebrow', { opacity: 1, duration: 0.7, delay: 0.2, ease: 'power3.out' });
+
+// HERO — headline words
+gsap.to('.word-inner', {
+  y: 0, opacity: 1,
+  duration: 0.9,
+  ease: 'power3.out',
+  stagger: 0.07,
+  delay: 0.35
+});
+
+// HERO — sub + ctas
+gsap.to('.hero-sub', { opacity: 1, duration: 0.7, delay: 0.9, ease: 'power2.out' });
+gsap.to('.hero-ctas', { opacity: 1, duration: 0.7, delay: 1.1, ease: 'power2.out' });
+
+// HERO — photo grid slides in
+gsap.to('.hero-grid', { x: 0, opacity: 1, duration: 1.0, delay: 0.4, ease: 'power3.out' });
+
+// SERVICE CARDS stagger on scroll
+gsap.utils.toArray('.service-card').forEach((card, i) => {
+  gsap.to(card, {
+    scrollTrigger: { trigger: card, start: 'top 88%' },
+    opacity: 1, y: 0,
+    duration: 0.65,
+    delay: (i % 3) * 0.1,
+    ease: 'power2.out'
+  });
+});
+
+// PROCESS steps — alternating slide-in
+document.querySelectorAll('.process-step').forEach((step) => {
+  const dir = step.dataset.dir;
+  const textEl = step.querySelector('.process-text');
+  const photoEl = step.querySelector('.process-photo');
+  const fromText = dir === 'left' ? -60 : 60;
+  const fromPhoto = dir === 'left' ? 60 : -60;
+
+  gsap.set(textEl, { x: fromText, opacity: 0 });
+  gsap.set(photoEl, { x: fromPhoto, opacity: 0 });
+
+  const tl = gsap.timeline({
+    scrollTrigger: { trigger: step, start: 'top 78%' }
+  });
+  tl.to(textEl, { x: 0, opacity: 1, duration: 0.85, ease: 'power3.out' })
+    .to(photoEl, { x: 0, opacity: 1, duration: 0.85, ease: 'power3.out' }, '-=0.65');
+});
+
+// STAT CARDS + count-up
+let statsAnimated = false;
+ScrollTrigger.create({
+  trigger: '.stats-section',
+  start: 'top 70%',
+  onEnter: () => {
+    if (statsAnimated) return;
+    statsAnimated = true;
+
+    gsap.to('.stat-card', {
+      opacity: 1, y: 0,
+      duration: 0.7,
+      stagger: 0.15,
+      ease: 'power3.out',
+      onComplete: () => {
+        document.querySelectorAll('.stat-number').forEach(numEl => {
+          if (numEl.dataset.static) return;
+          const target = parseInt(numEl.dataset.target);
+          const prefix = numEl.dataset.prefix || '';
+          const suffix = numEl.dataset.suffix || '';
+          const obj = { val: 0 };
+          const card = numEl.closest('.stat-card');
+          gsap.to(obj, {
+            val: target,
+            duration: 1.8,
+            ease: 'power2.out',
+            onUpdate: () => { numEl.textContent = prefix + Math.round(obj.val) + suffix; },
+            onComplete: () => {
+              gsap.fromTo(card, { scale: 1 }, { scale: 1.025, duration: 0.18, yoyo: true, repeat: 1, ease: 'power1.inOut' });
+            }
+          });
+        });
       }
     });
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => observer.observe(el));
-
-  // Count-up animation for stat numbers
-  function animateCount(el) {
-    const target = parseInt(el.dataset.target);
-    const suffix = el.dataset.suffix || '';
-    const duration = 1600;
-    const start = performance.now();
-    function update(time) {
-      const elapsed = time - start;
-      const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
-      const ease = 1 - Math.pow(1 - progress, 3);
-      const value = Math.round(ease * target);
-      el.textContent = value + suffix;
-      if (progress < 1) requestAnimationFrame(update);
-    }
-    requestAnimationFrame(update);
   }
+});
 
-  const countEls = document.querySelectorAll('.count-up');
-  const countObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animateCount(entry.target);
-        countObserver.unobserve(entry.target);
-      }
+// TESTIMONIAL CARDS
+gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
+  gsap.to(card, {
+    scrollTrigger: { trigger: card, start: 'top 88%' },
+    opacity: 1, y: 0,
+    duration: 0.65,
+    delay: i * 0.12,
+    ease: 'power2.out'
+  });
+});
+
+// CONTACT — curtain wipe reveal
+const curtain = document.getElementById('contact-curtain');
+const contactInner = document.getElementById('contact-inner');
+
+ScrollTrigger.create({
+  trigger: '.contact',
+  start: 'top 75%',
+  onEnter: () => {
+    gsap.to(curtain, {
+      scaleX: 0,
+      transformOrigin: 'right center',
+      duration: 0.85,
+      ease: 'power3.inOut',
+      onComplete: () => { curtain.style.display = 'none'; }
     });
-  }, { threshold: 0.4 });
-  countEls.forEach(el => countObserver.observe(el));
-
-  // Simple form handler
-  function handleSubmit() {
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    if (!name || !email) {
-      alert('Please fill in at least your name and email to continue.');
-      return;
-    }
-    const btn = document.querySelector('.form-submit');
-    btn.textContent = 'Thank you! We\'ll be in touch soon.';
-    btn.style.background = '#507559';
-    btn.disabled = true;
+    gsap.to(contactInner, { opacity: 1, duration: 0.5, delay: 0.5 });
   }
+});
+
+// Magnetic submit button
+const submitBtn = document.getElementById('submit-btn');
+submitBtn.addEventListener('mousemove', (e) => {
+  const rect = submitBtn.getBoundingClientRect();
+  const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.28;
+  const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.28;
+  gsap.to(submitBtn, { x: dx, y: dy, duration: 0.3, ease: 'power2.out' });
+});
+submitBtn.addEventListener('mouseleave', () => {
+  gsap.to(submitBtn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1,0.5)' });
+});
 </script>
-
 </body>
 </html>
