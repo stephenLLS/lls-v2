@@ -7,21 +7,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --near-black:   #0D1510;
       --forest-green: #1A3A20;
-      --deep-green:   #122B17;
+      --deep-green:   #0A110C;
       --gold:         #C8972A;
       --gold-light:   #E0AF50;
       --white:        #FFFFFF;
-      --off-white:    #E8E8E0;
-      --text-muted:   #9AA89D;
+      --off-white:    #E8E0D0;
+      --text-muted:   #8A9A8D;
     }
 
-    html { scroll-behavior: smooth; }
+    html { overflow-x: hidden; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -30,30 +31,37 @@
       overflow-x: hidden;
     }
 
-    /* ─── PARTICLES ─── */
-    #particles {
+    /* ─── CANVAS BACKGROUND ─── */
+    #particle-canvas {
       position: fixed;
       inset: 0;
+      z-index: -1;
       pointer-events: none;
-      z-index: 1;
+    }
+
+    /* ─── CSS PARTICLE FALLBACK (mobile) ─── */
+    .css-particles {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
       overflow: hidden;
     }
-
-    .particle {
+    .css-particle {
       position: absolute;
-      bottom: -4px;
-      width: 2px;
-      height: 2px;
+      width: 3px;
+      height: 3px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.7);
-      animation: floatUp linear infinite;
+      background: var(--gold);
+      opacity: 0;
+      animation: cssFloat linear infinite;
     }
-
-    @keyframes floatUp {
-      0%   { transform: translateY(0) translateX(0); opacity: 0; }
-      10%  { opacity: 0.8; }
+    @keyframes cssFloat {
+      0%   { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      10%  { opacity: 0.7; }
       90%  { opacity: 0.4; }
-      100% { transform: translateY(-100vh) translateX(var(--drift)); opacity: 0; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
     }
 
     /* ─── NAV ─── */
@@ -61,51 +69,52 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
+      padding: 1.25rem 3rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.4rem 3rem;
-      transition: background 0.4s ease, padding 0.3s ease, backdrop-filter 0.4s ease;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
     }
-
     nav.scrolled {
-      background: rgba(13, 21, 16, 0.95);
-      backdrop-filter: blur(12px);
-      padding: 0.9rem 3rem;
-      border-bottom: 1px solid rgba(200,151,42,0.15);
+      background: rgba(13, 21, 16, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
-
     .nav-logo {
       font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
       color: var(--white);
-      text-decoration: none;
-      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
-
-    .nav-logo span {
-      color: var(--gold);
-    }
-
+    .nav-logo span { color: var(--gold); }
     .nav-links {
       display: flex;
-      gap: 2.4rem;
+      gap: 2.5rem;
       list-style: none;
     }
-
     .nav-links a {
-      color: rgba(255,255,255,0.85);
+      color: rgba(255,255,255,0.75);
       text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       transition: color 0.2s;
     }
-
     .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      border: 1px solid var(--gold);
+      color: var(--gold) !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 2px;
+      transition: background 0.2s, color 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--near-black) !important; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { display: none; }
+    }
 
     /* ─── HERO ─── */
     #hero {
@@ -113,685 +122,1075 @@
       height: 100vh;
       min-height: 600px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
     }
-
-    .hero-bg {
+    .hero-photo {
       position: absolute;
       inset: 0;
-      background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80');
+      background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=90');
       background-size: cover;
-      background-position: center 40%;
-      transform: scale(1.04);
-      transition: transform 8s ease-out;
+      background-position: center;
+      transform-origin: center center;
+      will-change: transform;
     }
-
-    .hero-bg.loaded { transform: scale(1); }
-
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      background: linear-gradient(
-        180deg,
-        rgba(0,0,0,0.3) 0%,
-        rgba(0,0,0,0.45) 50%,
-        rgba(13,21,16,0.85) 100%
-      );
+      background: rgba(10, 18, 12, 0.55);
     }
-
-    /* CSS Sparkle */
-    .sparkle {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) translateY(-120px);
-      width: 20px;
-      height: 20px;
-      z-index: 3;
-    }
-
-    .sparkle::before,
-    .sparkle::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--gold);
-      clip-path: polygon(50% 0%, 55% 42%, 100% 50%, 55% 58%, 50% 100%, 45% 58%, 0% 50%, 45% 42%);
-      animation: sparkleGlow 2.8s ease-in-out infinite;
-    }
-
-    .sparkle::after {
-      transform: rotate(45deg) scale(0.55);
-      background: rgba(255,255,255,0.9);
-      animation-delay: -1.4s;
-    }
-
-    @keyframes sparkleGlow {
-      0%, 100% { opacity: 0.6; transform: scale(1); }
-      50%       { opacity: 1;   transform: scale(1.25); filter: drop-shadow(0 0 8px rgba(200,151,42,0.9)); }
-    }
-
     .hero-content {
       position: relative;
-      z-index: 4;
+      z-index: 2;
       text-align: center;
       padding: 0 1.5rem;
-      animation: heroReveal 1.4s cubic-bezier(0.22,1,0.36,1) both;
+      max-width: 900px;
     }
-
-    @keyframes heroReveal {
-      from { opacity: 0; transform: translateY(32px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
     .hero-eyebrow {
       display: block;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.3em;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 1.1rem;
+      margin-bottom: 1.25rem;
+      opacity: 0;
     }
-
     .hero-headline {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-size: clamp(3rem, 8vw, 7rem);
       font-weight: 900;
-      line-height: 1.0;
+      line-height: 1;
       color: var(--white);
-      letter-spacing: -0.01em;
-      text-shadow: 0 4px 40px rgba(0,0,0,0.6);
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
     }
-
-    .hero-sub {
-      font-size: 1.05rem;
-      font-weight: 300;
-      color: rgba(255,255,255,0.75);
-      letter-spacing: 0.04em;
-      margin-bottom: 2.8rem;
-      max-width: 480px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .btn-ghost {
+    .hero-word {
       display: inline-block;
-      padding: 0.85rem 2.4rem;
-      border: 1px solid rgba(255,255,255,0.5);
-      color: var(--white);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8rem;
+      opacity: 0;
+      transform: translateY(100px);
+      margin-right: 0.25em;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(255,255,255,0.75);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      opacity: 0;
+    }
+    .hero-cta-wrap { opacity: 0; transform: scale(0.85); }
+    .btn-primary {
+      display: inline-block;
+      padding: 1rem 2.75rem;
+      background: var(--gold);
+      color: var(--near-black);
+      font-size: 0.85rem;
       font-weight: 600;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       text-decoration: none;
-      transition: border-color 0.3s, background 0.3s, color 0.3s;
-      backdrop-filter: blur(4px);
-      background: rgba(255,255,255,0.05);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s;
+      will-change: transform;
     }
+    .btn-primary:hover { background: var(--gold-light); }
 
-    .btn-ghost:hover {
-      border-color: var(--gold);
-      background: rgba(200,151,42,0.15);
-      color: var(--gold-light);
-    }
-
-    .hero-scroll-hint {
+    .scroll-hint {
       position: absolute;
       bottom: 2.5rem;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 4;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.4rem;
-      color: rgba(255,255,255,0.4);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      animation: bounceDown 2s ease-in-out infinite;
-    }
-
-    .hero-scroll-hint::after {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-    }
-
-    @keyframes bounceDown {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%       { transform: translateX(-50%) translateY(6px); }
-    }
-
-    /* ─── REVEAL ANIMATION ─── */
-    .reveal {
+      gap: 0.5rem;
       opacity: 0;
-      transform: translateY(36px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .scroll-hint span {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollDrop 1.6s ease-in-out infinite;
+    }
+    @keyframes scrollDrop {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
     }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    /* ─── SECTION SHARED ─── */
+    section { position: relative; }
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
     }
-
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.22s; }
-    .reveal-delay-3 { transition-delay: 0.34s; }
-
-    /* ─── SECTION LABELS ─── */
-    .section-eyebrow {
+    .section-label {
       display: block;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.3em;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 0.9rem;
+      margin-bottom: 1rem;
     }
-
-    .section-title {
+    .section-headline {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.9rem, 4vw, 3rem);
+      font-size: clamp(2rem, 4vw, 3.25rem);
       font-weight: 700;
-      line-height: 1.15;
       color: var(--white);
-      margin-bottom: 1.2rem;
+      line-height: 1.15;
     }
 
-    .section-text {
-      font-size: 0.97rem;
-      font-weight: 300;
-      line-height: 1.85;
-      color: var(--text-muted);
-      max-width: 540px;
-    }
-
-    /* ─── WHAT WE OFFER ─── */
-    #offers {
+    /* ─── SECTION 1 — SERVICES ─── */
+    #services {
       background: var(--near-black);
-      padding: 7rem 3rem;
+      padding: 7rem 0;
     }
-
-    .offers-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-    }
-
-    .offers-header {
+    .services-header {
       text-align: center;
       margin-bottom: 4rem;
     }
-
-    .offers-header .section-text {
-      margin: 0 auto;
+    .services-header p {
+      margin-top: 1rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
     }
-
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-      gap: 1.6rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
-
-    .card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
+    .service-card {
+      background: rgba(26, 58, 32, 0.12);
+      border: 1px solid rgba(26, 58, 32, 0.4);
       border-top: 3px solid var(--forest-green);
-      padding: 2.4rem 2rem;
-      transition: border-top-color 0.3s, background 0.3s, transform 0.3s;
+      padding: 2.5rem 2rem;
+      border-radius: 2px;
+      cursor: default;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.35s ease,
+                  border-color 0.35s ease;
+      opacity: 0;
+      transform: translateY(60px);
     }
-
-    .card:hover {
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 30px rgba(200, 151, 42, 0.15), 0 20px 40px rgba(0,0,0,0.4);
+      border-color: var(--gold);
       border-top-color: var(--gold);
-      background: rgba(200,151,42,0.04);
-      transform: translateY(-4px);
     }
-
     .card-icon {
-      font-size: 2.4rem;
-      line-height: 1;
-      margin-bottom: 1.2rem;
+      font-size: 2rem;
+      margin-bottom: 1.25rem;
       display: block;
     }
-
     .card-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: var(--white);
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.75rem;
     }
-
-    .card-text {
-      font-size: 0.9rem;
-      line-height: 1.75;
+    .card-desc {
       color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
     }
 
-    /* ─── THE EXPERIENCE (SPLIT) ─── */
+    /* ─── SECTION 2 — HORIZONTAL STORYTELLING ─── */
     #experience {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 600px;
-    }
-
-    .experience-photo {
-      background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=960&q=80');
-      background-size: cover;
-      background-position: center;
-      min-height: 500px;
-    }
-
-    .experience-content {
       background: var(--deep-green);
-      padding: 6rem 4rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
-
-    .experience-content .section-text {
-      margin-bottom: 1.4rem;
-    }
-
-    .experience-list {
-      list-style: none;
-      margin-top: 1.8rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    .experience-list li {
+    .experience-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
       align-items: center;
-      gap: 0.8rem;
-      font-size: 0.9rem;
-      color: var(--off-white);
     }
-
-    .experience-list li::before {
-      content: '';
-      display: block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--gold);
+    .panels-track {
+      display: flex;
+      width: 300vw;
+      height: 100%;
+      will-change: transform;
+    }
+    .story-panel {
+      width: 100vw;
+      height: 100%;
       flex-shrink: 0;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 5rem 6rem;
+    }
+    .story-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,17,12,0.85) 0%, rgba(10,17,12,0.2) 60%, transparent 100%);
+    }
+    .panel-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+    }
+    .panel-1 .panel-bg { background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=90'); }
+    .panel-2 .panel-bg { background-image: url('https://images.unsplash.com/photo-1542202229-7d93c33f5d07?w=1920&q=90'); }
+    .panel-3 .panel-bg { background-image: url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1920&q=90'); }
+    .panel-text {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+    .panel-num {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .panel-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
     }
 
-    /* ─── BOOK CTA ─── */
-    #book {
-      background: var(--forest-green);
-      background: linear-gradient(135deg, var(--deep-green) 0%, var(--forest-green) 60%, #1F4425 100%);
-      padding: 7rem 3rem;
+    @media (max-width: 768px) {
+      .story-panel { padding: 3rem 1.5rem; align-items: flex-end; }
+      .panel-quote { font-size: 1.75rem; }
+    }
+
+    /* ─── SECTION 3 — STATS ─── */
+    #stats {
+      background: #081009;
+      padding: 6rem 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
       text-align: center;
     }
+    .stat-item { opacity: 0; transform: translateY(40px); }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+    }
+    .stat-suffix {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--gold-light);
+    }
+    .stat-label {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .stat-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin: 1rem auto 0;
+      opacity: 0.5;
+    }
 
-    .book-inner {
-      max-width: 640px;
+    /* ─── SECTION 4 — BOOKING ─── */
+    #booking {
+      background: linear-gradient(160deg, #0D2014 0%, #1A3A20 50%, #0D2014 100%);
+      padding: 7rem 0;
+      overflow: hidden;
+    }
+    .booking-inner {
+      max-width: 680px;
       margin: 0 auto;
+      text-align: center;
+      padding: 0 1.5rem;
     }
-
-    .book-inner .section-title {
-      margin-bottom: 1rem;
+    .booking-headline-wrap {
+      overflow: hidden;
+      margin-bottom: 1.25rem;
     }
-
-    .book-inner .section-text {
-      margin: 0 auto 2.8rem;
+    .booking-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--white);
+      clip-path: inset(0 100% 0 0);
     }
-
-    .btn-gold {
-      display: inline-block;
-      padding: 1rem 3rem;
+    .booking-sub {
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 3rem;
+      line-height: 1.7;
+      opacity: 0;
+    }
+    .booking-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      text-align: left;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .form-full { grid-column: 1 / -1; }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-group label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(200,151,42,0.25);
+      color: var(--off-white);
+      padding: 0.85rem 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+      background: rgba(200,151,42,0.07);
+    }
+    .form-group select option { background: #1A3A20; }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .btn-submit {
+      grid-column: 1 / -1;
+      display: block;
+      width: 100%;
+      padding: 1.1rem;
       background: var(--gold);
       color: var(--near-black);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      text-decoration: none;
-      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      border: none;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.25s, transform 0.2s;
+      will-change: transform;
+      margin-top: 0.5rem;
+    }
+    .btn-submit:hover { background: var(--gold-light); }
+
+    @media (max-width: 600px) {
+      .booking-form { grid-template-columns: 1fr; }
+      .form-full { grid-column: 1; }
+      .btn-submit { grid-column: 1; }
     }
 
-    .btn-gold:hover {
-      background: var(--gold-light);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 36px rgba(200,151,42,0.35);
-    }
-
-    /* ─── TESTIMONIALS ─── */
+    /* ─── SECTION 5 — TESTIMONIALS ─── */
     #testimonials {
       background: var(--near-black);
-      padding: 7rem 3rem;
+      padding: 7rem 0;
     }
-
-    .testimonials-inner {
-      max-width: 1080px;
-      margin: 0 auto;
-    }
-
     .testimonials-header {
       text-align: center;
       margin-bottom: 4rem;
     }
-
     .testimonials-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.5rem;
     }
-
-    .testimonial {
-      padding: 2.4rem 2rem 2rem;
-      border: 1px solid rgba(255,255,255,0.07);
-      background: rgba(255,255,255,0.02);
+    .testimonial-card {
+      background: rgba(26,58,32,0.1);
+      border: 1px solid rgba(200,151,42,0.12);
+      padding: 2.5rem 2rem;
+      border-radius: 2px;
+      opacity: 0;
+      transform: translateY(50px);
       position: relative;
     }
-
-    .testimonial::before {
-      content: '\201C';
-      position: absolute;
-      top: 1rem;
-      left: 1.8rem;
+    .quote-mark {
       font-family: 'Playfair Display', serif;
-      font-size: 4.5rem;
-      line-height: 1;
+      font-size: 5rem;
+      line-height: 0.5;
       color: var(--gold);
-      opacity: 0.6;
-      pointer-events: none;
+      opacity: 0.35;
+      margin-bottom: 1rem;
+      display: block;
     }
-
     .testimonial-text {
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 1rem;
-      line-height: 1.75;
+      font-size: 1.05rem;
       color: var(--off-white);
-      margin-top: 1.6rem;
-      margin-bottom: 1.4rem;
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
     }
-
     .testimonial-author {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
-
-    .testimonial-location {
-      display: block;
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--forest-green);
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .author-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .author-detail {
       font-size: 0.75rem;
       color: var(--text-muted);
-      font-weight: 400;
-      letter-spacing: 0;
-      text-transform: none;
+      margin-top: 0.1rem;
+    }
+    .stars {
+      color: var(--gold);
+      font-size: 0.8rem;
       margin-top: 0.2rem;
+      letter-spacing: 0.1em;
     }
 
     /* ─── FOOTER ─── */
     footer {
-      background: #080E0A;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 3.5rem 3rem;
+      background: #080E09;
+      border-top: 1px solid var(--gold);
+      padding: 3.5rem 2rem 2rem;
+      text-align: center;
     }
-
-    .footer-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-
     .footer-logo {
       font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
+      font-size: 1.5rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
       color: var(--white);
-      text-decoration: none;
+      margin-bottom: 0.75rem;
     }
-
     .footer-logo span { color: var(--gold); }
-
+    .footer-tagline {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 2rem;
+    }
     .footer-links {
       display: flex;
+      justify-content: center;
       gap: 2rem;
       list-style: none;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
     }
-
     .footer-links a {
-      font-size: 0.78rem;
       color: var(--text-muted);
       text-decoration: none;
-      letter-spacing: 0.08em;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       transition: color 0.2s;
     }
-
     .footer-links a:hover { color: var(--gold); }
-
-    .footer-copy {
+    .footer-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin: 1.5rem auto;
+      max-width: 600px;
+    }
+    .footer-bottom {
+      color: var(--text-muted);
       font-size: 0.75rem;
-      color: rgba(154,168,157,0.5);
-      letter-spacing: 0.05em;
     }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 768px) {
-      nav { padding: 1.2rem 1.5rem; }
-      nav.scrolled { padding: 0.8rem 1.5rem; }
-      .nav-links { display: none; }
-
-      #offers, #book, #testimonials { padding: 5rem 1.5rem; }
-
-      #experience { grid-template-columns: 1fr; }
-      .experience-photo { min-height: 300px; }
-      .experience-content { padding: 4rem 1.8rem; }
-
-      .footer-inner { flex-direction: column; text-align: center; }
-      .footer-links { flex-wrap: wrap; justify-content: center; }
+    .footer-bottom a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 500;
     }
+    .footer-bottom a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
 
-  <!-- Floating particles -->
-  <div id="particles"></div>
+  <!-- Three.js canvas -->
+  <canvas id="particle-canvas"></canvas>
 
-  <!-- NAV -->
-  <nav id="nav">
-    <a href="#" class="nav-logo">Boreal <span>Ridge</span></a>
+  <!-- CSS particle fallback (mobile) -->
+  <div class="css-particles" id="css-particles"></div>
+
+  <!-- ─── NAV ─── -->
+  <nav id="main-nav">
+    <div class="nav-logo">Boreal<span>Ridge</span></div>
     <ul class="nav-links">
-      <li><a href="#offers">Experiences</a></li>
+      <li><a href="#services">Experiences</a></li>
       <li><a href="#experience">The Wild</a></li>
-      <li><a href="#book">Book Now</a></li>
       <li><a href="#testimonials">Stories</a></li>
+      <li><a href="#booking" class="nav-cta">Book Now</a></li>
     </ul>
   </nav>
 
-  <!-- HERO -->
+  <!-- ─── HERO ─── -->
   <section id="hero">
-    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-photo" id="hero-photo"></div>
     <div class="hero-overlay"></div>
-    <div class="sparkle"></div>
     <div class="hero-content">
-      <span class="hero-eyebrow">Northern Ontario</span>
-      <h1 class="hero-headline">WHERE THE<br>WILD CALLS</h1>
-      <p class="hero-sub">Guided wilderness experiences deep in the boreal forest — fishing, paddling, and off-grid adventure.</p>
-      <a href="#book" class="btn-ghost">Claim Your Journey</a>
+      <span class="hero-eyebrow" id="hero-eyebrow">Northern Ontario</span>
+      <h1 class="hero-headline" id="hero-headline">
+        <span class="hero-word">Where</span><span class="hero-word">The</span><span class="hero-word">Wild</span><span class="hero-word">Calls</span>
+      </h1>
+      <p class="hero-sub" id="hero-sub">
+        Premier wilderness guiding in the boreal heart of Canada. Fishing, trekking, and solitude — just hours from the city.
+      </p>
+      <div class="hero-cta-wrap" id="hero-cta">
+        <a href="#booking" class="btn-primary magnetic" data-magnetic>Book Your Expedition</a>
+      </div>
     </div>
-    <div class="hero-scroll-hint">Scroll</div>
+    <div class="scroll-hint" id="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
   </section>
 
-  <!-- WHAT WE OFFER -->
-  <section id="offers">
-    <div class="offers-inner">
-      <div class="offers-header reveal">
-        <span class="section-eyebrow">What We Offer</span>
-        <h2 class="section-title">Built for the True Wilderness</h2>
-        <p class="section-text">Every trip is guided by people who grew up on these lakes and rivers. No crowds. No shortcuts. Just the real boreal.</p>
+  <!-- ─── SERVICES ─── -->
+  <section id="services">
+    <div class="section-inner">
+      <div class="services-header">
+        <span class="section-label">What We Offer</span>
+        <h2 class="section-headline">Guided by <em>Nature,</em><br>Driven by Passion</h2>
+        <p>Every experience is hand-crafted by guides who know these lakes and trails like their own backyard.</p>
       </div>
       <div class="cards-grid">
-        <div class="card reveal reveal-delay-1">
+        <div class="service-card" data-card>
           <span class="card-icon">🎣</span>
-          <div class="card-title">Guided Fishing Expeditions</div>
-          <p class="card-text">Walleye, pike, and bass on remote lakes accessible only by float plane or portage trail. We handle the boats, tackle, and licences.</p>
+          <div class="card-title">Trophy Fishing</div>
+          <p class="card-desc">Chase walleye, northern pike, and muskie on remote lakes only accessible by floatplane. Four-season guided fishing packages available.</p>
         </div>
-        <div class="card reveal reveal-delay-2">
-          <span class="card-icon">🛶</span>
-          <div class="card-title">Canoe &amp; Kayak Rentals</div>
-          <p class="card-text">Multi-day paddling routes through crown land waterways. Gear, route maps, and satellite communication included.</p>
+        <div class="service-card" data-card>
+          <span class="card-icon">🏕️</span>
+          <div class="card-title">Wilderness Camps</div>
+          <p class="card-desc">Multi-day backcountry expeditions with fully outfitted campsites, gourmet trail meals, and expert naturalist guides.</p>
         </div>
-        <div class="card reveal reveal-delay-3">
-          <span class="card-icon">🌲</span>
-          <div class="card-title">Wilderness Guide Services</div>
-          <p class="card-text">Hunting outfitters, backcountry skills, and deep bush navigation. Our certified guides carry 20+ years of boreal experience.</p>
+        <div class="service-card" data-card>
+          <span class="card-icon">🦅</span>
+          <div class="card-title">Wildlife Encounters</div>
+          <p class="card-desc">Photograph moose, black bear, osprey, and loon in their natural habitat. Photography workshops available on request.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- THE EXPERIENCE -->
-  <section id="experience">
-    <div class="experience-photo"></div>
-    <div class="experience-content">
-      <div class="reveal">
-        <span class="section-eyebrow">The Experience</span>
-        <h2 class="section-title">Silence You Can Actually Hear</h2>
-        <p class="section-text">There's a reason people come back every year. Out here, a loon call echoes for a kilometre. The mist lifts off the water at 5am. The stars are so thick you can navigate by them.</p>
-        <p class="section-text" style="margin-top:1rem;">Boreal Ridge Outfitters operates across 400,000 acres of licenced wilderness in the Temagami and Chapleau regions — two of Northern Ontario's last truly wild corners.</p>
-        <ul class="experience-list">
-          <li>Float-plane access to remote base camps</li>
-          <li>All-season expeditions — spring through late fall</li>
-          <li>Groups of 2 to 12, fully catered or self-guided</li>
-          <li>Satellite phones and emergency protocols on every trip</li>
-          <li>Leave No Trace certified operations</li>
-        </ul>
+  <!-- ─── EXPERIENCE (HORIZONTAL STORYTELLING) ─── -->
+  <div id="experience-wrapper" style="height: 300vh;">
+    <section id="experience">
+      <div class="experience-sticky">
+        <div class="panels-track" id="panels-track">
+          <div class="story-panel panel-1">
+            <div class="panel-bg"></div>
+            <div class="panel-text">
+              <span class="panel-num">01 / 03</span>
+              <h2 class="panel-quote">"The silence before the cast"</h2>
+            </div>
+          </div>
+          <div class="story-panel panel-2">
+            <div class="panel-bg"></div>
+            <div class="panel-text">
+              <span class="panel-num">02 / 03</span>
+              <h2 class="panel-quote">"Miles of untouched wilderness"</h2>
+            </div>
+          </div>
+          <div class="story-panel panel-3">
+            <div class="panel-bg"></div>
+            <div class="panel-text">
+              <span class="panel-num">03 / 03</span>
+              <h2 class="panel-quote">"Evenings you'll never forget"</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ─── STATS ─── -->
+  <section id="stats">
+    <div class="section-inner">
+      <div class="stats-grid">
+        <div class="stat-item" data-stat data-target="200" data-suffix="+">
+          <span class="stat-number" data-count><span class="count-num">0</span><span class="stat-suffix">+</span></span>
+          <span class="stat-label">Happy Guests</span>
+          <div class="stat-divider"></div>
+        </div>
+        <div class="stat-item" data-stat data-target="15" data-suffix="">
+          <span class="stat-number" data-count><span class="count-num">0</span><span class="stat-suffix"> Yrs</span></span>
+          <span class="stat-label">In Operation</span>
+          <div class="stat-divider"></div>
+        </div>
+        <div class="stat-item" data-stat data-target="4.9" data-suffix="★" data-decimal="1">
+          <span class="stat-number" data-count><span class="count-num">0</span><span class="stat-suffix">★</span></span>
+          <span class="stat-label">Guest Rating</span>
+          <div class="stat-divider"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- BOOK CTA -->
-  <section id="book">
-    <div class="book-inner reveal">
-      <span class="section-eyebrow">Book Your Adventure</span>
-      <h2 class="section-title">The Wilderness Is Waiting</h2>
-      <p class="section-text">Seasons book fast. Most remote camps are full by March. Reach out now to lock in your dates and we'll build the right trip around you.</p>
-      <a href="tel:+17055550182" class="btn-gold">Start Planning Your Trip</a>
+  <!-- ─── BOOKING ─── -->
+  <section id="booking">
+    <div class="booking-inner">
+      <span class="section-label">Reserve Your Spot</span>
+      <div class="booking-headline-wrap">
+        <h2 class="booking-headline" id="booking-headline">Book Your Adventure</h2>
+      </div>
+      <p class="booking-sub" id="booking-sub">
+        Limited spaces available each season. Fill out the form below and our team will contact you within 24 hours to confirm your dates.
+      </p>
+      <form class="booking-form" id="booking-form" onsubmit="return false;">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" placeholder="+1 (705) 555-0100" />
+        </div>
+        <div class="form-group">
+          <label>Preferred Date</label>
+          <input type="date" />
+        </div>
+        <div class="form-group form-full">
+          <label>Party Size</label>
+          <select>
+            <option value="">Select size...</option>
+            <option>1 — Solo</option>
+            <option>2 — Duo</option>
+            <option>3–4 — Small Group</option>
+            <option>5–8 — Large Group</option>
+            <option>9+ — Corporate / Event</option>
+          </select>
+        </div>
+        <div class="form-group form-full">
+          <label>Tell us about your dream trip</label>
+          <textarea placeholder="What experiences are you looking for? Any special requirements?"></textarea>
+        </div>
+        <button type="submit" class="btn-submit magnetic" data-magnetic>Send Enquiry</button>
+      </form>
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
+  <!-- ─── TESTIMONIALS ─── -->
   <section id="testimonials">
-    <div class="testimonials-inner">
-      <div class="testimonials-header reveal">
-        <span class="section-eyebrow">Stories from the Field</span>
-        <h2 class="section-title">They Came. They Stayed. They Came Back.</h2>
+    <div class="section-inner">
+      <div class="testimonials-header">
+        <span class="section-label">Guest Stories</span>
+        <h2 class="section-headline">From the <em>Wild</em></h2>
       </div>
       <div class="testimonials-grid">
-        <div class="testimonial reveal reveal-delay-1">
-          <p class="testimonial-text">Five days in the Temagami backcountry. We didn't see another human soul. The walleye were thick and the guides knew every rock. Best trip of my life — and I've been fishing for 30 years.</p>
-          <div class="testimonial-author">Dave K.
-            <span class="testimonial-location">Sudbury, Ontario</span>
+        <div class="testimonial-card" data-tcard>
+          <span class="quote-mark">"</span>
+          <p class="testimonial-text">
+            Three days on that lake and I completely forgot what a phone was for. The guides knew every cove, every hatch, every move the fish would make. Best trip of my life.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">DM</div>
+            <div>
+              <div class="author-name">Dave M.</div>
+              <div class="author-detail">Fly Fishing Package — July 2024</div>
+              <div class="stars">★★★★★</div>
+            </div>
           </div>
         </div>
-        <div class="testimonial reveal reveal-delay-2">
-          <p class="testimonial-text">My daughter and I did the 7-day canoe route. Professional, safe, incredibly well organized. She's twelve and she handled every portage. These guides made us feel capable out there.</p>
-          <div class="testimonial-author">Marie-Josée T.
-            <span class="testimonial-location">Ottawa, Ontario</span>
+        <div class="testimonial-card" data-tcard>
+          <span class="quote-mark">"</span>
+          <p class="testimonial-text">
+            We brought our corporate team for a two-day wilderness camp. The transformation in group dynamics was remarkable. We'll be back every year. Absolutely world-class.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SL</div>
+            <div>
+              <div class="author-name">Sarah L.</div>
+              <div class="author-detail">Corporate Retreat — September 2024</div>
+              <div class="stars">★★★★★</div>
+            </div>
           </div>
         </div>
-        <div class="testimonial reveal reveal-delay-3">
-          <p class="testimonial-text">I've used three different outfitters in Northern Ontario. Boreal Ridge is in a different league. The camp setup, the food, the local knowledge — everything is dialled in perfectly.</p>
-          <div class="testimonial-author">Greg F.
-            <span class="testimonial-location">Mississauga, Ontario</span>
+        <div class="testimonial-card" data-tcard>
+          <span class="quote-mark">"</span>
+          <p class="testimonial-text">
+            Saw a moose and her calf within the first hour. My camera memory card couldn't hold all the shots. Boreal Ridge knows how to put you exactly where nature wants you.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">RK</div>
+            <div>
+              <div class="author-name">Ray K.</div>
+              <div class="author-detail">Wildlife Photography — August 2024</div>
+              <div class="stars">★★★★★</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ─── FOOTER ─── -->
   <footer>
-    <div class="footer-inner">
-      <a href="#" class="footer-logo">Boreal <span>Ridge</span> Outfitters</a>
-      <ul class="footer-links">
-        <li><a href="#offers">Experiences</a></li>
-        <li><a href="#book">Book</a></li>
-        <li><a href="#testimonials">Stories</a></li>
-        <li><a href="mailto:hello@borealridge.ca">Contact</a></li>
-      </ul>
-      <p class="footer-copy">&copy; 2026 Boreal Ridge Outfitters Ltd. — Northern Ontario, Canada</p>
-    </div>
+    <div class="footer-logo">Boreal<span>Ridge</span> Outfitters</div>
+    <p class="footer-tagline">Northern Ontario's Premier Wilderness Guide Service</p>
+    <ul class="footer-links">
+      <li><a href="#services">Experiences</a></li>
+      <li><a href="#booking">Book Now</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Privacy</a></li>
+    </ul>
+    <div class="footer-divider"></div>
+    <p class="footer-bottom">
+      &copy; 2024 Boreal Ridge Outfitters &mdash; Devlin, Ontario &nbsp;|&nbsp;
+      Website by <a href="https://locallaunches.ca" target="_blank">Local Launch Sites</a>
+    </p>
   </footer>
 
+  <!-- ─── SCRIPTS ─── -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <script>
-    // ─── PARTICLES ───────────────────────────────────────────────
-    (function () {
-      const container = document.getElementById('particles');
-      const count = 28;
-      for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
-        p.classList.add('particle');
-        const size = Math.random() * 2 + 1;
-        p.style.cssText = `
-          left: ${Math.random() * 100}%;
-          width: ${size}px;
-          height: ${size}px;
-          --drift: ${(Math.random() - 0.5) * 60}px;
-          animation-duration: ${Math.random() * 14 + 9}s;
-          animation-delay: ${Math.random() * 12}s;
-          opacity: ${Math.random() * 0.5 + 0.2};
-        `;
-        container.appendChild(p);
+  (function () {
+    'use strict';
+
+    /* ─────────────────────────────────────────
+       DETECT MOBILE
+    ───────────────────────────────────────── */
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth < 768;
+
+    /* ─────────────────────────────────────────
+       LENIS SMOOTH SCROLL
+    ───────────────────────────────────────── */
+    const lenis = new Lenis({ lerp: 0.08 });
+    gsap.registerPlugin(ScrollTrigger);
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    /* ─────────────────────────────────────────
+       THREE.JS PARTICLE FIREFLIES (desktop)
+    ───────────────────────────────────────── */
+    if (!isMobile) {
+      const canvas = document.getElementById('particle-canvas');
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.z = 5;
+
+      const PARTICLE_COUNT = 200;
+      const positions = new Float32Array(PARTICLE_COUNT * 3);
+      const velocities = [];
+      const phases = [];
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        positions[i * 3]     = (Math.random() - 0.5) * 20;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 8;
+        velocities.push({
+          x: (Math.random() - 0.5) * 0.003,
+          y: 0.004 + Math.random() * 0.006,
+          z: (Math.random() - 0.5) * 0.001
+        });
+        phases.push(Math.random() * Math.PI * 2);
       }
-    })();
 
-    // ─── NAV SCROLL ───────────────────────────────────────────────
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 60);
-    }, { passive: true });
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-    // ─── HERO BG PARALLAX / LOAD ──────────────────────────────────
-    const heroBg = document.getElementById('heroBg');
-    setTimeout(() => heroBg.classList.add('loaded'), 100);
+      const mat = new THREE.PointsMaterial({
+        color: 0xC8972A,
+        size: 0.045,
+        transparent: true,
+        opacity: 0.75,
+        sizeAttenuation: true
+      });
 
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (y < window.innerHeight) {
-        heroBg.style.transform = `scale(1) translateY(${y * 0.25}px)`;
+      const particles = new THREE.Points(geo, mat);
+      scene.add(particles);
+
+      function animateParticles(t) {
+        requestAnimationFrame(animateParticles);
+        const pos = particles.geometry.attributes.position.array;
+        const time = t * 0.001;
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          pos[i * 3]     += velocities[i].x + Math.sin(time + phases[i]) * 0.001;
+          pos[i * 3 + 1] += velocities[i].y;
+          pos[i * 3 + 2] += velocities[i].z;
+
+          // Reset to bottom when particle exits top
+          if (pos[i * 3 + 1] > 7) {
+            pos[i * 3 + 1] = -7;
+            pos[i * 3]     = (Math.random() - 0.5) * 20;
+          }
+        }
+        particles.geometry.attributes.position.needsUpdate = true;
+        mat.opacity = 0.5 + 0.25 * Math.sin(time * 0.5);
+        renderer.render(scene, camera);
       }
-    }, { passive: true });
+      animateParticles(0);
 
-    // ─── INTERSECTION OBSERVER (REVEAL) ───────────────────────────
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+    } else {
+      /* CSS PARTICLE FALLBACK */
+      document.getElementById('particle-canvas').style.display = 'none';
+      const container = document.getElementById('css-particles');
+      container.style.display = 'block';
+      for (let i = 0; i < 20; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'css-particle';
+        dot.style.left = Math.random() * 100 + 'vw';
+        dot.style.animationDuration = (6 + Math.random() * 10) + 's';
+        dot.style.animationDelay = (Math.random() * 10) + 's';
+        dot.style.width = dot.style.height = (2 + Math.random() * 3) + 'px';
+        dot.style.opacity = 0;
+        container.appendChild(dot);
+      }
+    }
+
+    /* ─────────────────────────────────────────
+       NAV — SCROLL BEHAVIOR
+    ───────────────────────────────────────── */
+    const nav = document.getElementById('main-nav');
+    ScrollTrigger.create({
+      start: 80,
+      onEnter: () => nav.classList.add('scrolled'),
+      onLeaveBack: () => nav.classList.remove('scrolled')
+    });
+
+    /* ─────────────────────────────────────────
+       HERO ANIMATIONS
+    ───────────────────────────────────────── */
+    const heroTL = gsap.timeline({ delay: 0.3 });
+
+    // Ken Burns on hero photo
+    gsap.to('#hero-photo', {
+      scale: 1.08,
+      duration: 12,
+      ease: 'none',
+      transformOrigin: 'center center'
+    });
+
+    heroTL
+      .to('#hero-eyebrow', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+      .to('.hero-word', {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power4.out'
+      }, '-=0.2')
+      .to('#hero-sub', { opacity: 1, duration: 0.7, ease: 'power2.out' }, '-=0.2')
+      .to('#hero-cta', { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.7)' }, '-=0.2')
+      .to('#scroll-hint', { opacity: 1, duration: 0.5 }, '-=0.1');
+
+    /* ─────────────────────────────────────────
+       MAGNETIC HOVER EFFECT
+    ───────────────────────────────────────── */
+    document.querySelectorAll('[data-magnetic]').forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = (e.clientX - cx) * 0.25;
+        const dy = (e.clientY - cy) * 0.25;
+        gsap.to(el, { x: dx, y: dy, duration: 0.4, ease: 'power2.out' });
+      });
+      el.addEventListener('mouseleave', () => {
+        gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+      });
+    });
+
+    /* ─────────────────────────────────────────
+       SERVICE CARDS — STAGGER IN
+    ───────────────────────────────────────── */
+    gsap.to('[data-card]', {
+      opacity: 1,
+      y: 0,
+      duration: 0.75,
+      stagger: 0.15,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#services',
+        start: 'top 70%'
+      }
+    });
+
+    /* ─────────────────────────────────────────
+       HORIZONTAL STORYTELLING — PIN + SCRUB
+    ───────────────────────────────────────── */
+    const track = document.getElementById('panels-track');
+
+    ScrollTrigger.create({
+      trigger: '#experience-wrapper',
+      start: 'top top',
+      end: 'bottom bottom',
+      pin: '#experience',
+      pinSpacing: false,
+      scrub: 1,
+      onUpdate: (self) => {
+        const x = -self.progress * (track.scrollWidth - window.innerWidth);
+        gsap.set(track, { x });
+      }
+    });
+
+    // Panel text fade-in as each panel centres
+    document.querySelectorAll('.panel-text').forEach((text, i) => {
+      gsap.fromTo(text,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.5,
+          scrollTrigger: {
+            trigger: '#experience-wrapper',
+            start: `${i * 33}% top`,
+            end: `${i * 33 + 25}% top`,
+            scrub: true,
+          }
+        }
+      );
+    });
+
+    /* ─────────────────────────────────────────
+       STATS — COUNT UP
+    ───────────────────────────────────────── */
+    function countUp(el, target, isDecimal) {
+      const numEl = el.querySelector('.count-num');
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: target,
+        duration: 2.2,
+        ease: 'power2.out',
+        onUpdate: () => {
+          numEl.textContent = isDecimal ? obj.val.toFixed(1) : Math.floor(obj.val);
         }
       });
-    }, { threshold: 0.12 });
+    }
 
-    reveals.forEach(el => observer.observe(el));
+    gsap.to('[data-stat]', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      stagger: 0.15,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#stats',
+        start: 'top 70%',
+        onEnter: () => {
+          document.querySelectorAll('[data-stat]').forEach(stat => {
+            const target = parseFloat(stat.dataset.target);
+            const isDecimal = stat.dataset.decimal === '1';
+            countUp(stat, target, isDecimal);
+          });
+        }
+      }
+    });
+
+    /* ─────────────────────────────────────────
+       BOOKING — CURTAIN WIPE + FORM FADE
+    ───────────────────────────────────────── */
+    gsap.to('#booking-headline', {
+      clipPath: 'inset(0 0% 0 0)',
+      duration: 1.1,
+      ease: 'power3.inOut',
+      scrollTrigger: {
+        trigger: '#booking',
+        start: 'top 65%'
+      }
+    });
+
+    gsap.to('#booking-sub', {
+      opacity: 1,
+      duration: 0.8,
+      delay: 0.3,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '#booking',
+        start: 'top 65%'
+      }
+    });
+
+    gsap.to('#booking-form', {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      delay: 0.5,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#booking',
+        start: 'top 65%'
+      }
+    });
+
+    /* ─────────────────────────────────────────
+       TESTIMONIALS — STAGGER IN
+    ───────────────────────────────────────── */
+    gsap.to('[data-tcard]', {
+      opacity: 1,
+      y: 0,
+      duration: 0.75,
+      stagger: 0.18,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#testimonials',
+        start: 'top 70%'
+      }
+    });
+
+  })();
   </script>
-
 </body>
 </html>
